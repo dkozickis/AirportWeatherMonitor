@@ -5,10 +5,10 @@ php:
 before_script:
   - cp app/config/parameters.yml.travis app/config/parameters.yml
   - export SYMFONY_ENV=test
+  - composer require --no-update satooshi/php-coveralls '~1.0'
   - composer install
   - php app/console doctrine:database:create --env=test
   - php app/console doctrine:schema:create --env=test
-  - composer require --no-update satooshi/php-coveralls '~1.0'
 
 script:
   - mkdir -p build/logs

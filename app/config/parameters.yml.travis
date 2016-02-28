@@ -1,4 +1,15 @@
 parameters:
-    database_user: travis
-    database_password: ~
-    # Other parameters
+    database_driver:   pdo_mysql
+    database_host:     127.0.0.1
+    database_port:     null
+    database_name:     aero_weather
+    database_user:     travis
+    database_password: null
+
+    mailer_transport:  smtp
+    mailer_host:       127.0.0.1
+    mailer_user:       null
+    mailer_password:   null
+
+    locale:            en
+    secret:            ThisTokenIsNotSoSecretChangeIt

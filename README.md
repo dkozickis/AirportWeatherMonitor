@@ -1,3 +1,4 @@
+[![Build Status](https://travis-ci.org/JohnieWalker/AeroWeatherWatch.svg?branch=master)](https://travis-ci.org/JohnieWalker/AeroWeatherWatch)
 [![Coverage Status](https://coveralls.io/repos/github/JohnieWalker/AeroWeatherWatch/badge.svg?branch=master)](https://coveralls.io/github/JohnieWalker/AeroWeatherWatch?branch=master)
 
 AeroWeatherWatch

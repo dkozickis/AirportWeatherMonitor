@@ -15,7 +15,7 @@ script:
   - phpunit --coverage-clover build/logs/clover.xml -c app
 
 after_script:
-  - php vendor/bin/coveralls -v
+  - php ./vendor/satooshi/php-coveralls/bin/coveralls -v
 
 sudo: false
 

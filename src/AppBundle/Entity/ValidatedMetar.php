@@ -30,13 +30,9 @@ class ValidatedMetar
     }
 
     /**
-     * @param array $metarWarnings
+     * @param $metarWarning
+     * @return $this
      */
-    public function setMetarWarnings($metarWarnings)
-    {
-        $this->metarWarnings = $metarWarnings;
-    }
-
     public function addWarning($metarWarning)
     {
         $this->metarWarnings[] = $metarWarning;

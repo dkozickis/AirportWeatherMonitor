@@ -1,3 +1,5 @@
+[![Coverage Status](https://coveralls.io/repos/github/JohnieWalker/AeroWeatherWatch/badge.svg?branch=master)](https://coveralls.io/github/JohnieWalker/AeroWeatherWatch?branch=master)
+
 AeroWeatherWatch
 ================
 

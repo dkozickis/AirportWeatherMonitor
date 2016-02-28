@@ -1,0 +1,4 @@
+parameters:
+    database_user: travis
+    database_password: ~
+    # Other parameters

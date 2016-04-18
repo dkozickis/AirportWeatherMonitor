@@ -2,119 +2,100 @@
 
 namespace AppBundle\Services;
 
-use AppBundle\Entity\Airports;
-use AppBundle\Entity\ValidatedMetar;
+use AppBundle\Entity\MonitoredAirports;
+use AppBundle\Entity\ValidatedWeather;
 use AppBundle\Entity\ValidatorWarning;
-use MetarDecoder\Entity\DecodedMetar;
 use MetarDecoder\Entity\SurfaceWind;
 use MetarDecoder\Entity\CloudLayer;
 use MetarDecoder\Entity\Visibility;
-
+use Symfony\Bridge\Monolog\Logger;
+use MetarDecoder\Exception\ChunkDecoderException;
 
 class MetarValidator
 {
+    /**
+     * @var MonitoredAirports
+     */
     private $airport;
-    private $decodedMetar;
+
+    /**
+     * @var ValidatedWeather
+     */
     private $validatedMetar;
 
-    public function __construct(Airports $airport, DecodedMetar $decodedMetar)
+    /**
+     * @var Logger
+     */
+    private $weatherLogger;
+
+    public function __construct(Logger $weatherLogger)
     {
-        $this->airport = $airport;
-        $this->decodedMetar = $decodedMetar;
-        $this->validatedMetar = new ValidatedMetar();
+        $this->weatherLogger = $weatherLogger;
     }
 
     /**
-     * @return ValidatedMetar
+     * @return ValidatedWeather
      */
-    public function validate()
+    public function validate(MonitoredAirports $airport)
     {
-        $this->validatedMetar = $this->validateWind();
-        if($this->decodedMetar->getCavok() != TRUE){
-            $this->validatedMetar = $this->validateCeiling();
-            $this->validatedMetar = $this->validateVisibility();
+        $this->setAirport($airport);
+        $this->validatedMetar = new ValidatedWeather();
+
+        if (!$this->checkProcessingErrors()) {
+            return $this->validatedMetar;
+        }
+
+        $this->validateWind();
+        if ($this->airport->getDecodedMetar()->getCavok() != true) {
+            if (count($this->airport->getDecodedMetar()->getClouds()) > 0) {
+                $this->validateCeiling();
+            }
+
+            $this->validateVisibility();
         }
 
         return $this->validatedMetar;
+    }
+
+    /**
+     * @param MonitoredAirports $airport
+     */
+    private function setAirport(MonitoredAirports $airport)
+    {
+        $this->airport = $airport;
     }
 
     private function validateWind($midWarning = null, $highWarning = null)
     {
-        if ($midWarning === null) {
-            $midWarning = $this->airport->getMidWarningWind();
-        }
-
         if ($highWarning === null) {
             $highWarning = $this->airport->getHighWarningWind();
         }
 
-        // TODO: Check against SurfaceWinds equals NULL
-        /** @var SurfaceWind $surfaceWind */
-        $surfaceWind = $this->decodedMetar->getSurfaceWind();
-        $surfaceWindChunk = $surfaceWind->getChunk();
-        $knots = $surfaceWind->getMeanSpeed()->getConvertedValue('kt');
-        $gustKnotsValue = $surfaceWind->getSpeedVariations();
+        /*
+         * Turns our we only want to check if Wind exceeds high warning...
+         * Understood that too late into dev, hence the quick fix.
+         * Sorry.
+         */
+        $midWarning = $highWarning;
 
-        if (isset($gustKnotsValue)) {
-            $knots = $gustKnotsValue->getConvertedValue('kt');
-        }
+        $surfaceWind = $this->airport->getDecodedMetar()->getSurfaceWind();
+        if ($surfaceWind) {
+            /* @var SurfaceWind $surfaceWind */
+            $surfaceWindChunk = $surfaceWind->getChunk();
+            $knots = $surfaceWind->getMeanSpeed()->getConvertedValue('kt');
+            $gustKnotsValue = $surfaceWind->getSpeedVariations();
 
-        $this->validatedMetar = $this->exceedsWarningCheck(
-            $knots,
-            $midWarning,
-            $highWarning,
-            $surfaceWindChunk
-        );
-
-        return $this->validatedMetar;
-    }
-
-    public function validateCeiling($midWarning = null, $highWarning = null)
-    {
-        $ceilingClouds = array('BKN', 'OVC', 'VV');
-
-        if ($midWarning === null) {
-            $midWarning = $this->airport->getMidWarningCeiling();
-        }
-
-        if ($highWarning === null) {
-            $highWarning = $this->airport->getHighWarningCeiling();
-        }
-
-        /** @var CloudLayer[] $clouds */
-        $clouds = $this->decodedMetar->getClouds();
-
-        foreach ($clouds as $cloud) {
-            $cloudChunk = $cloud->getChunk();
-            $cloudAmount = $cloud->getAmount();
-            $cloudBase = $cloud->getBaseHeight()->getConvertedValue('ft');
-
-            if (in_array($cloudAmount, $ceilingClouds)) {
-                $this->validatedMetar = $this->belowWarningCheck($cloudBase, $midWarning, $highWarning, $cloudChunk);
+            if (isset($gustKnotsValue)) {
+                $knots = $gustKnotsValue->getConvertedValue('kt');
             }
+
+            $this->exceedsWarningCheck(
+                $knots,
+                $midWarning,
+                $highWarning,
+                $surfaceWindChunk
+            );
         }
-
-        return $this->validatedMetar;
-    }
-
-
-    public function validateVisibility($midWarning = null, $highWarning = null)
-    {
-        if ($midWarning === null) {
-            $midWarning = $this->airport->getMidWarningVis();
-        }
-
-        if ($highWarning === null) {
-            $highWarning = $this->airport->getHighWarningVis();
-        }
-
-        /** @var Visibility $visibility */
-        $visibility = $this->decodedMetar->getVisibility();
-
-        $visDistance = $visibility->getVisibility()->getConvertedValue('m');
-        $visChunk = $visibility->getChunk();
-
-        $this->validatedMetar = $this->belowWarningCheck($visDistance, $midWarning, $highWarning, $visChunk);
 
         return $this->validatedMetar;
     }
@@ -124,7 +105,8 @@ class MetarValidator
      * @param $midWarning
      * @param $highWarning
      * @param $chunk
-     * @return ValidatedMetar
+     *
+     * @return ValidatedWeather
      */
     private function exceedsWarningCheck(
         $referenceValue,
@@ -145,10 +127,14 @@ class MetarValidator
      * @param $referenceValue
      * @param $midWarning
      * @param $highWarning
+     *
      * @return int
      */
-    private function exceedsValueCheck($referenceValue, $midWarning, $highWarning)
-    {
+    private function exceedsValueCheck(
+        $referenceValue,
+        $midWarning,
+        $highWarning
+    ) {
         if ($referenceValue >= $midWarning && $referenceValue < $highWarning) {
             $metarStatus = 2;
         } elseif ($referenceValue >= $highWarning) {
@@ -161,11 +147,63 @@ class MetarValidator
     }
 
     /**
+     * @param $chunk
+     * @param $metarStatus
+     *
+     * @return ValidatedWeather
+     */
+    private function generateWarning(
+        $chunk,
+        $metarStatus
+    ) {
+        $validatorWarning = new ValidatorWarning();
+        $validatorWarning->setChunk($chunk);
+        $validatorWarning->setWarningLevel($metarStatus);
+        $this->validatedMetar->setWeatherStatus($metarStatus);
+        $this->validatedMetar->addWarning($validatorWarning);
+
+        return $this->validatedMetar;
+    }
+
+    private function validateCeiling(
+        $midWarning = null,
+        $highWarning = null
+    ) {
+        $ceilingClouds = array('BKN', 'OVC', 'VV');
+
+        if ($midWarning === null) {
+            $midWarning = $this->airport->getMidWarningCeiling();
+        }
+
+        if ($highWarning === null) {
+            $highWarning = $this->airport->getHighWarningCeiling();
+        }
+
+        /** @var CloudLayer[] $clouds */
+        $clouds = $this->airport->getDecodedMetar()->getClouds();
+
+        foreach ($clouds as $cloud) {
+            if ($cloud->getBaseHeight()) {
+                $cloudChunk = $cloud->getChunk();
+                $cloudAmount = $cloud->getAmount();
+                $cloudBase = $cloud->getBaseHeight()->getConvertedValue('ft');
+
+                if (in_array($cloudAmount, $ceilingClouds)) {
+                    $this->belowWarningCheck($cloudBase, $midWarning, $highWarning, $cloudChunk);
+                }
+            }
+        }
+
+        return $this->validatedMetar;
+    }
+
+    /**
      * @param $referenceValue
      * @param $midWarning
      * @param $highWarning
      * @param $chunk
-     * @return ValidatedMetar
+     *
+     * @return ValidatedWeather
      */
     private function belowWarningCheck(
         $referenceValue,
@@ -186,11 +224,14 @@ class MetarValidator
      * @param $referenceValue
      * @param $midWarning
      * @param $highWarning
+     *
      * @return int
      */
-    private function belowValueCheck($referenceValue, $midWarning, $highWarning)
-    {
-
+    private function belowValueCheck(
+        $referenceValue,
+        $midWarning,
+        $highWarning
+    ) {
         if ($referenceValue < $highWarning) {
             $metCondition = 3;
         } elseif ($referenceValue < $midWarning) {
@@ -202,20 +243,60 @@ class MetarValidator
         return $metCondition;
     }
 
-    /**
-     * @param $chunk
-     * @param $metarStatus
-     * @return ValidatedMetar
-     */
-    private function generateWarning($chunk, $metarStatus)
-    {
-        $vw = new ValidatorWarning();
-        $vw->setChunk($chunk);
-        $vw->setWarningLevel($metarStatus);
-        $this->validatedMetar->setMetarStatus($metarStatus);
-        $this->validatedMetar->addWarning($vw);
+    private function validateVisibility(
+        $midWarning = null,
+        $highWarning = null
+    ) {
+        if ($midWarning === null) {
+            $midWarning = $this->airport->getMidWarningVis();
+        }
+
+        if ($highWarning === null) {
+            $highWarning = $this->airport->getHighWarningVis();
+        }
+
+        /** @var Visibility $visibility */
+        $visibility = $this->airport->getDecodedMetar()->getVisibility();
+
+        $visDistance = $visibility->getVisibility()->getConvertedValue('m');
+        $visChunk = $visibility->getChunk();
+
+        $this->belowWarningCheck($visDistance, $midWarning, $highWarning, $visChunk);
 
         return $this->validatedMetar;
     }
 
+    /**
+     * @return bool
+     */
+    private function checkProcessingErrors()
+    {
+        $airportIcao = $this->airport->getAirportData()->getAirportIcao();
+        $rawMetar = $this->airport->getRawMetar();
+        $decodingExceptions = $this->airport->getDecodedMetar()->getDecodingExceptions();
+        $badExceptions = array('SurfaceWindChunkDecoder');
+
+        if (!$rawMetar) {
+            $this->validatedMetar->setWeatherStatus(0);
+            $this->weatherLogger->warning($airportIcao." had NO METAR: '".$rawMetar."'");
+
+            return false;
+        }
+
+        if ($decodingExceptions) {
+            /** @var ChunkDecoderException $exception */
+            foreach ($decodingExceptions as $exception) {
+                if (in_array($exception->getChunkDecoder(), $badExceptions)) {
+                    $this->validatedMetar->setWeatherStatus(0);
+                    $this->weatherLogger->warning(
+                        $airportIcao.' had '.$exception->getChunkDecoder().": '".$rawMetar."'"
+                    );
+
+                    return false;
+                }
+            }
+        }
+
+        return true;
+    }
 }

@@ -3,15 +3,12 @@
  * Created by PhpStorm.
  * User: Denis
  * Date: 28/02/16
- * Time: 12:37
+ * Time: 12:37.
  */
-
 namespace AppBundle\Entity;
-
 
 class ValidatorWarning
 {
-
     /**
      * @var string
      */
@@ -53,7 +50,4 @@ class ValidatorWarning
     {
         $this->warningLevel = $warningLevel;
     }
-
-
-
 }

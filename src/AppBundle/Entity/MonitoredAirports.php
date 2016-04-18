@@ -6,13 +6,13 @@ use Doctrine\ORM\Mapping as ORM;
 use MetarDecoder\Entity\DecodedMetar;
 
 /**
- * Airports
+ * Monitored Airports.
  *
- * @ORM\Table(name="airports")
- * @ORM\Entity(repositoryClass="AppBundle\Repository\AirportsRepository")
+ * @ORM\Table(name="monitored_airports")
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\MonitoredAirportsRepository")
  * @ORM\HasLifecycleCallbacks()
  */
-class Airports
+class MonitoredAirports
 {
     /**
      * @var int
@@ -26,9 +26,9 @@ class Airports
     /**
      * @var string
      *
-     * @ORM\Column(name="airport_icao", type="string", length=4, unique=true)
+     * @ORM\OneToOne(targetEntity="AppBundle\Entity\AirportsMasterData", fetch="EAGER")
      */
-    private $airportIcao;
+    private $airportData;
 
     /**
      * @var bool
@@ -106,35 +106,59 @@ class Airports
      * @ORM\Column(name="raw_metar", type="string", nullable=true)
      */
     private $rawMetar;
+
     /**
      * @var \DateTime
      *
      * @ORM\Column(name="raw_metar_date_time", type="datetime", nullable=true)
      */
     private $rawMetarDateTime;
+
     /**
      * @var DecodedMetar
      */
     private $decodedMetar;
+
     /**
-     * @var ValidatedMetar
+     * @var ValidatedWeather
      */
-    private $validatedWeather;
+    private $validatedMetar;
+
+    /**
+     * @var string
+     */
+    private $colorizedMetar;
+
+    /**
+     * @return string
+     */
+    public function getColorizedMetar()
+    {
+        return $this->colorizedMetar;
+    }
+
+    /**
+     * @param string $colorizedMetar
+     */
+    public function setColorizedMetar($colorizedMetar)
+    {
+        $this->colorizedMetar = $colorizedMetar;
+    }
 
     /**
      * @return mixed
      */
-    public function getValidatedWeather()
+    public function getValidatedMetar()
     {
-        return $this->validatedWeather;
+        return $this->validatedMetar;
     }
 
     /**
-     * @param mixed $validatedWeather
+     * @param mixed $validatedMetar
      */
-    public function setValidatedWeather($validatedWeather)
+    public function setValidatedMetar($validatedMetar)
     {
-        $this->validatedWeather = $validatedWeather;
+        $this->validatedMetar = $validatedMetar;
     }
 
     /**
@@ -152,6 +176,7 @@ class Airports
     {
         $this->decodedMetar = $decodedMetar;
     }
+
     /**
      * @var string
      *
@@ -195,6 +220,8 @@ class Airports
     public function setRawMetar($rawMetar)
     {
         $this->rawMetar = $rawMetar;
+        // If new Raw METAR is set, then colorized METAR should be reset to new Raw METAR state
+        $this->colorizedMetar = $rawMetar;
     }
 
     /**
@@ -227,22 +254,14 @@ class Airports
     public function setRawTaf($rawTaf)
     {
         $this->rawTaf = $rawTaf;
+        // If new Raw TAF is set, then colorized TAF should be reset to new Raw TAF state
+        // TODO: IMPLEMENT ABOVE COMMENT
     }
 
     /**
-     * @ORM\PrePersist()
-     * @ORM\PreUpdate()
-     */
-    public function upperCaseAirportICAOCode(){
-
-        $this->airportIcao = strtoupper($this->airportIcao);
-
-    }
-
-    /**
-     * Get id
+     * Get id.
      *
-     * @return integer 
+     * @return int
      */
     public function getId()
     {
@@ -250,32 +269,9 @@ class Airports
     }
 
     /**
-     * Get airportIcao
+     * Get activeWinter.
      *
-     * @return string
-     */
-    public function getAirportIcao()
-    {
-        return $this->airportIcao;
-    }
-
-    /**
-     * Set airportIcao
-     *
-     * @param string $airportIcao
-     * @return Airports
-     */
-    public function setAirportIcao($airportIcao)
-    {
-        $this->airportIcao = $airportIcao;
-
-        return $this;
-    }
-
-    /**
-     * Get activeWinter
-     *
-     * @return boolean
+     * @return bool
      */
     public function getActiveWinter()
     {
@@ -283,10 +279,11 @@ class Airports
     }
 
     /**
-     * Set activeWinter
+     * Set activeWinter.
      *
-     * @param boolean $activeWinter
-     * @return Airports
+     * @param bool $activeWinter
+     *
+     * @return MonitoredAirports
      */
     public function setActiveWinter($activeWinter)
     {
@@ -296,9 +293,9 @@ class Airports
     }
 
     /**
-     * Get alternateWinter
+     * Get alternateWinter.
      *
-     * @return boolean
+     * @return bool
      */
     public function getAlternateWinter()
     {
@@ -306,10 +303,11 @@ class Airports
     }
 
     /**
-     * Set alternateWinter
+     * Set alternateWinter.
      *
-     * @param boolean $alternateWinter
-     * @return Airports
+     * @param bool $alternateWinter
+     *
+     * @return MonitoredAirports
      */
     public function setAlternateWinter($alternateWinter)
     {
@@ -319,9 +317,9 @@ class Airports
     }
 
     /**
-     * Get activeSummer
+     * Get activeSummer.
      *
-     * @return boolean
+     * @return bool
      */
     public function getActiveSummer()
     {
@@ -329,10 +327,11 @@ class Airports
     }
 
     /**
-     * Set activeSummer
+     * Set activeSummer.
      *
-     * @param boolean $activeSummer
-     * @return Airports
+     * @param bool $activeSummer
+     *
+     * @return MonitoredAirports
      */
     public function setActiveSummer($activeSummer)
     {
@@ -342,9 +341,9 @@ class Airports
     }
 
     /**
-     * Get alternateSummer
+     * Get alternateSummer.
      *
-     * @return boolean
+     * @return bool
      */
     public function getAlternateSummer()
     {
@@ -352,10 +351,11 @@ class Airports
     }
 
     /**
-     * Set alternateSummer
+     * Set alternateSummer.
      *
-     * @param boolean $alternateSummer
-     * @return Airports
+     * @param bool $alternateSummer
+     *
+     * @return MonitoredAirports
      */
     public function setAlternateSummer($alternateSummer)
     {
@@ -365,9 +365,9 @@ class Airports
     }
 
     /**
-     * Get midWarningVis
+     * Get midWarningVis.
      *
-     * @return integer
+     * @return int
      */
     public function getMidWarningVis()
     {
@@ -375,10 +375,11 @@ class Airports
     }
 
     /**
-     * Set midWarningVis
+     * Set midWarningVis.
      *
-     * @param integer $midWarningVis
-     * @return Airports
+     * @param int $midWarningVis
+     *
+     * @return MonitoredAirports
      */
     public function setMidWarningVis($midWarningVis)
     {
@@ -388,9 +389,9 @@ class Airports
     }
 
     /**
-     * Get midWarningCeiling
+     * Get midWarningCeiling.
      *
-     * @return integer
+     * @return int
      */
     public function getMidWarningCeiling()
     {
@@ -398,10 +399,11 @@ class Airports
     }
 
     /**
-     * Set midWarningCeiling
+     * Set midWarningCeiling.
      *
-     * @param integer $midWarningCeiling
-     * @return Airports
+     * @param int $midWarningCeiling
+     *
+     * @return MonitoredAirports
      */
     public function setMidWarningCeiling($midWarningCeiling)
     {
@@ -411,9 +413,9 @@ class Airports
     }
 
     /**
-     * Get midWarningWind
+     * Get midWarningWind.
      *
-     * @return integer
+     * @return int
      */
     public function getMidWarningWind()
     {
@@ -421,10 +423,11 @@ class Airports
     }
 
     /**
-     * Set midWarningWind
+     * Set midWarningWind.
      *
-     * @param integer $midWarningWind
-     * @return Airports
+     * @param int $midWarningWind
+     *
+     * @return MonitoredAirports
      */
     public function setMidWarningWind($midWarningWind)
     {
@@ -434,9 +437,9 @@ class Airports
     }
 
     /**
-     * Get highWarningVis
+     * Get highWarningVis.
      *
-     * @return integer
+     * @return int
      */
     public function getHighWarningVis()
     {
@@ -444,10 +447,11 @@ class Airports
     }
 
     /**
-     * Set highWarningVis
+     * Set highWarningVis.
      *
-     * @param integer $highWarningVis
-     * @return Airports
+     * @param int $highWarningVis
+     *
+     * @return MonitoredAirports
      */
     public function setHighWarningVis($highWarningVis)
     {
@@ -457,9 +461,9 @@ class Airports
     }
 
     /**
-     * Get highWarningCeiling
+     * Get highWarningCeiling.
      *
-     * @return integer
+     * @return int
      */
     public function getHighWarningCeiling()
     {
@@ -467,10 +471,11 @@ class Airports
     }
 
     /**
-     * Set highWarningCeiling
+     * Set highWarningCeiling.
      *
-     * @param integer $highWarningCeiling
-     * @return Airports
+     * @param int $highWarningCeiling
+     *
+     * @return MonitoredAirports
      */
     public function setHighWarningCeiling($highWarningCeiling)
     {
@@ -480,9 +485,9 @@ class Airports
     }
 
     /**
-     * Get highWarningWind
+     * Get highWarningWind.
      *
-     * @return integer
+     * @return int
      */
     public function getHighWarningWind()
     {
@@ -490,15 +495,40 @@ class Airports
     }
 
     /**
-     * Set highWarningWind
+     * Set highWarningWind.
      *
-     * @param integer $highWarningWind
-     * @return Airports
+     * @param int $highWarningWind
+     *
+     * @return MonitoredAirports
      */
     public function setHighWarningWind($highWarningWind)
     {
         $this->highWarningWind = $highWarningWind;
 
         return $this;
+    }
+
+    /**
+     * Set airportData.
+     *
+     * @param \AppBundle\Entity\AirportsMasterData $airportData
+     *
+     * @return MonitoredAirports
+     */
+    public function setAirportData(\AppBundle\Entity\AirportsMasterData $airportData = null)
+    {
+        $this->airportData = $airportData;
+
+        return $this;
+    }
+
+    /**
+     * Get airportData.
+     *
+     * @return \AppBundle\Entity\AirportsMasterData
+     */
+    public function getAirportData()
+    {
+        return $this->airportData;
     }
 }

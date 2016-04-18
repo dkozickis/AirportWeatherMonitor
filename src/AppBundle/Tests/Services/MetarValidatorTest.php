@@ -3,21 +3,18 @@
  * Created by PhpStorm.
  * User: Denis
  * Date: 28/02/16
- * Time: 14:31
+ * Time: 14:31.
  */
-
 namespace AppBundle\Tests\Services;
 
-use AppBundle\Entity\Airports;
+use AppBundle\Entity\MonitoredAirports;
 use AppBundle\Services\MetarValidator;
 use MetarDecoder\MetarDecoder;
 
 class MetarValidatorTest extends \PHPUnit_Framework_TestCase
 {
-
     public $airportOne;
     public $airportTwo;
-
 
     /**
      * @dataProvider airportMetarDataProvider
@@ -35,7 +32,7 @@ class MetarValidatorTest extends \PHPUnit_Framework_TestCase
         $warnings
     ) {
         $md = new MetarDecoder();
-        $airport = new Airports();
+        $airport = new MonitoredAirports();
 
         $airport->setAirportIcao($name)
             ->setHighWarningWind($highWind)
@@ -48,14 +45,13 @@ class MetarValidatorTest extends \PHPUnit_Framework_TestCase
         $mv = new MetarValidator($airport, $md->parse($raw));
         $validated = $mv->validate();
 
-        $this->assertEquals($status, $validated->getMetarStatus());
+        $this->assertEquals($status, $validated->getWeatherStatus());
         $i = 0;
         foreach ($warnings as $warning) {
-            $this->assertEquals($warning['chunk'], $validated->getMetarWarnings()[$i]->getChunk());
-            $this->assertEquals($warning['level'], $validated->getMetarWarnings()[$i]->getWarningLevel());
-            $i++;
+            $this->assertEquals($warning['chunk'], $validated->getWeatherWarnings()[$i]->getChunk());
+            $this->assertEquals($warning['level'], $validated->getWeatherWarnings()[$i]->getWarningLevel());
+            ++$i;
         }
-
     }
 
     /**
@@ -77,9 +73,9 @@ class MetarValidatorTest extends \PHPUnit_Framework_TestCase
                 'warning' => array(
                     array(
                         'chunk' => '10023KT',
-                        'level' => 2
-                    )
-                )
+                        'level' => 2,
+                    ),
+                ),
             ),
             array(
                 'name' => 'BIKF',
@@ -94,13 +90,10 @@ class MetarValidatorTest extends \PHPUnit_Framework_TestCase
                 'warning' => array(
                     array(
                         'chunk' => '10031KT',
-                        'level' => 3
-                    )
-                )
-            )
+                        'level' => 3,
+                    ),
+                ),
+            ),
         );
-
-
     }
-
 }

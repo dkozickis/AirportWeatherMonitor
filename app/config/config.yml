@@ -66,23 +66,52 @@ swiftmailer:
     password:  "%mailer_password%"
     spool:     { type: memory }
 
+monolog:
+    channels: ['weather']
+    handlers:
+        weather:
+            level:    debug
+            type:     stream
+            path: '%kernel.logs_dir%/weather.log'
+            channels: ['weather']
+
 easy_admin:
     entities:
-        Airports:
-            class: AppBundle\Entity\Airports
+        MonitoredAirports:
+            class: AppBundle\Entity\MonitoredAirports
+            label: "Monitored Airports"
             list:
+                actions:
+                  - { name: 'new', label: 'New Monitored Airport'}
                 fields:
                     - 'id'
-                    - { property: 'airport_icao' }
-                    - { property: 'active_winter', type: 'toggle', label: 'Act. W'}
-                    - { property: 'alternate_winter', type: 'toggle', label: 'Altn. W'}
-                    - { property: 'active_summer', type: 'toggle', label: 'Act. S'}
-                    - { property: 'alternate_summer', type: 'toggle', label: 'Altn. S'}
-                    - { property: 'mid_warning_vis', label: 'Vis. Y'}
-                    - { property: 'mid_warning_ceiling', label: 'Ceil. Y'}
-                    - { property: 'mid_warning_wind', label: 'Wind. Y'}
-                    - { property: 'high_warning_vis', label: 'Vis. R'}
-                    - { property: 'high_warning_ceiling', label: 'Ceil. R'}
-                    - { property: 'high_warning_wind', label: 'Wind. R'}
+                    - { property: 'airportData', label: 'Airport' }
+                    - { property: 'activeWinter', type: 'toggle', label: 'Act. W'}
+                    - { property: 'alternateWinter', type: 'toggle', label: 'Altn. W'}
+                    - { property: 'activeSummer', type: 'toggle', label: 'Act. S'}
+                    - { property: 'alternateSummer', type: 'toggle', label: 'Altn. S'}
+                    - { property: 'midWarningVis', label: 'Vis. Y'}
+                    - { property: 'midWarningCeiling', label: 'Ceil. Y'}
+                    - { property: 'midWarningWind', label: 'Wind. Y'}
+                    - { property: 'highWarningVis', label: 'Vis. R'}
+                    - { property: 'highWarningCeiling', label: 'Ceil. R'}
+                    - { property: 'highWarningWind', label: 'Wind. R'}
+            form:
+                fields:
+                    - { property: 'airportData', label: 'Airport' }
+                    - { property: 'activeWinter', label: 'Act. W'}
+                    - { property: 'alternateWinter', label: 'Altn. W'}
+                    - { property: 'activeSummer', label: 'Act. S'}
+                    - { property: 'alternateSummer', label: 'Altn. S'}
+                    - { property: 'midWarningVis', label: 'Vis. Y'}
+                    - { property: 'midWarningCeiling', label: 'Ceil. Y'}
+                    - { property: 'midWarningWind', label: 'Wind. Y'}
+                    - { property: 'highWarningVis', label: 'Vis. R'}
+                    - { property: 'highWarningCeiling', label: 'Ceil. R'}
+                    - { property: 'highWarningWind', label: 'Wind. R'}
+        AirportsMasterData:
+            class: AppBundle\Entity\AirportsMasterData
+            label: "Airport Master Data"
+
 
 

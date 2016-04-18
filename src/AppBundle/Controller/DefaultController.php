@@ -2,10 +2,12 @@
 
 namespace AppBundle\Controller;
 
-use AppBundle\Services\WeatherForView;
+use Ddeboer\DataImport\Reader\CsvReader;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use AppBundle\Entity\MonitoredAirports;
 
 class DefaultController extends Controller
 {
@@ -14,15 +16,64 @@ class DefaultController extends Controller
      */
     public function indexAction(Request $request)
     {
+        return $this->render('AppBundle::leaflet.html.twig');
+    }
+
+    /**
+     * @Route("/weather/{alternate}", name="airport_json", defaults={"alternate" = 0})
+     */
+    public function jsonAction(Request $request, $alternate)
+    {
         $em = $this->getDoctrine()->getManager();
-        $airports = $em->getRepository('AppBundle:Airports')->getAirportsData();
-        $airportsForView = new WeatherForView($airports, $em);
+        $airports = $em->getRepository('AppBundle:MonitoredAirports')->getSeasonActiveAirports($alternate);
+        $airportsWeatherForView = $this->get('weather_for_view');
 
-        dump($airportsForView->prepareForView());
+        if (count($airports) > 0) {
+            $airports = $airportsWeatherForView->getJsonWeather($airports);
+        }
 
-        // replace this example code with whatever you need
-        return $this->render('default/index.html.twig', array(
-            'base_dir' => realpath($this->getParameter('kernel.root_dir').'/..'),
-        ));
+        $response = new JsonResponse();
+        $response->setData($airports);
+
+        return $response;
+    }
+
+    /**
+     * @Route("/write")
+     */
+    public function writeAction(Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        $masterAirports = $em->getRepository('AppBundle:AirportsMasterData');
+
+        $file = new \SplFileObject($this->get('kernel')->getRootDir().'/../german_wings_stations.csv');
+        $csvReader = new CsvReader($file);
+
+        $csvReader->setHeaderRowNumber(0);
+
+        foreach ($csvReader as $row) {
+            $masterAirport = $masterAirports->findOneBy(array(
+                'airportIcao' => $row['station'],
+            ));
+
+            $airport = new MonitoredAirports();
+
+            $airport->setMidWarningCeiling($row['2_ceil'])
+                ->setHighWarningCeiling($row['3_ceil'])
+                ->setMidWarningVis($row['2_vis'])
+                ->setHighWarningVis($row['3_vis'])
+                ->setHighWarningWind($row['3_wind'])
+                ->setMidWarningWind($row['3_wind'])
+                ->setActiveSummer($row['active_s'])
+                ->setActiveWinter($row['active'])
+                ->setAlternateSummer($row['alternate_s'])
+                ->setAlternateWinter($row['alternate'])
+                ->setAirportData($masterAirport);
+
+            $em->persist($airport);
+        }
+
+        $em->flush();
     }
 }

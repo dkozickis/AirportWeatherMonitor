@@ -76,15 +76,17 @@ monolog:
             channels: ['weather']
 
 easy_admin:
+    list:
+        max_results: 100
     entities:
         MonitoredAirports:
             class: AppBundle\Entity\MonitoredAirports
             label: "Monitored Airports"
             list:
+                max_results: 100
                 actions:
                   - { name: 'new', label: 'New Monitored Airport'}
                 fields:
-                    - 'id'
                     - { property: 'airportData', label: 'Airport' }
                     - { property: 'activeWinter', type: 'toggle', label: 'Act. W'}
                     - { property: 'alternateWinter', type: 'toggle', label: 'Altn. W'}
@@ -112,6 +114,3 @@ easy_admin:
         AirportsMasterData:
             class: AppBundle\Entity\AirportsMasterData
             label: "Airport Master Data"
-
-
-

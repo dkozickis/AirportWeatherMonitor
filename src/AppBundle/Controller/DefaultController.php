@@ -20,6 +20,17 @@ class DefaultController extends Controller
     }
 
     /**
+     * @Route("/test")
+     */
+    public function testAction(Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $masterAirports = $em->getRepository('AppBundle:MonitoredAirports');
+
+        dump($masterAirports->getSeasonActiveAirports());
+    }
+
+    /**
      * @Route("/weather/{alternate}", name="airport_json", defaults={"alternate" = 0})
      */
     public function jsonAction(Request $request, $alternate)

@@ -7,6 +7,7 @@
  */
 namespace AppBundle\Tests\Services;
 
+use AppBundle\Entity\AirportsMasterData;
 use AppBundle\Entity\MonitoredAirports;
 use AppBundle\Services\MetarValidator;
 use MetarDecoder\MetarDecoder;
@@ -65,9 +66,10 @@ class MetarValidatorTest extends KernelTestCase
         $decodedMetar = $metarDecoder->parse($airport->getRawMetar());
         $airport->setDecodedMetar($decodedMetar);
 
-        $airportMasterData = $this->em->getRepository('AppBundle:AirportsMasterData')->findOneBy(array(
-            'airportIcao' => $name,
-        ));
+        $airportMasterData = new AirportsMasterData();
+        $airportMasterData->setAirportIcao($name)
+            ->setLat(0)
+            ->setLon(0);
 
         $airport->setAirportData($airportMasterData)
             ->setHighWarningWind($highWind)

@@ -25,9 +25,14 @@ class DefaultController extends Controller
     public function testAction(Request $request)
     {
         $em = $this->getDoctrine()->getManager();
-        $masterAirports = $em->getRepository('AppBundle:MonitoredAirports');
+        $airports = $em->getRepository('AppBundle:MonitoredAirports')->getSeasonActiveAirports();
+        $airportsWeatherForView = $this->get('weather_for_view');
 
-        dump($masterAirports->getSeasonActiveAirports());
+        if (count($airports) > 0) {
+            $airports = $airportsWeatherForView->getGeoJsonWeather($airports);
+        }
+
+        dump($airports);
     }
 
     /**
@@ -40,7 +45,7 @@ class DefaultController extends Controller
         $airportsWeatherForView = $this->get('weather_for_view');
 
         if (count($airports) > 0) {
-            $airports = $airportsWeatherForView->getJsonWeather($airports);
+            $airports = $airportsWeatherForView->getGeoJsonWeather($airports);
         }
 
         $response = new JsonResponse();

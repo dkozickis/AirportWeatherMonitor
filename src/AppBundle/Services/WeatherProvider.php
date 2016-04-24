@@ -15,52 +15,63 @@ class WeatherProvider
     /** @var Logger $weatherLogger */
     private $weatherLogger;
 
-    /** @var  MonitoredAirports[] array */
-    private $airports;
-
     public function __construct(Logger $logger)
     {
         $this->weatherLogger = $logger;
     }
 
     /**
+     * @param $airports
+     * @param $type
+     * @return array
+     */
+    public function getWeather($airports, $type)
+    {
+        $upperCaseType = strtoupper($type);
+        $weatherData = [];
+
+        $freshWeather = $this->getWeatherXML($airports, $type);
+
+        foreach ($freshWeather->data->$upperCaseType as $weather) {
+            $stationID = (string)$weather->station_id;
+            $rawWeather = (string)$weather->raw_text;
+            $rawWeatherTime = new \DateTime($weather->observation_time, new \DateTimeZone('UTC'));
+
+            $weatherData[$stationID] = array(
+                "rawWeather" => $rawWeather,
+                "rawWeatherTime" => $rawWeatherTime
+            );
+
+        }
+
+        return $weatherData;
+    }
+
+    /**
      * Retrieves METAR/TAF XML from aviationweather.gov, returns SimpleXMLElement.
      *
-     * @param array  $airports array of airports
-     * @param string $type     `metars` or `tafs`
+     * @param string $type `metars` or `tafs`
      *
      * @return \SimpleXMLElement
      */
-    public function getWeatherXML($airports, $type)
+    private function getWeatherXML($airports, $type, $gzip = true)
     {
-        $this->airports = $airports;
+        $type = $type."s";
+        $airportsString = implode(',', array_values($airports));
 
-        $this->filterAirportsByTime();
-
-        $airportsString = implode(' ', array_keys($this->airports));
         $fullUrl = 'http://aviationweather.gov/adds/dataserver_current/httpparam'.
-            '?dataSource='.$type.'&requestType=retrieve&format=xml&compression=gzip&mostRecentForEachStation=true&'.
-            'hoursBeforeNow=12&stationString='.$airportsString;
+            '?dataSource='.$type.'&requestType=retrieve&format=xml&mostRecentForEachStation=true&'.
+            'hoursBeforeNow=3&stationString='.$airportsString;
+
+        if ($gzip) {
+            $fullUrl = $fullUrl."&compression=gzip";
+            $xml = new \SimpleXMLElement("compress.zlib://".$fullUrl, 0, 1);
+        }else{
+            $xml = new \SimpleXMLElement($fullUrl, 0, 1);
+        }
 
         $this->weatherLogger->info('Requested '.strtoupper($type).' for airports - '.$airportsString);
 
-        $xml = new \SimpleXMLElement("compress.zlib://$fullUrl", 0, 1);
-
         return $xml;
-    }
-
-    private function filterAirportsByTime()
-    {
-        foreach ($this->airports as $key => $airport) {
-            $metarDateTime = $airport->getRawMetarDateTime();
-            $now = new \DateTime('now', new \DateTimeZone('UTC'));
-
-            if ($metarDateTime) {
-                $diff = $now->diff($metarDateTime, 1)->format('%i');
-                if ($diff < 20) {
-                    unset($this->airports[$key]);
-                }
-            }
-        }
     }
 }

@@ -2,27 +2,26 @@
 /**
  * Created by PhpStorm.
  * User: Denis
- * Date: 28/02/16
- * Time: 14:31.
+ * Date: 24/04/16
+ * Time: 13:59
  */
+
 namespace AppBundle\Tests\Services;
 
 use AppBundle\Entity\AirportsMasterData;
 use AppBundle\Entity\MonitoredAirports;
 use AppBundle\Services\MetarValidator;
-use MetarDecoder\MetarDecoder;
+use AppBundle\Services\WeatherForView;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Bridge\Monolog\Logger;
 
-class MetarValidatorTest extends KernelTestCase
+class WeatherForViewTest extends KernelTestCase
 {
-    public $airportOne;
-    public $airportTwo;
 
     /**
      * @var \Doctrine\ORM\EntityManager
      */
-    private $em;
+    private $entityManager;
 
     /**
      * @var Logger
@@ -36,7 +35,7 @@ class MetarValidatorTest extends KernelTestCase
     {
         self::bootKernel();
 
-        $this->em = static::$kernel->getContainer()
+        $this->entityManager = static::$kernel->getContainer()
             ->get('doctrine')
             ->getManager();
 
@@ -47,7 +46,7 @@ class MetarValidatorTest extends KernelTestCase
     /**
      * @dataProvider airportMetarDataProvider
      */
-    public function testValidate(
+    public function testGetJsonWeather(
         $name,
         $highWind,
         $midWind,
@@ -59,19 +58,18 @@ class MetarValidatorTest extends KernelTestCase
         $status,
         $warnings
     ) {
-        $metarDecoder = new MetarDecoder();
-        $airport = new MonitoredAirports();
-
-        $airport->setRawMetar($raw);
-        $decodedMetar = $metarDecoder->parse($airport->getRawMetar());
-        $airport->setDecodedMetar($decodedMetar);
+        $weatherForView = new WeatherForView($this->entityManager, $this->weatherLogger);
 
         $airportMasterData = new AirportsMasterData();
         $airportMasterData->setAirportIcao($name)
             ->setLat(0)
             ->setLon(0);
 
-        $airport->setAirportData($airportMasterData)
+        $this->entityManager->persist($airportMasterData);
+
+        $airports = [];
+        $airports['BIKF'] = new MonitoredAirports();
+        $airports['BIKF']->setAirportData($airportMasterData)
             ->setHighWarningWind($highWind)
             ->setMidWarningWind($midWind)
             ->setHighWarningCeiling($highCeil)
@@ -79,19 +77,14 @@ class MetarValidatorTest extends KernelTestCase
             ->setHighWarningVis($highVis)
             ->setMidWarningVis($midVis);
 
-        $metarValidator = new MetarValidator($this->weatherLogger);
+        $jsonWeather = $weatherForView->getGeoJsonWeather($airports);
 
-        $validatedMetar = $metarValidator->validate($airport);
-        $airport->setValidatedMetar($validatedMetar);
+        $this->assertEquals("FeatureCollection", $jsonWeather->getType());
 
-        $this->assertEquals($status, $validatedMetar->getWeatherStatus());
+        $this->entityManager->remove($airports['BIKF']);
+        $this->entityManager->remove($airportMasterData);
+        $this->entityManager->flush();
 
-        $i = 0;
-        foreach ($warnings as $warning) {
-            $this->assertEquals($warning['chunk'], $validatedMetar->getWeatherWarnings()[$i]->getChunk());
-            $this->assertEquals($warning['level'], $validatedMetar->getWeatherWarnings()[$i]->getWarningLevel());
-            ++$i;
-        }
     }
 
     /**
@@ -112,7 +105,7 @@ class MetarValidatorTest extends KernelTestCase
                 'status' => '1',
                 'warning' => array(),
             ),
-            array(
+           /* array(
                 'name' => 'BIKF',
                 'highWind' => '30',
                 'midWind' => '20',
@@ -228,9 +221,7 @@ class MetarValidatorTest extends KernelTestCase
                 'midVis' => '1000',
                 'raw' => '',
                 'status' => '0',
-                'warning' => array(
-
-                ),
+                'warning' => array(),
             ),
             array(
                 'name' => 'BIKF',
@@ -242,10 +233,8 @@ class MetarValidatorTest extends KernelTestCase
                 'midVis' => '1000',
                 'raw' => 'BIKF 281000Z /////KT 9999 BKN005 02/M01 Q1011',
                 'status' => '0',
-                'warning' => array(
-
-                ),
-            ),
+                'warning' => array(),
+            ),*/
         );
     }
 

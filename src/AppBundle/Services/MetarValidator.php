@@ -135,10 +135,11 @@ class MetarValidator
         $midWarning,
         $highWarning
     ) {
-        if ($referenceValue >= $midWarning && $referenceValue < $highWarning) {
-            $metarStatus = 2;
-        } elseif ($referenceValue >= $highWarning) {
+
+        if ($referenceValue > $highWarning) {
             $metarStatus = 3;
+        } elseif ($referenceValue > $midWarning) {
+            $metarStatus = 2;
         } else {
             $metarStatus = 1;
         }

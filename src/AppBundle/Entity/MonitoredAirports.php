@@ -24,7 +24,7 @@ class MonitoredAirports
     private $id;
 
     /**
-     * @var string
+     * @var \AppBundle\Entity\AirportsMasterData
      *
      * @ORM\OneToOne(targetEntity="AppBundle\Entity\AirportsMasterData", fetch="EAGER")
      */

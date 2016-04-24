@@ -2,13 +2,13 @@
 
 namespace AppBundle\Services;
 
+use AppBundle\Services\WeatherValidator\MetarValidator;
 use Doctrine\ORM\EntityManager;
 use GeoJson\Feature\Feature;
 use GeoJson\Feature\FeatureCollection;
 use GeoJson\Geometry\Point;
 use MetarDecoder\MetarDecoder;
 use Symfony\Bridge\Monolog\Logger;
-use AppBundle\Entity\MonitoredAirports;
 
 class WeatherForView
 {

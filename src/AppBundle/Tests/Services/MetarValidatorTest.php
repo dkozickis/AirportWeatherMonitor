@@ -9,7 +9,7 @@ namespace AppBundle\Tests\Services;
 
 use AppBundle\Entity\AirportsMasterData;
 use AppBundle\Entity\MonitoredAirports;
-use AppBundle\Services\MetarValidator;
+use AppBundle\Services\WeatherValidator\MetarValidator;
 use MetarDecoder\MetarDecoder;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Bridge\Monolog\Logger;

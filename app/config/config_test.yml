@@ -19,4 +19,3 @@ swiftmailer:
 doctrine:
     dbal:
         server_version: 5.7
-        dbname:   airport_test

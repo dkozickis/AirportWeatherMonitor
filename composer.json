@@ -1,6 +1,7 @@
 {
     "name": "denis/aero-weather-watch",
     "license": "proprietary",
+    "description": "Aviation Weather Monitoring Tool",
     "type": "project",
     "autoload": {
         "psr-4": {
@@ -33,7 +34,7 @@
     },
     "require-dev": {
         "sensio/generator-bundle": "~3.0",
-        "symfony/phpunit-bridge": "~2.7",
+        "symfony/phpunit-bridge": "^3.0",
         "phpunit/phpunit": "4.3.*",
         "ddeboer/data-import": "@stable"
     },

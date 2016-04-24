@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "89fb8d90572ebd5b50240fb8913cee94",
-    "content-hash": "d2e407ba868978b71c4f4706756d6357",
+    "hash": "23b84ad1418ec42adb6d1ca1acad5105",
+    "content-hash": "e597f23e7d1c3e8408fa10483a400f2c",
     "packages": [
         {
             "name": "doctrine/annotations",
@@ -3219,16 +3219,16 @@
         },
         {
             "name": "symfony/phpunit-bridge",
-            "version": "v2.8.4",
+            "version": "v3.0.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/phpunit-bridge.git",
-                "reference": "a967db6a4cd5d276cf849d01b29dba559e149978"
+                "reference": "b097218e4ab7724e7ec0c420e96dfd70518c2354"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/phpunit-bridge/zipball/a967db6a4cd5d276cf849d01b29dba559e149978",
-                "reference": "a967db6a4cd5d276cf849d01b29dba559e149978",
+                "url": "https://api.github.com/repos/symfony/phpunit-bridge/zipball/b097218e4ab7724e7ec0c420e96dfd70518c2354",
+                "reference": "b097218e4ab7724e7ec0c420e96dfd70518c2354",
                 "shasum": ""
             },
             "require": {
@@ -3240,7 +3240,7 @@
             "type": "symfony-bridge",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "2.8-dev"
+                    "dev-master": "3.0-dev"
                 }
             },
             "autoload": {
@@ -3270,7 +3270,7 @@
             ],
             "description": "Symfony PHPUnit Bridge",
             "homepage": "https://symfony.com",
-            "time": "2016-03-23 13:45:24"
+            "time": "2016-03-23 13:46:08"
         }
     ],
     "aliases": [],

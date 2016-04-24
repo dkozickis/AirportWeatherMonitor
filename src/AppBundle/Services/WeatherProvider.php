@@ -8,7 +8,6 @@
 namespace AppBundle\Services;
 
 use Symfony\Bridge\Monolog\Logger;
-use AppBundle\Entity\MonitoredAirports;
 
 class WeatherProvider
 {

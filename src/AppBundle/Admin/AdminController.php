@@ -5,7 +5,7 @@
  * Date: 24/04/16
  * Time: 9:06.
  */
-namespace AppBundle\Controller;
+namespace AppBundle\Admin;
 
 use JavierEguiluz\Bundle\EasyAdminBundle\Controller\AdminController as BaseAdminController;
 use Doctrine\ORM\EntityManager;

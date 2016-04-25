@@ -246,6 +246,40 @@ class MetarValidatorTest extends KernelTestCase
 
                 ),
             ),
+            array(
+                'name' => 'BIKF',
+                'highWind' => '30',
+                'midWind' => '20',
+                'highCeil' => '500',
+                'midCeil' => '1000',
+                'highVis' => '500',
+                'midVis' => '600',
+                'raw' => 'BIKF 281000Z 10023KT 5000 TSRA BKN120 02/M01 Q1011',
+                'status' => '2',
+                'warning' => array(
+                    array(
+                        'chunk' => 'TSRA',
+                        'level' => 2
+                    )
+                ),
+            ),
+            array(
+                'name' => 'BIKF',
+                'highWind' => '30',
+                'midWind' => '20',
+                'highCeil' => '500',
+                'midCeil' => '1000',
+                'highVis' => '500',
+                'midVis' => '600',
+                'raw' => 'BIKF 281000Z 10023KT 5000 FZDZ BKN120 02/M01 Q1011',
+                'status' => '3',
+                'warning' => array(
+                    array(
+                        'chunk' => 'FZDZ',
+                        'level' => 3
+                    )
+                ),
+            ),
         );
     }
 

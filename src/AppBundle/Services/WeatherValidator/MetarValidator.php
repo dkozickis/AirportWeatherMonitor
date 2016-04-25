@@ -4,14 +4,16 @@ namespace AppBundle\Services\WeatherValidator;
 
 use AppBundle\Entity\MonitoredAirports;
 use AppBundle\Entity\ValidatedWeather;
-use MetarDecoder\Entity\SurfaceWind;
-use MetarDecoder\Entity\CloudLayer;
-use MetarDecoder\Entity\Value as Value;
-use MetarDecoder\Entity\Visibility;
+use MetarDecoder\Entity\WeatherPhenomenon;
 use MetarDecoder\Exception\ChunkDecoderException;
 
 class MetarValidator extends WeatherValidator
 {
+    /**
+     * @var string
+     */
+    public $type = "METAR";
+
     /**
      * @param MonitoredAirports $airport
      * @return ValidatedWeather
@@ -20,114 +22,48 @@ class MetarValidator extends WeatherValidator
     {
         $this->airport = $airport;
         $this->validatedWeather = new ValidatedWeather();
+        $decodedMetar = $this->airport->getDecodedMetar();
+        $rawMetar = $this->airport->getRawMetar();
 
-        if (!$this->checkProcessingErrors()) {
+        $surfaceWind = $decodedMetar->getSurfaceWind();
+        $clouds = $decodedMetar->getClouds();
+        $visibility = $decodedMetar->getVisibility();
+        $decodingExceptions = $decodedMetar->getDecodingExceptions();
+        $presentWeather = $decodedMetar->getPresentWeather();
+
+        if (!$this->checkProcessingErrors($rawMetar, $decodingExceptions)) {
             return $this->validatedWeather;
         }
 
-        $this->validateWind();
-        if ($this->airport->getDecodedMetar()->getCavok() !== true) {
-            if (count($this->airport->getDecodedMetar()->getClouds()) > 0) {
-                $this->validateCeiling();
+        if($presentWeather){
+            /* @var WeatherPhenomenon $phenomenon */
+            foreach ($presentWeather as $phenomenon){
+                if(in_array($phenomenon->getChunk(), self::MID_WEATHER_PHENOMEN)){
+                    $this->generateWarning($phenomenon->getChunk(), self::MID_ALERT);
+                }
+                if(in_array($phenomenon->getChunk(), self::HIGH_WEATHER_PHENOMEN)){
+                    $this->generateWarning($phenomenon->getChunk(), self::HIGH_ALERT);
+                }
             }
-            $this->validateVisibility();
+        }
+
+        if ($surfaceWind) {
+            $this->validateWind($surfaceWind);
+        }
+
+        if ($decodedMetar->getCavok() !== true) {
+            if (!empty($clouds)) {
+                foreach ($clouds as $cloud) {
+                    if ($cloud->getBaseHeight()) {
+                        $this->validateCeiling($cloud);
+                    }
+                }
+            }
+            $this->validateVisibility($visibility);
         }
 
         return $this->validatedWeather;
     }
 
-    private function validateWind()
-    {
-        $highWarning = $this->airport->getHighWarningWind();
-        $surfaceWind = $this->airport->getDecodedMetar()->getSurfaceWind();
 
-        if ($surfaceWind) {
-            /* @var SurfaceWind $surfaceWind */
-            $surfaceWindChunk = $surfaceWind->getChunk();
-            $knots = $surfaceWind->getMeanSpeed()->getConvertedValue('kt');
-            $gustKnotsValue = $surfaceWind->getSpeedVariations();
-
-            if (isset($gustKnotsValue)) {
-                /* @var Value $knots */
-                $knots = $gustKnotsValue->getConvertedValue('kt');
-            }
-
-            /**
-             * High warning value is passed into both mid and high paremater for check.
-             * Requirement for GWI wind check - only HIGH warning.
-             * TODO: think how to make it reusable
-             */
-            $this->exceedsWarningCheck($knots, $highWarning, $highWarning, $surfaceWindChunk);
-        }
-    }
-
-    private function validateCeiling()
-    {
-        $midWarning = $this->airport->getMidWarningCeiling();
-        $highWarning = $this->airport->getHighWarningCeiling();
-
-        /** @var CloudLayer[] $clouds */
-        $clouds = $this->airport->getDecodedMetar()->getClouds();
-
-        foreach ($clouds as $cloud) {
-            if ($cloud->getBaseHeight()) {
-                $cloudChunk = $cloud->getChunk();
-                $cloudAmount = $cloud->getAmount();
-                $cloudBase = $cloud->getBaseHeight()->getConvertedValue('ft');
-
-                if (in_array($cloudAmount, self::CEILING_CLOUDS)) {
-                    $this->belowWarningCheck($cloudBase, $midWarning, $highWarning, $cloudChunk);
-                }
-            }
-        }
-    }
-
-    private function validateVisibility()
-    {
-        $midWarning = $this->airport->getMidWarningVis();
-        $highWarning = $this->airport->getHighWarningVis();
-
-        /** @var Visibility $visibility */
-        $visibility = $this->airport->getDecodedMetar()->getVisibility();
-
-        $visDistance = $visibility->getVisibility()->getConvertedValue('m');
-        $visChunk = $visibility->getChunk();
-
-        $this->belowWarningCheck($visDistance, $midWarning, $highWarning, $visChunk);
-
-    }
-
-    /**
-     * @return bool
-     */
-    private function checkProcessingErrors()
-    {
-        $airportIcao = $this->airport->getAirportData()->getAirportIcao();
-        $rawMetar = $this->airport->getRawMetar();
-        $decodingExceptions = $this->airport->getDecodedMetar()->getDecodingExceptions();
-        $badExceptions = array('SurfaceWindChunkDecoder');
-
-        if (!$rawMetar) {
-            $this->validatedWeather->setWeatherStatus(0);
-            $this->weatherLogger->warning($airportIcao." had NO METAR: '".$rawMetar."'");
-
-            return false;
-        }
-
-        if ($decodingExceptions) {
-            /** @var ChunkDecoderException $exception */
-            foreach ($decodingExceptions as $exception) {
-                if (in_array($exception->getChunkDecoder(), $badExceptions)) {
-                    $this->validatedWeather->setWeatherStatus(0);
-                    $this->weatherLogger->warning(
-                        $airportIcao.' had '.$exception->getChunkDecoder().": '".$rawMetar."'"
-                    );
-
-                    return false;
-                }
-            }
-        }
-
-        return true;
-    }
 }

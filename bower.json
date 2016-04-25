@@ -1,0 +1,24 @@
+{
+  "name": "AeroWeatherWatch",
+  "homepage": "https://github.com/JohnieWalker/AeroWeatherWatch",
+  "description": "Aviation Weather Monitoring Tool",
+  "main": "",
+  "moduleType": [
+    "node"
+  ],
+  "authors": [
+    "Deniss Kozickis"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "jquery": "~2.2.3",
+    "leaflet": "~0.7.7"
+  }
+}

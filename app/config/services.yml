@@ -8,6 +8,6 @@ services:
 #        class: AppBundle\Directory\ClassName
 #        arguments: ["@another_service_name", "plain_value", "%parameter_name%"]
 
-  weather_for_view:
-      class: AppBundle\Services\WeatherForView
+  weather_processor:
+      class: AppBundle\Services\WeatherProcessor
       arguments: ["@doctrine.orm.entity_manager", "@monolog.logger.weather"]

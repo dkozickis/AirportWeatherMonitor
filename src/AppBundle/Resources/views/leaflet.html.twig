@@ -4,83 +4,17 @@
     <title>Airport Weather Monitor v3</title>
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.css"/>
-    <link rel="stylesheet" href="{{ asset('css/map.css') }}"/>
+    <link rel="stylesheet" href="{{ asset('css/leaflet.min.css') }}"/>
+    <link rel="stylesheet" href="{{ asset('css/map.min.css') }}"/>
 </head>
 <body>
-<div id="map" style="width: 100%"></div>
-<script src="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.js"></script>
-<script src="http://calvinmetcalf.github.io/leaflet-ajax/dist/leaflet.ajax.min.js"></script>
+<div id="map"></div>
 <script>
-    var map = L.map('map').setView([24, 56], 4);
-
-    var greenIcon = L.icon({
-        iconUrl: '{{ asset('img/green-green.png') }}',
-        iconSize: [30, 30]
-    });
-
-    var yellowIcon = L.icon({
-        iconUrl: '{{ asset('img/yellow-yellow.png') }}',
-        iconSize: [30, 30]
-    });
-
-    var popup = L.popup();
-
-    function airportMarker(feature, layer) {
-        var popupContent = [];
-        if(feature.properties.metarStatus == 0){
-            popupContent.push('<span style="color:red">METAR NOT PROCESSED</span>');
-        }
-        popupContent.push(feature.properties.colorizedMetar);
-        layer.bindPopup(popupContent.join("</br>"));
-        if (feature.properties.metarStatus > 1) {
-            layer.setIcon(yellowIcon);
-        } else {
-            layer.setIcon(greenIcon);
-        }
-    }
-
-    var baseMap = L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: 'Created & Maintained by Deniss Kozickis @ EY',
-        maxZoom: 18
-    }).addTo(map);
-
-    var airportsDest = new L.GeoJSON.AJAX('{{ url('airport_json') }}',
-            {
-                onEachFeature: airportMarker
-            });
-    airportsDest.addTo(map);
-
-    var airportsAltn = new L.GeoJSON.AJAX('{{ url('airport_json', {"alternate" : 1}) }}',
-            {
-                onEachFeature: airportMarker
-            });
-    airportsAltn.addTo(map);
-
-    airportsAltn.on('data:loaded', function () {
-        altnBounds = airportsAltn.getBounds();
-        destBounds = airportsDest.getBounds();
-        extendedBounds = altnBounds.extend(destBounds);
-        this.map.fitBounds(extendedBounds);
-    }.bind());
-
-    var airports = {
-        "Destinations": airportsDest,
-        "Alternates": airportsAltn
-    };
-
-    L.control.layers(null, airports).addTo(map);
-
-    var outdatedWeatherBox = L.control({position: 'bottomright'});
-
-    outdatedWeatherBox.onAdd = function (map) {
-        var div = L.DomUtil.create('div', 'info legend');
-        div.innerHTML = "<strong>Outdated METARs</strong>";
-        return div;
-    };
-
-    outdatedWeatherBox.addTo(map);
-
+    var destinationWeather = '{{ path('airport_json') }}';
+    var alternateWeather = '{{ path('airport_json', { alternate : 1}) }}';
 </script>
+<script src="{{ asset('js/leaflet.min.js') }}"></script>
+<script src="{{ asset('js/leaflet.ajax.min.js') }}"></script>
+<script src="{{ asset('js/weather.leaflet.js') }}"></script>
 </body>
 </html>

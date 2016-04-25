@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "23b84ad1418ec42adb6d1ca1acad5105",
-    "content-hash": "e597f23e7d1c3e8408fa10483a400f2c",
+    "hash": "aa0b782a98bdf781f12cae6006ee7164",
+    "content-hash": "411c9d0059971d7621d8d2450e1b5b1f",
     "packages": [
         {
             "name": "doctrine/annotations",
@@ -811,16 +811,16 @@
         },
         {
             "name": "javiereguiluz/easyadmin-bundle",
-            "version": "v1.12.6",
+            "version": "v1.12.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/javiereguiluz/EasyAdminBundle.git",
-                "reference": "4009d0536b74db049fa241315634e51cb010c4fc"
+                "reference": "e19d9d808b828117c7d7c93ef50ea6e6a9f9160e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/javiereguiluz/EasyAdminBundle/zipball/4009d0536b74db049fa241315634e51cb010c4fc",
-                "reference": "4009d0536b74db049fa241315634e51cb010c4fc",
+                "url": "https://api.github.com/repos/javiereguiluz/EasyAdminBundle/zipball/e19d9d808b828117c7d7c93ef50ea6e6a9f9160e",
+                "reference": "e19d9d808b828117c7d7c93ef50ea6e6a9f9160e",
                 "shasum": ""
             },
             "require": {
@@ -886,7 +886,7 @@
                 "backend",
                 "generator"
             ],
-            "time": "2016-04-15 18:23:01"
+            "time": "2016-04-24 18:54:26"
         },
         {
             "name": "jdorn/sql-formatter",
@@ -1268,6 +1268,53 @@
                 "source": "https://github.com/JohnieWalker/php-metar-decoder/tree/master"
             },
             "time": "2016-03-21 18:52:03"
+        },
+        {
+            "name": "sagem-cassiopee/php-taf-decoder",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/JohnieWalker/php-taf-decoder.git",
+                "reference": "7c447585a97cb43a683172d87c8e1f7b7a839d3a"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/JohnieWalker/php-taf-decoder/zipball/7c447585a97cb43a683172d87c8e1f7b7a839d3a",
+                "reference": "7c447585a97cb43a683172d87c8e1f7b7a839d3a",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "4.3.*"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "TafDecoder\\": "src/"
+                }
+            },
+            "autoload-dev": {
+                "psr-4": {
+                    "TafDecoder\\Test\\": "tests/"
+                }
+            },
+            "license": [
+                "GPL-3.0+"
+            ],
+            "authors": [
+                {
+                    "name": "Philippe Martin",
+                    "email": "philippe2.martin@sagem.com",
+                    "role": "Developer"
+                }
+            ],
+            "description": "TAF weather forecast decoder",
+            "support": {
+                "source": "https://github.com/JohnieWalker/php-taf-decoder/tree/master"
+            },
+            "time": "2016-04-25 13:03:54"
         },
         {
             "name": "sensio/distribution-bundle",
@@ -3277,6 +3324,7 @@
     "minimum-stability": "stable",
     "stability-flags": {
         "sagem-cassiopee/php-metar-decoder": 20,
+        "sagem-cassiopee/php-taf-decoder": 20,
         "ddeboer/data-import": 0
     },
     "prefer-stable": false,

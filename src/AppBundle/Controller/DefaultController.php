@@ -26,7 +26,7 @@ class DefaultController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
         $airports = $em->getRepository('AppBundle:MonitoredAirports')->getSeasonActiveAirports();
-        $airportsWeatherForView = $this->get('weather_for_view');
+        $airportsWeatherForView = $this->get('weather_processor');
 
         if (count($airports) > 0) {
             $airports = $airportsWeatherForView->getGeoJsonWeather($airports);
@@ -42,7 +42,7 @@ class DefaultController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
         $airports = $em->getRepository('AppBundle:MonitoredAirports')->getSeasonActiveAirports($alternate);
-        $airportsWeatherForView = $this->get('weather_for_view');
+        $airportsWeatherForView = $this->get('weather_processor');
 
         if (count($airports) > 0) {
             $airports = $airportsWeatherForView->getGeoJsonWeather($airports);

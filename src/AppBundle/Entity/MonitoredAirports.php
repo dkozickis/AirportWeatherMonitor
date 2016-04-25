@@ -4,6 +4,7 @@ namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use MetarDecoder\Entity\DecodedMetar;
+use TafDecoder\Entity\DecodedTaf;
 
 /**
  * Monitored Airports.
@@ -130,6 +131,92 @@ class MonitoredAirports
     private $colorizedMetar;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="raw_taf", type="string", nullable=true)
+     */
+    private $rawTaf;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="raw_taf_date_time", type="datetime", nullable=true)
+     */
+    private $rawTafDateTime;
+
+    /**
+     * @var DecodedTaf
+     */
+    private $decodedTaf;
+
+    /**
+     * @var ValidatedWeather
+     */
+    private $validatedTaf;
+
+    /**
+     * @var string
+     */
+    private $colorizedTaf;
+
+    /**
+     * @ORM\PostLoad()
+     */
+    public function init()
+    {
+        $this->setColorizedMetar($this->rawMetar);
+        $this->setColorizedTaf($this->rawTaf);
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getColorizedTaf()
+    {
+        return $this->colorizedTaf;
+    }
+
+    /**
+     * @param mixed $colorizedTaf
+     */
+    public function setColorizedTaf($colorizedTaf)
+    {
+        $this->colorizedTaf = $colorizedTaf;
+    }
+
+    /**
+     * @return DecodedTaf
+     */
+    public function getDecodedTaf()
+    {
+        return $this->decodedTaf;
+    }
+
+    /**
+     * @param DecodedTaf $decodedTaf
+     */
+    public function setDecodedTaf($decodedTaf)
+    {
+        $this->decodedTaf = $decodedTaf;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getValidatedTaf()
+    {
+        return $this->validatedTaf;
+    }
+
+    /**
+     * @param mixed $validatedTaf
+     */
+    public function setValidatedTaf($validatedTaf)
+    {
+        $this->validatedTaf = $validatedTaf;
+    }
+
+    /**
      * @return string
      */
     public function getColorizedMetar()
@@ -177,18 +264,6 @@ class MonitoredAirports
         $this->decodedMetar = $decodedMetar;
     }
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="raw_taf", type="string", nullable=true)
-     */
-    private $rawTaf;
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="raw_taf_date_time", type="datetime", nullable=true)
-     */
-    private $rawTafDateTime;
 
     /**
      * @return \DateTime
@@ -255,7 +330,7 @@ class MonitoredAirports
     {
         $this->rawTaf = $rawTaf;
         // If new Raw TAF is set, then colorized TAF should be reset to new Raw TAF state
-        // TODO: IMPLEMENT ABOVE COMMENT
+        $this->colorizedTaf = $rawTaf;
     }
 
     /**
@@ -509,6 +584,16 @@ class MonitoredAirports
     }
 
     /**
+     * Get airportData.
+     *
+     * @return \AppBundle\Entity\AirportsMasterData
+     */
+    public function getAirportData()
+    {
+        return $this->airportData;
+    }
+
+    /**
      * Set airportData.
      *
      * @param \AppBundle\Entity\AirportsMasterData $airportData
@@ -520,15 +605,5 @@ class MonitoredAirports
         $this->airportData = $airportData;
 
         return $this;
-    }
-
-    /**
-     * Get airportData.
-     *
-     * @return \AppBundle\Entity\AirportsMasterData
-     */
-    public function getAirportData()
-    {
-        return $this->airportData;
     }
 }

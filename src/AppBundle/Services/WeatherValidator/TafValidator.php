@@ -14,10 +14,11 @@ class TafValidator extends WeatherValidator
     /**
      * @var string
      */
-    public $type = "TAF";
+    public $type = 'TAF';
 
     /**
      * @param MonitoredAirports $airport
+     *
      * @return ValidatedWeather
      */
     public function validate(MonitoredAirports $airport)
@@ -63,7 +64,7 @@ class TafValidator extends WeatherValidator
                     foreach ($cloud->getEvolutions() as $evolution) {
                         /* @var CloudLayer[] $cloudsEvolution */
                         $cloudsEvolution = $evolution->getEntity();
-                        foreach ($clouds as $cloud){
+                        foreach ($clouds as $cloud) {
                             if ($cloud->getBaseHeight()) {
                                 $this->validateCeiling($cloud);
                             }
@@ -73,7 +74,7 @@ class TafValidator extends WeatherValidator
             }
         }
 
-        if ($this->airport->getDecodedTaf()->getCavok() !== TRUE && isset($visibility)) {
+        if ($this->airport->getDecodedTaf()->getCavok() !== true && isset($visibility)) {
             /* @var Evolution[] $visibilityEvolutions */
             $visibilityEvolutions = $visibility->getEvolutions();
 
@@ -81,7 +82,7 @@ class TafValidator extends WeatherValidator
 
             if (!empty($visibilityEvolutions)) {
                 foreach ($visibilityEvolutions as $evolution) {
-                    if(!empty($evolution->getEntity())){
+                    if (!empty($evolution->getEntity())) {
                         $this->validateVisibility($evolution->getEntity());
                     }
                 }

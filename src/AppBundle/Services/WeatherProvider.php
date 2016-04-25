@@ -22,6 +22,7 @@ class WeatherProvider
     /**
      * @param $airports
      * @param $type
+     *
      * @return array
      */
     public function getWeather($airports, $type)
@@ -32,15 +33,14 @@ class WeatherProvider
         $freshWeather = $this->getWeatherXML($airports, $type);
 
         foreach ($freshWeather->data->$upperCaseType as $weather) {
-            $stationID = (string)$weather->station_id;
-            $rawWeather = (string)$weather->raw_text;
+            $stationID = (string) $weather->station_id;
+            $rawWeather = (string) $weather->raw_text;
             $rawWeatherTime = new \DateTime($weather->observation_time, new \DateTimeZone('UTC'));
 
             $weatherData[$stationID] = array(
-                "rawWeather" => $rawWeather,
-                "rawWeatherTime" => $rawWeatherTime
+                'rawWeather' => $rawWeather,
+                'rawWeatherTime' => $rawWeatherTime,
             );
-
         }
 
         return $weatherData;
@@ -55,7 +55,7 @@ class WeatherProvider
      */
     private function getWeatherXML($airports, $type, $gzip = true)
     {
-        $type = $type."s";
+        $type = $type.'s';
         $airportsString = implode(',', array_values($airports));
 
         $fullUrl = 'http://aviationweather.gov/adds/dataserver_current/httpparam'.
@@ -63,9 +63,9 @@ class WeatherProvider
             'hoursBeforeNow=3&stationString='.$airportsString;
 
         if ($gzip) {
-            $fullUrl = $fullUrl."&compression=gzip";
-            $xml = new \SimpleXMLElement("compress.zlib://".$fullUrl, 0, 1);
-        }else{
+            $fullUrl = $fullUrl.'&compression=gzip';
+            $xml = new \SimpleXMLElement('compress.zlib://'.$fullUrl, 0, 1);
+        } else {
             $xml = new \SimpleXMLElement($fullUrl, 0, 1);
         }
 

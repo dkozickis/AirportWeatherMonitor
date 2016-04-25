@@ -264,7 +264,6 @@ class MonitoredAirports
         $this->decodedMetar = $decodedMetar;
     }
 
-
     /**
      * @return \DateTime
      */

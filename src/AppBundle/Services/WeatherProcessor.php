@@ -15,12 +15,11 @@ use TafDecoder\TafDecoder;
 
 class WeatherProcessor
 {
-
     const STATUS_COLOR = array(
-        0 => "grey",
-        1 => "green",
-        2 => "yellow",
-        3 => "red"
+        0 => 'grey',
+        1 => 'green',
+        2 => 'yellow',
+        3 => 'red',
     );
 
     /**
@@ -47,7 +46,7 @@ class WeatherProcessor
      * WeatherForView constructor.
      *
      * @param EntityManager $entityManager
-     * @param Logger $weatherLogger
+     * @param Logger        $weatherLogger
      */
     public function __construct(EntityManager $entityManager, Logger $weatherLogger)
     {
@@ -58,6 +57,7 @@ class WeatherProcessor
 
     /**
      * @param $airports
+     *
      * @return FeatureCollection
      */
     public function getGeoJsonWeather($airports)
@@ -74,7 +74,7 @@ class WeatherProcessor
                     'colorizedMetar' => $airport->getColorizedMetar(),
                     'metarStatus' => $airport->getValidatedMetar()->getWeatherStatus(),
                     'colorizedTaf' => $airport->getColorizedTaf(),
-                    'tafStatus' => $airport->getValidatedTaf()->getWeatherStatus()
+                    'tafStatus' => $airport->getValidatedTaf()->getWeatherStatus(),
                 )
             );
         }
@@ -115,7 +115,6 @@ class WeatherProcessor
 
             if (!$metarDateTime || $now->diff($metarDateTime, 1)->format('%i') > $threshold) {
                 $relevantAirports[] = $key;
-
             }
         }
 
@@ -223,6 +222,7 @@ class WeatherProcessor
 
     /**
      * @param MonitoredAirports $airport
+     *
      * @return \AppBundle\Entity\ValidatedWeather
      */
     private function weatherValidatePass(MonitoredAirports $airport)

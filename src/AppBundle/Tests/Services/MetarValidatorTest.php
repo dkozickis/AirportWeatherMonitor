@@ -125,8 +125,8 @@ class MetarValidatorTest extends KernelTestCase
                 'warning' => array(
                     array(
                         'chunk' => '5000',
-                        'level' => 2
-                    )
+                        'level' => 2,
+                    ),
                 ),
             ),
             array(
@@ -142,8 +142,8 @@ class MetarValidatorTest extends KernelTestCase
                 'warning' => array(
                     array(
                         'chunk' => '5000',
-                        'level' => 3
-                    )
+                        'level' => 3,
+                    ),
                 ),
             ),
             array(
@@ -159,8 +159,8 @@ class MetarValidatorTest extends KernelTestCase
                 'warning' => array(
                     array(
                         'chunk' => 'BKN010',
-                        'level' => 2
-                    )
+                        'level' => 2,
+                    ),
                 ),
             ),
             array(
@@ -176,8 +176,8 @@ class MetarValidatorTest extends KernelTestCase
                 'warning' => array(
                     array(
                         'chunk' => 'BKN010',
-                        'level' => 3
-                    )
+                        'level' => 3,
+                    ),
                 ),
             ),
             array(
@@ -193,8 +193,8 @@ class MetarValidatorTest extends KernelTestCase
                 'warning' => array(
                     array(
                         'chunk' => '10030KT',
-                        'level' => 3
-                    )
+                        'level' => 3,
+                    ),
                 ),
             ),
             array(
@@ -259,8 +259,8 @@ class MetarValidatorTest extends KernelTestCase
                 'warning' => array(
                     array(
                         'chunk' => 'TSRA',
-                        'level' => 2
-                    )
+                        'level' => 2,
+                    ),
                 ),
             ),
             array(
@@ -276,11 +276,10 @@ class MetarValidatorTest extends KernelTestCase
                 'warning' => array(
                     array(
                         'chunk' => 'FZDZ',
-                        'level' => 3
-                    )
+                        'level' => 3,
+                    ),
                 ),
             ),
         );
     }
-
 }

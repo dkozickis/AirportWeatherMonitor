@@ -5,17 +5,17 @@ namespace AppBundle\Services\WeatherValidator;
 use AppBundle\Entity\MonitoredAirports;
 use AppBundle\Entity\ValidatedWeather;
 use MetarDecoder\Entity\WeatherPhenomenon;
-use MetarDecoder\Exception\ChunkDecoderException;
 
 class MetarValidator extends WeatherValidator
 {
     /**
      * @var string
      */
-    public $type = "METAR";
+    public $type = 'METAR';
 
     /**
      * @param MonitoredAirports $airport
+     *
      * @return ValidatedWeather
      */
     public function validate(MonitoredAirports $airport)
@@ -35,13 +35,13 @@ class MetarValidator extends WeatherValidator
             return $this->validatedWeather;
         }
 
-        if($presentWeather){
+        if ($presentWeather) {
             /* @var WeatherPhenomenon $phenomenon */
-            foreach ($presentWeather as $phenomenon){
-                if(in_array($phenomenon->getChunk(), self::MID_WEATHER_PHENOMEN)){
+            foreach ($presentWeather as $phenomenon) {
+                if (in_array($phenomenon->getChunk(), self::MID_WEATHER_PHENOMEN)) {
                     $this->generateWarning($phenomenon->getChunk(), self::MID_ALERT);
                 }
-                if(in_array($phenomenon->getChunk(), self::HIGH_WEATHER_PHENOMEN)){
+                if (in_array($phenomenon->getChunk(), self::HIGH_WEATHER_PHENOMEN)) {
                     $this->generateWarning($phenomenon->getChunk(), self::HIGH_ALERT);
                 }
             }
@@ -64,6 +64,4 @@ class MetarValidator extends WeatherValidator
 
         return $this->validatedWeather;
     }
-
-
 }

@@ -3,9 +3,8 @@
  * Created by PhpStorm.
  * User: Denis
  * Date: 24/04/16
- * Time: 18:29
+ * Time: 18:29.
  */
-
 namespace AppBundle\Services\WeatherValidator;
 
 use AppBundle\Entity\MonitoredAirports;
@@ -16,7 +15,6 @@ use Symfony\Bridge\Monolog\Logger;
 
 abstract class WeatherValidator
 {
-
     const HIGH_ALERT = 3;
     const MID_ALERT = 2;
     const NO_ALERT = 1;
@@ -28,13 +26,13 @@ abstract class WeatherValidator
         'TSGS', '+SHPL', 'SHGR', 'FG', 'PRFG',
         'BCFG', 'FU', 'VA', 'DU', 'BLDU', 'VCBLSA',
         'BLPY', 'PO', 'SQ', 'FC', '+FC', 'SS',
-        '+SS', 'DS', '+DS', 'VCDS', 'FZBR', 'VV///'
+        '+SS', 'DS', '+DS', 'VCDS', 'FZBR', 'VV///',
     );
 
     const HIGH_WEATHER_PHENOMEN = array(
         '+FZDZ', 'FZFG', 'FZRA', 'SA', 'BLSA',
         '+SN', 'BLSN', 'VCBLSN', '+TSRA', 'TSSN', '+TSSN',
-        '+SHSN', 'FZDZ', '-FZDZ', '-FZRA', '+FZRA'
+        '+SHSN', 'FZDZ', '-FZDZ', '-FZRA', '+FZRA',
     );
 
     /**
@@ -54,6 +52,7 @@ abstract class WeatherValidator
 
     /**
      * WeatherValidator constructor.
+     *
      * @param Logger $weatherLogger
      */
     public function __construct(Logger $weatherLogger)
@@ -75,13 +74,12 @@ abstract class WeatherValidator
             $knots = $gustKnotsValue->getConvertedValue('kt');
         }
 
-        /**
+        /*
          * High warning value is passed into both mid and high paremater for check.
          * Requirement for GWI wind check - only HIGH warning.
          * TODO: think how to make it reusable
          */
         $this->exceedsWarningCheck($knots, $highWarning, $highWarning, $surfaceWindChunk);
-
     }
 
     protected function validateCeiling($cloud)
@@ -93,11 +91,9 @@ abstract class WeatherValidator
         $cloudAmount = $cloud->getAmount();
         $cloudBase = $cloud->getBaseHeight()->getConvertedValue('ft');
 
-        if (in_array($cloudAmount, WeatherValidator::CEILING_CLOUDS)) {
+        if (in_array($cloudAmount, self::CEILING_CLOUDS)) {
             $this->belowWarningCheck($cloudBase, $midWarning, $highWarning, $cloudChunk);
         }
-
-
     }
 
     protected function validateVisibility($visibility)
@@ -109,7 +105,6 @@ abstract class WeatherValidator
         $visChunk = $visibility->getChunk();
 
         $this->belowWarningCheck($visDistance, $midWarning, $highWarning, $visChunk);
-
     }
 
     /**
@@ -196,6 +191,7 @@ abstract class WeatherValidator
     /**
      * @param $rawWeather
      * @param $decodingExceptions
+     *
      * @return bool
      */
     protected function checkProcessingErrors($rawWeather, $decodingExceptions)
@@ -204,7 +200,7 @@ abstract class WeatherValidator
 
         if (!$rawWeather) {
             $this->validatedWeather->setWeatherStatus(0);
-            $this->weatherLogger->warning($airportIcao." had wrong ".$this->type.": '".$rawWeather."'");
+            $this->weatherLogger->warning($airportIcao.' had wrong '.$this->type.": '".$rawWeather."'");
 
             return false;
         }
@@ -212,7 +208,7 @@ abstract class WeatherValidator
         if ($decodingExceptions) {
             /** @var ChunkDecoderException $exception */
             foreach ($decodingExceptions as $exception) {
-                if (in_array($exception->getChunkDecoder(), WeatherValidator::BAD_DECODER_EXCEPTIONS)) {
+                if (in_array($exception->getChunkDecoder(), self::BAD_DECODER_EXCEPTIONS)) {
                     $this->validatedWeather->setWeatherStatus(0);
                     $this->weatherLogger->warning(
                         $airportIcao.' had '.$exception->getChunkDecoder().": '".$rawWeather."'"

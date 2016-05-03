@@ -30,6 +30,7 @@ framework:
         handler_id:  ~
     fragments:       ~
     http_method_override: true
+    assets: ~
 
 # Twig Configuration
 twig:
@@ -79,8 +80,8 @@ easy_admin:
     list:
         max_results: 100
     entities:
-        MonitoredAirports:
-            class: AppBundle\Entity\MonitoredAirports
+        MonitoredAirport:
+            class: AppBundle\Entity\MonitoredAirport
             label: "Monitored Airports"
             list:
                 max_results: 100

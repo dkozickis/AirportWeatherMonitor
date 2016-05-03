@@ -10,7 +10,7 @@ use TafDecoder\Entity\DecodedTaf;
  * Monitored Airports.
  *
  * @ORM\Table(name="monitored_airports")
- * @ORM\Entity(repositoryClass="AppBundle\Repository\MonitoredAirportsRepository")
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\MonitoredAirportRepository")
  * @ORM\HasLifecycleCallbacks()
  */
 class MonitoredAirport

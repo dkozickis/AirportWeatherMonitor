@@ -19,7 +19,7 @@ abstract class WeatherValidator
     const MID_ALERT = 2;
     const NO_ALERT = 1;
     const CEILING_CLOUDS = array('BKN', 'OVC', 'VV');
-    const BAD_DECODER_EXCEPTIONS = array('SurfaceWindChunkDecoder');
+    const BAD_DECODER_EXCEPTIONS = array('SurfaceWindChunkDecoder', 'VisibilityChunkDecoder', 'CloudChunkDecoder');
 
     const MID_WEATHER_PHENOMEN = array(
         'TSRA',

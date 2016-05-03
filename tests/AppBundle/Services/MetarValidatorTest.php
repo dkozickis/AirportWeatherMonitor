@@ -1,11 +1,5 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Denis
- * Date: 28/02/16
- * Time: 14:31.
- */
-namespace AppBundle\Tests\Services;
+namespace Tests\AppBundle\Services;
 
 use AppBundle\Entity\AirportsMasterData;
 use AppBundle\Entity\MonitoredAirport;

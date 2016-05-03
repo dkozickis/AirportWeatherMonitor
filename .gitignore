@@ -5,9 +5,12 @@
 /app/logs/*
 !app/cache/.gitkeep
 !app/logs/.gitkeep
-/app/phpunit.xml
 /build/
 /vendor/
 /bin/
 /composer.phar
 /bower_components
+/var/
+!var/cache/.gitkeep
+!var/logs/.gitkeep
+/phpunit.xml

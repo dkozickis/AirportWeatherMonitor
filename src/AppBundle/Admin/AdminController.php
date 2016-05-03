@@ -1,10 +1,5 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Denis
- * Date: 24/04/16
- * Time: 9:06.
- */
+
 namespace AppBundle\Admin;
 
 use JavierEguiluz\Bundle\EasyAdminBundle\Controller\AdminController as BaseAdminController;
@@ -12,7 +7,7 @@ use Doctrine\ORM\EntityManager;
 
 class AdminController extends BaseAdminController
 {
-    protected function createMonitoredAirportsListQueryBuilder($entityClass, $sortDirection, $sortField)
+    protected function createMonitoredAirportListQueryBuilder($entityClass, $sortDirection, $sortField)
     {
 
         /* @var EntityManager */
@@ -32,10 +27,12 @@ class AdminController extends BaseAdminController
             }
         }
 
+        dump($queryBuilder);
+
         return $queryBuilder;
     }
 
-    protected function createMonitoredAirportsSearchQueryBuilder(
+    protected function createMonitoredAirportSearchQueryBuilder(
         $entityClass, $searchQuery, $searchableFields, $sortField, $sortDirection
     ) {
 

@@ -35,7 +35,7 @@ class AdminController extends BaseAdminController
         return $queryBuilder;
     }
 
-    public function createMonitoredAirportsSearchQueryBuilder(
+    protected function createMonitoredAirportsSearchQueryBuilder(
         $entityClass, $searchQuery, $searchableFields, $sortField, $sortDirection
     ) {
 

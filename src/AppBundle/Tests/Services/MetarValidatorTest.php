@@ -8,7 +8,7 @@
 namespace AppBundle\Tests\Services;
 
 use AppBundle\Entity\AirportsMasterData;
-use AppBundle\Entity\MonitoredAirports;
+use AppBundle\Entity\MonitoredAirport;
 use AppBundle\Services\WeatherValidator\MetarValidator;
 use MetarDecoder\MetarDecoder;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
@@ -60,7 +60,7 @@ class MetarValidatorTest extends KernelTestCase
         $warnings
     ) {
         $metarDecoder = new MetarDecoder();
-        $airport = new MonitoredAirports();
+        $airport = new MonitoredAirport();
 
         $airport->setRawMetar($raw);
         $decodedMetar = $metarDecoder->parse($airport->getRawMetar());

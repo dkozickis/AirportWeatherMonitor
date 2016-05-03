@@ -2,7 +2,7 @@
 
 namespace AppBundle\Services;
 
-use AppBundle\Entity\MonitoredAirports;
+use AppBundle\Entity\MonitoredAirport;
 use AppBundle\Services\WeatherValidator\MetarValidator;
 use AppBundle\Services\WeatherValidator\TafValidator;
 use Doctrine\ORM\EntityManager;
@@ -23,7 +23,7 @@ class WeatherProcessor
     );
 
     /**
-     * @var MonitoredAirports[]
+     * @var MonitoredAirport[]
      */
     private $airports;
 
@@ -43,7 +43,7 @@ class WeatherProcessor
     private $weatherProvider;
 
     /**
-     * WeatherForView constructor.
+     * WeatherProcessor constructor.
      *
      * @param EntityManager $entityManager
      * @param Logger        $weatherLogger
@@ -56,17 +56,18 @@ class WeatherProcessor
     }
 
     /**
-     * @param $airports
+     * @param MonitoredAirport[] $airports
      *
      * @return FeatureCollection
      */
     public function getGeoJsonWeather($airports)
     {
-        $this->init($airports);
+        $this->airports = $airports;
+        $airports = $this->fillAirportsWithData();
 
         $features = array();
 
-        foreach ($this->airports as $airport) {
+        foreach ($airports as $airport) {
             $data = $airport->getAirportData();
             $features[] = new Feature(
                 new Point(array($data->getLon(), $data->getLat())), array(
@@ -84,28 +85,26 @@ class WeatherProcessor
         return $featureCollection;
     }
 
-    /**
-     * @param $airports
-     */
-    private function init($airports)
-    {
-        $this->airports = $airports;
-        $this->fillAirportsWithData();
-    }
-
     private function fillAirportsWithData()
     {
-        $airportsWithOutdatedWeather = $this->filterRelevantAirportsByTime();
+        $airportsWithOldWeather = $this->filterAirportsByWeatherTime();
 
-        if (count($airportsWithOutdatedWeather) > 0) {
-            $this->fillAirportsWithNewWeather($airportsWithOutdatedWeather, 'metar');
-            $this->fillAirportsWithNewWeather($airportsWithOutdatedWeather, 'taf');
+        if (count($airportsWithOldWeather) > 0) {
+            $this->getAndUpdateWeather($airportsWithOldWeather, 'metar');
+            $this->getAndUpdateWeather($airportsWithOldWeather, 'taf');
         }
 
         $this->decodeValidateColorizeWeather();
+
+        return $this->airports;
     }
 
-    private function filterRelevantAirportsByTime($threshold = 30)
+    /**
+     * @param int $threshold
+     *
+     * @return array
+     */
+    private function filterAirportsByWeatherTime($threshold = 30)
     {
         $relevantAirports = [];
 
@@ -125,18 +124,28 @@ class WeatherProcessor
      * @param $airportsWithOutdatedWeather
      * @param $type
      */
-    private function fillAirportsWithNewWeather($airportsWithOutdatedWeather, $type)
+    private function getAndUpdateWeather($airportsWithOutdatedWeather, $type)
     {
-        $freshWeather = $this->getWeatherFromProvider($airportsWithOutdatedWeather, $type);
-        $this->populateAirportsWithWeather($freshWeather, $type);
+        $freshWeather = $this->getWeather($airportsWithOutdatedWeather, $type);
+        $this->updateWeather($freshWeather, $type);
     }
 
-    private function getWeatherFromProvider($airports, $type)
+    /**
+     * @param $airports
+     * @param $type
+     *
+     * @return array
+     */
+    private function getWeather($airports, $type)
     {
         return $this->weatherProvider->getWeather($airports, $type);
     }
 
-    private function populateAirportsWithWeather($freshWeather, $type)
+    /**
+     * @param $freshWeather
+     * @param $type
+     */
+    private function updateWeather($freshWeather, $type)
     {
         $firstLetterUpperType = ucfirst($type);
 
@@ -157,58 +166,18 @@ class WeatherProcessor
         foreach ($this->airports as $airport) {
             $this->weatherDecodePass($airport);
             $this->weatherValidatePass($airport);
-
-            $validatedMetar = $airport->getValidatedMetar();
-            $metarStatus = $validatedMetar->getWeatherStatus();
-
-            if ($metarStatus > 1) {
-                foreach ($validatedMetar->getWeatherWarnings() as $warning) {
-                    $airport->setColorizedMetar(
-                        $this->colorize(
-                            $warning->getChunk(),
-                            self::STATUS_COLOR[$metarStatus],
-                            $airport->getColorizedMetar()
-                        )
-                    );
-                }
-            }
-
-            $validatedTaf = $airport->getValidatedTaf();
-            $tafStatus = $validatedTaf->getWeatherStatus();
-
-            $airport->setColorizedTaf(preg_replace(
-                '/(BECMG)|((PROB30|PROB40)(\sTEMPO)?)|(TEMPO)|(FM)/',
-                '<br/>&nbsp;&nbsp;$0',
-                $airport->getColorizedTaf()
-            ));
-
-            if ($tafStatus > 1) {
-                foreach ($validatedTaf->getWeatherWarnings() as $warning) {
-                    $airport->setColorizedTaf(
-                        $this->colorize(
-                            $warning->getChunk(),
-                            self::STATUS_COLOR[$tafStatus],
-                            $airport->getColorizedTaf()
-                        )
-                    );
-                }
-            }
+            $this->weatherColorizePass($airport, 'metar');
+            $this->beautifyTaf($airport);
+            $this->weatherColorizePass($airport, 'taf');
         }
     }
 
-    private function colorize($partToColorize, $color, $oldTextWeather)
-    {
-        return str_replace(
-            $partToColorize,
-            '<span class="'.$color.'">'.$partToColorize.'</span>',
-            $oldTextWeather
-        );
-    }
-
     /**
-     * @param MonitoredAirports $airport
+     * @param MonitoredAirport $airport
+     *
+     * @return MonitoredAirport
      */
-    private function weatherDecodePass(MonitoredAirports $airport)
+    private function weatherDecodePass(MonitoredAirport $airport)
     {
         $metarDecoder = new MetarDecoder();
         $tafDecoder = new TafDecoder();
@@ -218,14 +187,16 @@ class WeatherProcessor
 
         $decodedTaf = $tafDecoder->parse($airport->getRawTaf());
         $airport->setDecodedTaf($decodedTaf);
+
+        return $airport;
     }
 
     /**
-     * @param MonitoredAirports $airport
+     * @param MonitoredAirport $airport
      *
-     * @return \AppBundle\Entity\ValidatedWeather
+     * @return MonitoredAirport
      */
-    private function weatherValidatePass(MonitoredAirports $airport)
+    private function weatherValidatePass(MonitoredAirport $airport)
     {
         $metarValidator = new MetarValidator($this->weatherLogger);
         $tafValidator = new TafValidator($this->weatherLogger);
@@ -235,5 +206,72 @@ class WeatherProcessor
 
         $validatedTaf = $tafValidator->validate($airport);
         $airport->setValidatedTaf($validatedTaf);
+
+        return $airport;
+    }
+
+    /**
+     * @param MonitoredAirport $airport
+     * @param $type
+     *
+     * @return MonitoredAirport
+     */
+    private function weatherColorizePass(MonitoredAirport $airport, $type)
+    {
+        $firstLetterUpperType = ucfirst($type);
+        $getValidatedWeather = 'getValidated'.$firstLetterUpperType;
+        $getColorizedWeather = 'getColorized'.$firstLetterUpperType;
+        $setColorizedWeather = 'setColorized'.$firstLetterUpperType;
+
+        $validatedWeather = $airport->$getValidatedWeather();
+        $weatherStatus = $validatedWeather->getWeatherStatus();
+
+        if ($weatherStatus > 1) {
+            foreach ($validatedWeather->getWeatherWarnings() as $warning) {
+                $airport->$setColorizedWeather(
+                    $this->colorString(
+                        $warning->getChunk(),
+                        self::STATUS_COLOR[$weatherStatus],
+                        $airport->$getColorizedWeather()
+                    )
+                );
+            }
+        }
+
+        return $airport;
+    }
+
+    /**
+     * @param MonitoredAirport $airport
+     *
+     * @return MonitoredAirport
+     */
+    private function beautifyTaf(MonitoredAirport $airport)
+    {
+        $airport->setColorizedTaf(
+            preg_replace(
+                '/(BECMG)|((PROB30|PROB40)(\sTEMPO)?)|(TEMPO)|(FM)/',
+                '<br/>&nbsp;&nbsp;$0',
+                $airport->getColorizedTaf()
+            )
+        );
+
+        return $airport;
+    }
+
+    /**
+     * @param $partToColorize
+     * @param $color
+     * @param $oldTextWeather
+     *
+     * @return mixed
+     */
+    private function colorString($partToColorize, $color, $oldTextWeather)
+    {
+        return str_replace(
+            $partToColorize,
+            '<span class="'.$color.'">'.$partToColorize.'</span>',
+            $oldTextWeather
+        );
     }
 }

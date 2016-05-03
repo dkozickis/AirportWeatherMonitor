@@ -3,7 +3,7 @@
 namespace AppBundle\Repository;
 
 use Doctrine\ORM\EntityRepository;
-use AppBundle\Entity\MonitoredAirports;
+use AppBundle\Entity\MonitoredAirport;
 
 /**
  * AirportsRepository.
@@ -14,7 +14,7 @@ use AppBundle\Entity\MonitoredAirports;
 class MonitoredAirportsRepository extends EntityRepository
 {
     /**
-     * @return MonitoredAirports[] array
+     * @return MonitoredAirport[] array
      */
     public function getSeasonActiveAirports($alternate = 0)
     {
@@ -51,7 +51,7 @@ class MonitoredAirportsRepository extends EntityRepository
 
         $airports = $qb->getQuery()->getResult();
 
-        /** @var MonitoredAirports $airport */
+        /** @var MonitoredAirport $airport */
         foreach ($airports as $airport) {
             $airportsArray[$airport->getAirportData()->getAirportIcao()] = $airport;
         }

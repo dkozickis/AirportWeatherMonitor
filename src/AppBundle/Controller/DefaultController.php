@@ -7,7 +7,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use AppBundle\Entity\MonitoredAirports;
+use AppBundle\Entity\MonitoredAirport;
 
 class DefaultController extends Controller
 {
@@ -69,11 +69,13 @@ class DefaultController extends Controller
         $csvReader->setHeaderRowNumber(0);
 
         foreach ($csvReader as $row) {
-            $masterAirport = $masterAirports->findOneBy(array(
-                'airportIcao' => $row['station'],
-            ));
+            $masterAirport = $masterAirports->findOneBy(
+                array(
+                    'airportIcao' => $row['station'],
+                )
+            );
 
-            $airport = new MonitoredAirports();
+            $airport = new MonitoredAirport();
 
             $airport->setMidWarningCeiling($row['2_ceil'])
                 ->setHighWarningCeiling($row['3_ceil'])

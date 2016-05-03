@@ -2,7 +2,7 @@
 
 namespace AppBundle\Services\WeatherValidator;
 
-use AppBundle\Entity\MonitoredAirports;
+use AppBundle\Entity\MonitoredAirport;
 use AppBundle\Entity\ValidatedWeather;
 use MetarDecoder\Entity\WeatherPhenomenon;
 
@@ -14,11 +14,11 @@ class MetarValidator extends WeatherValidator
     public $type = 'METAR';
 
     /**
-     * @param MonitoredAirports $airport
+     * @param MonitoredAirport $airport
      *
      * @return ValidatedWeather
      */
-    public function validate(MonitoredAirports $airport)
+    public function validate(MonitoredAirport $airport)
     {
         $this->airport = $airport;
         $this->validatedWeather = new ValidatedWeather();

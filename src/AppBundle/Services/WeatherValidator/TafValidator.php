@@ -2,7 +2,7 @@
 
 namespace AppBundle\Services\WeatherValidator;
 
-use AppBundle\Entity\MonitoredAirports;
+use AppBundle\Entity\MonitoredAirport;
 use AppBundle\Entity\ValidatedWeather;
 use TafDecoder\Entity\CloudLayer;
 use TafDecoder\Entity\Evolution;
@@ -17,11 +17,11 @@ class TafValidator extends WeatherValidator
     public $type = 'TAF';
 
     /**
-     * @param MonitoredAirports $airport
+     * @param MonitoredAirport $airport
      *
      * @return ValidatedWeather
      */
-    public function validate(MonitoredAirports $airport)
+    public function validate(MonitoredAirport $airport)
     {
         $this->airport = $airport;
         $this->validatedWeather = new ValidatedWeather();
@@ -64,7 +64,7 @@ class TafValidator extends WeatherValidator
                     foreach ($cloud->getEvolutions() as $evolution) {
                         /* @var CloudLayer[] $cloudsEvolution */
                         $cloudsEvolution = $evolution->getEntity();
-                        foreach ($clouds as $cloud) {
+                        foreach ($cloudsEvolution as $cloud) {
                             if ($cloud->getBaseHeight()) {
                                 $this->validateCeiling($cloud);
                             }

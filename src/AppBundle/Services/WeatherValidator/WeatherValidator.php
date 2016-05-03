@@ -7,7 +7,7 @@
  */
 namespace AppBundle\Services\WeatherValidator;
 
-use AppBundle\Entity\MonitoredAirports;
+use AppBundle\Entity\MonitoredAirport;
 use AppBundle\Entity\ValidatedWeather;
 use AppBundle\Entity\ValidatorWarning;
 use MetarDecoder\Exception\ChunkDecoderException;
@@ -22,21 +22,57 @@ abstract class WeatherValidator
     const BAD_DECODER_EXCEPTIONS = array('SurfaceWindChunkDecoder');
 
     const MID_WEATHER_PHENOMEN = array(
-        'TSRA', 'TSPL', '+PL', 'GR', 'TSGR',
-        'TSGS', '+SHPL', 'SHGR', 'FG', 'PRFG',
-        'BCFG', 'FU', 'VA', 'DU', 'BLDU', 'VCBLSA',
-        'BLPY', 'PO', 'SQ', 'FC', '+FC', 'SS',
-        '+SS', 'DS', '+DS', 'VCDS', 'FZBR', 'VV///',
+        'TSRA',
+        'TSPL',
+        '+PL',
+        'GR',
+        'TSGR',
+        'TSGS',
+        '+SHPL',
+        'SHGR',
+        'FG',
+        'PRFG',
+        'BCFG',
+        'FU',
+        'VA',
+        'DU',
+        'BLDU',
+        'VCBLSA',
+        'BLPY',
+        'PO',
+        'SQ',
+        'FC',
+        '+FC',
+        'SS',
+        '+SS',
+        'DS',
+        '+DS',
+        'VCDS',
+        'FZBR',
+        'VV///',
     );
 
     const HIGH_WEATHER_PHENOMEN = array(
-        '+FZDZ', 'FZFG', 'FZRA', 'SA', 'BLSA',
-        '+SN', 'BLSN', 'VCBLSN', '+TSRA', 'TSSN', '+TSSN',
-        '+SHSN', 'FZDZ', '-FZDZ', '-FZRA', '+FZRA',
+        '+FZDZ',
+        'FZFG',
+        'FZRA',
+        'SA',
+        'BLSA',
+        '+SN',
+        'BLSN',
+        'VCBLSN',
+        '+TSRA',
+        'TSSN',
+        '+TSSN',
+        '+SHSN',
+        'FZDZ',
+        '-FZDZ',
+        '-FZRA',
+        '+FZRA',
     );
 
     /**
-     * @var MonitoredAirports
+     * @var MonitoredAirport
      */
     public $airport;
 
@@ -51,6 +87,11 @@ abstract class WeatherValidator
     public $weatherLogger;
 
     /**
+     * @var string
+     */
+    public $type;
+
+    /**
      * WeatherValidator constructor.
      *
      * @param Logger $weatherLogger
@@ -60,8 +101,11 @@ abstract class WeatherValidator
         $this->weatherLogger = $weatherLogger;
     }
 
-    abstract public function validate(MonitoredAirports $airport);
+    abstract public function validate(MonitoredAirport $airport);
 
+    /**
+     * @param \MetarDecoder\Entity\SurfaceWind|\TafDecoder\Entity\SurfaceWind $surfaceWind
+     */
     protected function validateWind($surfaceWind)
     {
         $highWarning = $this->airport->getHighWarningWind();
@@ -82,6 +126,9 @@ abstract class WeatherValidator
         $this->exceedsWarningCheck($knots, $highWarning, $highWarning, $surfaceWindChunk);
     }
 
+    /**
+     * @param \MetarDecoder\Entity\CloudLayer|\TafDecoder\Entity\CloudLayer $cloud
+     */
     protected function validateCeiling($cloud)
     {
         $midWarning = $this->airport->getMidWarningCeiling();
@@ -96,6 +143,9 @@ abstract class WeatherValidator
         }
     }
 
+    /**
+     * @param \MetarDecoder\Entity\Visibility|\TafDecoder\Entity\Visibility $visibility
+     */
     protected function validateVisibility($visibility)
     {
         $midWarning = $this->airport->getMidWarningVis();

@@ -13,7 +13,7 @@ use TafDecoder\Entity\DecodedTaf;
  * @ORM\Entity(repositoryClass="AppBundle\Repository\MonitoredAirportsRepository")
  * @ORM\HasLifecycleCallbacks()
  */
-class MonitoredAirports
+class MonitoredAirport
 {
     /**
      * @var int
@@ -357,7 +357,7 @@ class MonitoredAirports
      *
      * @param bool $activeWinter
      *
-     * @return MonitoredAirports
+     * @return MonitoredAirport
      */
     public function setActiveWinter($activeWinter)
     {
@@ -381,7 +381,7 @@ class MonitoredAirports
      *
      * @param bool $alternateWinter
      *
-     * @return MonitoredAirports
+     * @return MonitoredAirport
      */
     public function setAlternateWinter($alternateWinter)
     {
@@ -405,7 +405,7 @@ class MonitoredAirports
      *
      * @param bool $activeSummer
      *
-     * @return MonitoredAirports
+     * @return MonitoredAirport
      */
     public function setActiveSummer($activeSummer)
     {
@@ -429,7 +429,7 @@ class MonitoredAirports
      *
      * @param bool $alternateSummer
      *
-     * @return MonitoredAirports
+     * @return MonitoredAirport
      */
     public function setAlternateSummer($alternateSummer)
     {
@@ -453,7 +453,7 @@ class MonitoredAirports
      *
      * @param int $midWarningVis
      *
-     * @return MonitoredAirports
+     * @return MonitoredAirport
      */
     public function setMidWarningVis($midWarningVis)
     {
@@ -477,7 +477,7 @@ class MonitoredAirports
      *
      * @param int $midWarningCeiling
      *
-     * @return MonitoredAirports
+     * @return MonitoredAirport
      */
     public function setMidWarningCeiling($midWarningCeiling)
     {
@@ -501,7 +501,7 @@ class MonitoredAirports
      *
      * @param int $midWarningWind
      *
-     * @return MonitoredAirports
+     * @return MonitoredAirport
      */
     public function setMidWarningWind($midWarningWind)
     {
@@ -525,7 +525,7 @@ class MonitoredAirports
      *
      * @param int $highWarningVis
      *
-     * @return MonitoredAirports
+     * @return MonitoredAirport
      */
     public function setHighWarningVis($highWarningVis)
     {
@@ -549,7 +549,7 @@ class MonitoredAirports
      *
      * @param int $highWarningCeiling
      *
-     * @return MonitoredAirports
+     * @return MonitoredAirport
      */
     public function setHighWarningCeiling($highWarningCeiling)
     {
@@ -573,7 +573,7 @@ class MonitoredAirports
      *
      * @param int $highWarningWind
      *
-     * @return MonitoredAirports
+     * @return MonitoredAirport
      */
     public function setHighWarningWind($highWarningWind)
     {
@@ -597,7 +597,7 @@ class MonitoredAirports
      *
      * @param \AppBundle\Entity\AirportsMasterData $airportData
      *
-     * @return MonitoredAirports
+     * @return MonitoredAirport
      */
     public function setAirportData(\AppBundle\Entity\AirportsMasterData $airportData = null)
     {

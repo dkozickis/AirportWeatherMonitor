@@ -14,12 +14,15 @@ use AppBundle\Entity\MonitoredAirport;
 class MonitoredAirportRepository extends EntityRepository
 {
     /**
+     * @param int $alternate
+     *
      * @return MonitoredAirport[] array
      */
     public function getSeasonActiveAirports($alternate = 0)
     {
         $airportsArray = [];
 
+        // TODO: move DST detector our of Repository, pass it as parameter
         $date = new \DateTime('now');
         $date->setTimezone(new \DateTimeZone('Europe/Berlin'));
 
@@ -57,5 +60,10 @@ class MonitoredAirportRepository extends EntityRepository
         }
 
         return $airportsArray;
+    }
+    
+    public function getAirportsWithOldMetar(){
+        $qb = $this->createQueryBuilder('a');
+        $qb->where('a.rawMetarDateTime ')
     }
 }

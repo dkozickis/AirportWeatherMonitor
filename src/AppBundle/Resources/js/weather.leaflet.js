@@ -81,12 +81,28 @@ L.control.layers(null, airports).addTo(map);
  */
 var outdatedWeatherBox = L.control({position: 'bottomright'});
 
-outdatedWeatherBox.onAdd = function (map) {
-    var div = L.DomUtil.create('div', 'info legend');
-    div.innerHTML = "<strong>Outdated METARs</strong>";
+outdatedWeatherBox.onAdd = function () {
+    var div = L.DomUtil.create('div', 'info legend metar-info');
+    div.innerHTML = "<strong>Outdated METARs</strong></br>";
     return div;
 };
 
 outdatedWeatherBox.addTo(map);
+
+$(function () {
+    function updateOldMetar(){
+        $.getJSON(oldMetar, function (data) {
+            var metarLegend = [];
+            metarLegend.push("<strong>Outdated METARs</strong></br>");
+            $.each(data, function (key, val) {
+                metarLegend.push(val);
+            });
+            $("div.metar-info").html(metarLegend.join(" "));
+        });
+    }
+    setInterval(updateOldMetar, 60000);
+    updateOldMetar();
+});
+
 
 

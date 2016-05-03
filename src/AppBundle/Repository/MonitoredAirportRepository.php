@@ -18,24 +18,9 @@ class MonitoredAirportRepository extends EntityRepository
      *
      * @return MonitoredAirport[] array
      */
-    public function getSeasonActiveAirports($alternate = 0)
+    public function getSeasonActiveAirports($alternate = 0, $season)
     {
-        $airportsArray = [];
-
-        // TODO: move DST detector our of Repository, pass it as parameter
-        $date = new \DateTime('now');
-        $date->setTimezone(new \DateTimeZone('Europe/Berlin'));
-
-        /*
-         * Below returns 0 or 1.
-         * 0 is Winter season in Berlin timezone (no DST).
-         * 1 is Summer season in Berlin timezone (DST active).
-         * Berlin chosen as reference with normal DST.
-         */
-        $season = $date->format('I');
-
         $qb = $this->createQueryBuilder('a');
-
         if ($season == 0) {
             $qb->where('a.activeWinter = 1');
             if ($alternate == 1) {
@@ -54,16 +39,55 @@ class MonitoredAirportRepository extends EntityRepository
 
         $airports = $qb->getQuery()->getResult();
 
+        $airportsArray = $this->airportsObjectToArray($airports);
+
+        return $airportsArray;
+    }
+
+    /**
+     * @param bool $season
+     * @param \DateTime $referenceTime
+     * 
+     * @return \AppBundle\Entity\MonitoredAirport[]
+     */
+    public function getAirportsWithOldMetar($season, $referenceTime)
+    {
+        $qb = $this->createQueryBuilder('a')
+            ->where('a.rawMetarDateTime < :datetime')
+            ->orWhere('a.rawMetarDateTime IS NULL');
+
+        if ($season == 0) {
+            $qb->andWhere('a.activeWinter = 1');
+            $qb->andWhere('a.alternateWinter = 0');
+        } elseif ($season == 1) {
+            $qb->andWhere('a.activeSummer = 1');
+            $qb->andWhere('a.alternateSummer = 0');
+        }
+
+        $qb->setParameter('datetime', $referenceTime);
+
+        $airports = $qb->getQuery()->getResult();
+
+        $airportsArray = $this->airportsObjectToArray($airports);
+
+        return $airportsArray;
+    }
+
+    /**
+     * @param $airports
+     * @param $airportsArray
+     *
+     * @return MonitoredAirport[] array
+     */
+    private function airportsObjectToArray($airports)
+    {
+        $airportsArray = [];
+
         /** @var MonitoredAirport $airport */
         foreach ($airports as $airport) {
             $airportsArray[$airport->getAirportData()->getAirportIcao()] = $airport;
         }
 
         return $airportsArray;
-    }
-    
-    public function getAirportsWithOldMetar(){
-        $qb = $this->createQueryBuilder('a');
-        $qb->where('a.rawMetarDateTime ')
     }
 }

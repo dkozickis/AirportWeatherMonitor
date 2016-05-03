@@ -10,11 +10,15 @@
 <body>
 <div id="map"></div>
 <script>
-    var destinationWeather = '{{ path('airport_json') }}';
-    var alternateWeather = '{{ path('airport_json', { alternate : 1}) }}';
+    var destinationWeather = '{{ path('weather_json_actual') }}';
+    var alternateWeather = '{{ path('weather_json_actual', { alternate : 1}) }}';
+    var oldMetar = '{{ path('weather_json_old') }}';
 </script>
+<script src="{{ asset('js/jquery.min.js') }}"></script>
+<script src="{{ asset('js/spin.min.js') }}"></script>
 <script src="{{ asset('js/leaflet.min.js') }}"></script>
 <script src="{{ asset('js/leaflet.ajax.min.js') }}"></script>
+<script src="{{ asset('js/leaflet.spin.min.js') }}"></script>
 <script src="{{ asset('js/weather.leaflet.js') }}"></script>
 </body>
 </html>

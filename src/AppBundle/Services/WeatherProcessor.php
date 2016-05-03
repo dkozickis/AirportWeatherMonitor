@@ -3,6 +3,7 @@
 namespace AppBundle\Services;
 
 use AppBundle\Entity\MonitoredAirport;
+use AppBundle\Helpers\WeatherHelper;
 use AppBundle\Services\WeatherValidator\MetarValidator;
 use AppBundle\Services\WeatherValidator\TafValidator;
 use Doctrine\ORM\EntityManager;
@@ -43,15 +44,21 @@ class WeatherProcessor
     private $weatherProvider;
 
     /**
+     * @var WeatherHelper
+     */
+    private $weatherHelper;
+
+    /**
      * WeatherProcessor constructor.
      *
      * @param EntityManager $entityManager
      * @param Logger        $weatherLogger
      */
-    public function __construct(EntityManager $entityManager, Logger $weatherLogger)
+    public function __construct(EntityManager $entityManager, Logger $weatherLogger, WeatherHelper $weatherHelper)
     {
         $this->entityManager = $entityManager;
         $this->weatherLogger = $weatherLogger;
+        $this->weatherHelper = $weatherHelper;
         $this->weatherProvider = new WeatherProvider($this->weatherLogger);
     }
 
@@ -100,19 +107,19 @@ class WeatherProcessor
     }
 
     /**
-     * @param int $threshold
+     * @param int $difference
      *
      * @return array
      */
-    private function filterAirportsByWeatherTime($threshold = 30)
+    private function filterAirportsByWeatherTime($difference = 30)
     {
         $relevantAirports = [];
 
         foreach ($this->airports as $key => $airport) {
             $metarDateTime = $airport->getRawMetarDateTime();
-            $now = new \DateTime('now', new \DateTimeZone('UTC'));
+            $referenceTime = $this->weatherHelper->getReferenceTime($difference);
 
-            if (!$metarDateTime || $now->diff($metarDateTime, 1)->format('%i') > $threshold) {
+            if (!$metarDateTime || $referenceTime > $metarDateTime) {
                 $relevantAirports[] = $key;
             }
         }

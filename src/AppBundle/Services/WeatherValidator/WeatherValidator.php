@@ -21,6 +21,8 @@ abstract class WeatherValidator
     const CEILING_CLOUDS = array('BKN', 'OVC', 'VV');
     const BAD_DECODER_EXCEPTIONS = array('SurfaceWindChunkDecoder', 'VisibilityChunkDecoder', 'CloudChunkDecoder');
 
+    //TODO: Move phenoms to DB
+
     const MID_WEATHER_PHENOMEN = array(
         'TSRA',
         'TSPL',
@@ -118,11 +120,6 @@ abstract class WeatherValidator
             $knots = $gustKnotsValue->getConvertedValue('kt');
         }
 
-        /*
-         * High warning value is passed into both mid and high paremater for check.
-         * Requirement for GWI wind check - only HIGH warning.
-         * TODO: think how to make it reusable
-         */
         $this->exceedsWarningCheck($knots, $highWarning, $highWarning, $surfaceWindChunk);
     }
 

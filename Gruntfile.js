@@ -30,7 +30,10 @@ module.exports = function(grunt) {
                     destPrefix: 'src/AppBundle/Resources/js'
                 },
                 files: {
-                    'leaflet.min.js': 'leaflet/dist/leaflet.js'
+                    'leaflet.min.js': 'leaflet/dist/leaflet.js',
+                    'jquery.min.js': 'jquery/dist/jquery.min.js',
+                    'spin.min.js': 'spin.js/spin.min.js',
+                    'leaflet.spin.js': 'leaflet-spin/leaflet.spin.js'
                 }
             }
         },
@@ -58,7 +61,10 @@ module.exports = function(grunt) {
                 files: {
                     'web/js/leaflet.min.js': ['src/AppBundle/Resources/js/leaflet.min.js'],
                     'web/js/leaflet.ajax.min.js': ['src/AppBundle/Resources/js/leaflet.ajax.min.js'],
-                    'web/js/weather.leaflet.js' : ['src/AppBundle/Resources/js/weather.leaflet.js']
+                    'web/js/weather.leaflet.js' : ['src/AppBundle/Resources/js/weather.leaflet.js'],
+                    'web/js/jquery.min.js' : ['src/AppBundle/Resources/js/jquery.min.js'],
+                    'web/js/leaflet.spin.min.js': ['src/AppBundle/Resources/js/leaflet.spin.js'],
+                    'web/js/spin.min.js': ['src/AppBundle/Resources/js/spin.min.js']
                 }
             }
         },

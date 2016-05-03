@@ -5,7 +5,6 @@ namespace AppBundle\Controller;
 use Ddeboer\DataImport\Reader\CsvReader;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use AppBundle\Entity\MonitoredAirport;
 
@@ -25,33 +24,9 @@ class DefaultController extends Controller
     public function testAction(Request $request)
     {
         $em = $this->getDoctrine()->getManager();
-        $airports = $em->getRepository('AppBundle:MonitoredAirport')->getSeasonActiveAirports();
-        $airportsWeatherForView = $this->get('weather_processor');
-
-        if (count($airports) > 0) {
-            $airports = $airportsWeatherForView->getGeoJsonWeather($airports);
-        }
+        $airports = $em->getRepository('AppBundle:MonitoredAirport')->getAirportsWithOldMetar();
 
         dump($airports);
-    }
-
-    /**
-     * @Route("/weather/{alternate}", name="airport_json", defaults={"alternate" = 0})
-     */
-    public function jsonAction(Request $request, $alternate)
-    {
-        $em = $this->getDoctrine()->getManager();
-        $airports = $em->getRepository('AppBundle:MonitoredAirport')->getSeasonActiveAirports($alternate);
-        $airportsWeatherForView = $this->get('weather_processor');
-
-        if (count($airports) > 0) {
-            $airports = $airportsWeatherForView->getGeoJsonWeather($airports);
-        }
-
-        $response = new JsonResponse();
-        $response->setData($airports);
-
-        return $response;
     }
 
     /**

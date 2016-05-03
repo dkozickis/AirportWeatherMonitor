@@ -10,4 +10,7 @@ services:
 
   weather_processor:
       class: AppBundle\Services\WeatherProcessor
-      arguments: ['@doctrine.orm.entity_manager', '@monolog.logger.weather']
+      arguments: ['@doctrine.orm.entity_manager', '@monolog.logger.weather', '@weather_helper']
+
+  weather_helper:
+    class: AppBundle\Helpers\WeatherHelper

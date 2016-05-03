@@ -27,8 +27,6 @@ class AdminController extends BaseAdminController
             }
         }
 
-        dump($queryBuilder);
-
         return $queryBuilder;
     }
 

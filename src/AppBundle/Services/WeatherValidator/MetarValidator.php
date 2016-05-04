@@ -38,12 +38,7 @@ class MetarValidator extends WeatherValidator
         if ($presentWeather) {
             /* @var WeatherPhenomenon $phenomenon */
             foreach ($presentWeather as $phenomenon) {
-                if (in_array($phenomenon->getChunk(), self::MID_WEATHER_PHENOMEN)) {
-                    $this->generateWarning($phenomenon->getChunk(), self::MID_ALERT);
-                }
-                if (in_array($phenomenon->getChunk(), self::HIGH_WEATHER_PHENOMEN)) {
-                    $this->generateWarning($phenomenon->getChunk(), self::HIGH_ALERT);
-                }
+                $this->validatePhenomenon($phenomenon->getChunk());
             }
         }
 

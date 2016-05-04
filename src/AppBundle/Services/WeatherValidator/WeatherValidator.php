@@ -268,4 +268,17 @@ abstract class WeatherValidator
 
         return true;
     }
+
+    /**
+     * @param $weatherPhenomenonChunk
+     */
+    protected function validatePhenomenon($weatherPhenomenonChunk)
+    {
+        if (in_array($weatherPhenomenonChunk, WeatherValidator::MID_WEATHER_PHENOMEN)) {
+            $this->generateWarning($weatherPhenomenonChunk, WeatherValidator::MID_ALERT);
+        }
+        if (in_array($weatherPhenomenonChunk, WeatherValidator::HIGH_WEATHER_PHENOMEN)) {
+            $this->generateWarning($weatherPhenomenonChunk, WeatherValidator::HIGH_ALERT);
+        }
+    }
 }

@@ -1290,12 +1290,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/JohnieWalker/php-taf-decoder.git",
-                "reference": "7c447585a97cb43a683172d87c8e1f7b7a839d3a"
+                "reference": "31abb4ee0d8b5c903f1ca3762c280f235adc748a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/JohnieWalker/php-taf-decoder/zipball/7c447585a97cb43a683172d87c8e1f7b7a839d3a",
-                "reference": "7c447585a97cb43a683172d87c8e1f7b7a839d3a",
+                "url": "https://api.github.com/repos/JohnieWalker/php-taf-decoder/zipball/31abb4ee0d8b5c903f1ca3762c280f235adc748a",
+                "reference": "31abb4ee0d8b5c903f1ca3762c280f235adc748a",
                 "shasum": ""
             },
             "require": {
@@ -1329,7 +1329,7 @@
             "support": {
                 "source": "https://github.com/JohnieWalker/php-taf-decoder/tree/master"
             },
-            "time": "2016-04-25 13:03:54"
+            "time": "2016-05-04 14:16:30"
         },
         {
             "name": "sensio/distribution-bundle",

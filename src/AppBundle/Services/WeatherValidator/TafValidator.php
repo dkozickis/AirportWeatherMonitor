@@ -8,6 +8,7 @@ use TafDecoder\Entity\CloudLayer;
 use TafDecoder\Entity\Evolution;
 use TafDecoder\Entity\SurfaceWind;
 use TafDecoder\Entity\Visibility;
+use TafDecoder\Entity\WeatherPhenomenon;
 
 class TafValidator extends WeatherValidator
 {
@@ -37,8 +38,25 @@ class TafValidator extends WeatherValidator
         /* @var Visibility $visibility */
         $visibility = $this->airport->getDecodedTaf()->getVisibility();
 
+        /* @var WeatherPhenomenon $weatherPhenomenon */
+        $weatherPhenomenon = $this->airport->getDecodedTaf()->getWeatherPhenomenon();
+
         if (!$this->checkProcessingErrors($rawTaf, $decodingExceptions)) {
             return $this->validatedWeather;
+        }
+
+        if ($weatherPhenomenon) {
+            $weatherPhenomenonChunk = $weatherPhenomenon->getChunk();
+            $this->validatePhenomenon($weatherPhenomenonChunk);
+            if($weatherPhenomenon->getEvolutions()){
+                /* @var Evolution $evolution */
+                foreach ($weatherPhenomenon->getEvolutions() as $evolution){
+                    /* @var WeatherPhenomenon $weatherPhenomenonEvolution */
+                    $weatherPhenomenonEvolution = $evolution->getEntity();
+                    $weatherPhenomenonEvolutionChunk = $weatherPhenomenonEvolution->getChunk();
+                    $this->validatePhenomenon($weatherPhenomenonEvolutionChunk);
+                }
+            }
         }
 
         if ($surfaceWind) {
@@ -91,4 +109,6 @@ class TafValidator extends WeatherValidator
 
         return $this->validatedWeather;
     }
+
+
 }

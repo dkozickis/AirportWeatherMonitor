@@ -37,10 +37,20 @@ function airportMarker(feature, layer) {
 /*
  Base Map for our leaflet map
  */
-var baseMap = L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+var baseMap = L.tileLayer('http://mt1.google.com/vt/lyrs=m@129&hl=en&x={x}&y={y}&z={z}&s=Galileo', {
     attribution: 'Created & Maintained by Deniss Kozickis @ EY',
     maxZoom: 18
 }).addTo(map);
+
+var alternateMap = L.tileLayer('http://mt1.google.com/vt/lyrs=y@129&hl=en&x={x}&y={y}&z={z}&s=Galileo', {
+    attribution: 'Created & Maintained by Deniss Kozickis @ EY',
+    maxZoom: 18
+});
+
+var baseMaps = {
+    'Google Street' : baseMap,
+    'Google Hybrid' : alternateMap
+};
 
 /*
  Destination airports layers
@@ -74,7 +84,7 @@ var airports = {
 /*
  Adding control to map
  */
-L.control.layers(null, airports).addTo(map);
+L.control.layers(baseMaps, airports).addTo(map);
 
 /*
  Adding box for outdated WX display

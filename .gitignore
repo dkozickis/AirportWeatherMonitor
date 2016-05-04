@@ -13,3 +13,4 @@
 !var/cache/.gitkeep
 !var/logs/.gitkeep
 /phpunit.xml
+german_wings_stations.csv

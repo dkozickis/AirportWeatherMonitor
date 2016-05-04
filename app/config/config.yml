@@ -28,6 +28,7 @@ framework:
     session:
         # handler_id set to null will use default session handler from php.ini
         handler_id:  ~
+        name: WXSESS
     fragments:       ~
     http_method_override: true
     assets: ~
@@ -72,8 +73,8 @@ monolog:
     channels: ['weather']
     handlers:
         weather:
-            level:    debug
-            type:     stream
+            level:    error
+            type:     rotating_file
             path: '%kernel.logs_dir%/weather.log'
             channels: ['weather']
 

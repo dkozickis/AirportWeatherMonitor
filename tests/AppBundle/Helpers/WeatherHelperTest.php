@@ -1,7 +1,8 @@
 <?php
 
+use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
-class WeatherHelperTest extends PHPUnit_Framework_TestCase
+class WeatherHelperTest extends KernelTestCase
 {
     /**
      * @var \AppBundle\Helpers\WeatherHelper
@@ -30,6 +31,14 @@ class WeatherHelperTest extends PHPUnit_Framework_TestCase
         $retrievedReferenceTime = $this->weatherHelper->getReferenceTime(30, $dateTime);
 
         $this->assertEquals($dateTimeMinusThirty, $retrievedReferenceTime);
+    }
+
+    public function testEmptySeason()
+    {
+
+        $retrievedSeason = $this->weatherHelper->getDateSeason();
+
+        $this->assertInternalType("int", $retrievedSeason);
     }
 
     public static function dateProvider()

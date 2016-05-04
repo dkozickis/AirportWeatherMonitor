@@ -14,7 +14,7 @@ for (var i = 0; i < 4; i++) {
 /*
  Leaflet Init
  */
-var map = L.map('map').setView([24, 56], 4);
+var map = L.map('map').setView([46.34, 10.32], 5);
 
 /*
  Function to attach popups to markers
@@ -51,10 +51,10 @@ var airportsDest = new L.GeoJSON.AJAX(destinationWeather, {
 
 airportsDest.addTo(map);
 
-airportsDest.on('data:loaded', function () {
+/*airportsDest.on('data:loaded', function () {
     destBounds = airportsDest.getBounds();
     this.map.fitBounds(destBounds);
-}.bind());
+}.bind());*/
 
 /*
  Alternate airports layer
@@ -100,14 +100,9 @@ $(function () {
             $("div.metar-info").html(metarLegend.join(" "));
         });
     }
-
-    function layerRefresh() {
-        airportsDest.refresh();
-        airportsAltn.refresh();
-    }
-
     setInterval(updateOldMetar, 60000);
-    setInterval(layerRefresh, 120000);
+    setInterval(airportsDest.refresh(), 120000);
+    setInterval(airportsAltn.refresh(), 130000);
     updateOldMetar();
 });
 

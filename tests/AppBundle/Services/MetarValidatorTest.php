@@ -222,9 +222,7 @@ class MetarValidatorTest extends KernelTestCase
                 'midVis' => '1000',
                 'raw' => '',
                 'status' => '0',
-                'warning' => array(
-
-                ),
+                'warning' => array(),
             ),
             array(
                 'name' => 'BIKF',
@@ -236,9 +234,7 @@ class MetarValidatorTest extends KernelTestCase
                 'midVis' => '1000',
                 'raw' => 'BIKF 281000Z /////KT 9999 BKN005 02/M01 Q1011',
                 'status' => '0',
-                'warning' => array(
-
-                ),
+                'warning' => array(),
             ),
             array(
                 'name' => 'BIKF',
@@ -271,6 +267,27 @@ class MetarValidatorTest extends KernelTestCase
                     array(
                         'chunk' => 'FZDZ',
                         'level' => 3,
+                    ),
+                ),
+            ),
+            array(
+                'name' => 'BIKF',
+                'highWind' => '30',
+                'midWind' => '20',
+                'highCeil' => '500',
+                'midCeil' => '600',
+                'highVis' => '500',
+                'midVis' => '1000',
+                'raw' => 'BIKF 281000Z 10031G40KT 9999 BKN005 02/M01 Q1011',
+                'status' => '3',
+                'warning' => array(
+                    array(
+                        'chunk' => '10031G40KT',
+                        'level' => 3,
+                    ),
+                    array(
+                        'chunk' => 'BKN005',
+                        'level' => 2,
                     ),
                 ),
             ),

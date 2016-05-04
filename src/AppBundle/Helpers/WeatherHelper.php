@@ -12,19 +12,22 @@ class WeatherHelper
      * 1 is Summer season in Berlin timezone (DST active).
      * Berlin chosen as reference with normal DST.
      */
-    public function getCurrentSeason()
+    public function getDateSeason($dateTime = null)
     {
-        $date = new \DateTime('now');
-        $date->setTimezone(new \DateTimeZone('Europe/Berlin'));
+        if (!$dateTime) {
+            $dateTime = new \DateTime('now', new \DateTimeZone('Europe/Berlin'));
+        }
 
-        $season = $date->format('I');
+        $season = $dateTime->format('I');
 
-        return (int) $season;
+        return (int)$season;
     }
 
-    public function getReferenceTime($difference = 30)
+    public function getReferenceTime($difference = 30, $dateTime = null)
     {
-        $dateTime = new \DateTime('now', new \DateTimeZone('UTC'));
+        if (!$dateTime) {
+            $dateTime = new \DateTime('now', new \DateTimeZone('UTC'));
+        }
         $dateTime->modify('-'.$difference.' minutes');
 
         return $dateTime;

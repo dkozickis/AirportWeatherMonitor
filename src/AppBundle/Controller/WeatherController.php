@@ -27,7 +27,7 @@ class WeatherController extends Controller
         $em = $this->getDoctrine()->getManager();
         $weatherProcessor = $this->get('weather_processor');
         $weatherHelper = $this->get('weather_helper');
-        $season = $weatherHelper->getCurrentSeason();
+        $season = $weatherHelper->getDateSeason();
 
         $airports = $em->getRepository('AppBundle:MonitoredAirport')->getSeasonActiveAirports($alternate, $season);
 
@@ -52,7 +52,7 @@ class WeatherController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
         $weatherHelper = $this->get('weather_helper');
-        $season = $weatherHelper->getCurrentSeason();
+        $season = $weatherHelper->getDateSeason();
         $referenceTime = $weatherHelper->getReferenceTime(60);
 
         $airports = $em->getRepository('AppBundle:MonitoredAirport')->getAirportsWithOldMetar($season, $referenceTime);

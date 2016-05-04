@@ -42,7 +42,8 @@
   },
   "require-dev": {
     "sensio/generator-bundle": "^3.0",
-    "ddeboer/data-import": "@stable"
+    "ddeboer/data-import": "@stable",
+    "phpunit/phpunit": "^5.3"
   },
   "scripts": {
     "post-install-cmd": [

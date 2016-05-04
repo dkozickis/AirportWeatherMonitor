@@ -110,9 +110,12 @@ $(function () {
             $("div.metar-info").html(metarLegend.join(" "));
         });
     }
+    function updateWeatherLayers(){
+        airportsDest.refresh();
+        airportsAltn.refresh();
+    }
     setInterval(updateOldMetar, 60000);
-    setInterval(airportsDest.refresh(), 120000);
-    setInterval(airportsAltn.refresh(), 130000);
+    setInterval(updateWeatherLayers, 120000);
     updateOldMetar();
 });
 

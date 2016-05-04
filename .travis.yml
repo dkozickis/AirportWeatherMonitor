@@ -12,7 +12,7 @@ before_script:
 
 script:
   - mkdir -p build/logs
-  - phpunit --coverage-clover build/logs/clover.xml -c app
+  - phpunit --coverage-clover build/logs/clover.xml
 
 after_script:
   - php ./vendor/satooshi/php-coveralls/bin/coveralls -v

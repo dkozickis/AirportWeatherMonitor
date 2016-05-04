@@ -90,7 +90,7 @@ outdatedWeatherBox.onAdd = function () {
 outdatedWeatherBox.addTo(map);
 
 $(function () {
-    function updateOldMetar(){
+    function updateOldMetar() {
         $.getJSON(oldMetar, function (data) {
             var metarLegend = [];
             metarLegend.push("<strong>Outdated METARs</strong></br>");
@@ -100,7 +100,14 @@ $(function () {
             $("div.metar-info").html(metarLegend.join(" "));
         });
     }
+
+    function layerRefresh() {
+        airportsDest.refresh();
+        airportsAltn.refresh();
+    }
+
     setInterval(updateOldMetar, 60000);
+    setInterval(layerRefresh, 120000);
     updateOldMetar();
 });
 

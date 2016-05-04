@@ -54,12 +54,16 @@ class WeatherProcessor
      * @param EntityManager $entityManager
      * @param Logger        $weatherLogger
      */
-    public function __construct(EntityManager $entityManager, Logger $weatherLogger, WeatherHelper $weatherHelper)
-    {
+    public function __construct(
+        EntityManager $entityManager,
+        Logger $weatherLogger,
+        WeatherHelper $weatherHelper,
+        WeatherProvider $weatherProvider
+    ) {
         $this->entityManager = $entityManager;
         $this->weatherLogger = $weatherLogger;
         $this->weatherHelper = $weatherHelper;
-        $this->weatherProvider = new WeatherProvider($this->weatherLogger);
+        $this->weatherProvider = $weatherProvider;
     }
 
     /**

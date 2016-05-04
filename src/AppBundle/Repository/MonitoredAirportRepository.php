@@ -45,7 +45,7 @@ class MonitoredAirportRepository extends EntityRepository
     }
 
     /**
-     * @param bool $season
+     * @param bool      $season
      * @param \DateTime $referenceTime
      * 
      * @return \AppBundle\Entity\MonitoredAirport[]

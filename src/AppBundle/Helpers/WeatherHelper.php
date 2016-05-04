@@ -20,7 +20,7 @@ class WeatherHelper
 
         $season = $dateTime->format('I');
 
-        return (int)$season;
+        return (int) $season;
     }
 
     public function getReferenceTime($difference = 30, $dateTime = null)

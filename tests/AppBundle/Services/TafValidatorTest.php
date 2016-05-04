@@ -183,6 +183,32 @@ class TafValidatorTest extends KernelTestCase
                     )
                 ),
             ),
+            array(
+                'name' => 'KJFK',
+                'highWind' => '30',
+                'midWind' => '20',
+                'highCeil' => '500',
+                'midCeil' => '1000',
+                'highVis' => '500',
+                'midVis' => '1000',
+                'raw' => 'TAF KJFK 201410Z 2014/2212 03017G28KT P6SM VCFGRA BKN020 OVC080 TX22/2014Z TN14/2204Z '.
+                    'BECMG 0810/0812 27030KT BKN006 BECMG 0810/0812 27030KT 1/2SM BKN004',
+                'status' => '3',
+                'warning' => array(
+                    array(
+                        'chunk' => 'BKN006',
+                        'level' => 2
+                    ),
+                    array(
+                        'chunk' => 'BKN004',
+                        'level' => 3
+                    ),
+                    array(
+                        'chunk' => '1/2SM',
+                        'level' => 2
+                    ),
+                ),
+            ),
         );
     }
 }

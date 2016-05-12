@@ -54,7 +54,9 @@ class MetarValidator extends WeatherValidator
                     }
                 }
             }
-            $this->validateVisibility($visibility);
+            if(!empty($visibility)){
+                $this->validateVisibility($visibility);
+            }
         }
 
         return $this->validatedWeather;

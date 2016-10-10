@@ -17,56 +17,5 @@ class DefaultController extends Controller
     {
         return $this->render('AppBundle::leaflet.html.twig');
     }
-
-    /**
-     * @Route("/test")
-     */
-    public function testAction(Request $request)
-    {
-        $em = $this->getDoctrine()->getManager();
-        $airports = $em->getRepository('AppBundle:MonitoredAirport')->getAirportsWithOldMetar();
-
-        dump($airports);
-    }
-
-    /**
-     * @Route("/write")
-     */
-    public function writeAction(Request $request)
-    {
-        $em = $this->getDoctrine()->getManager();
-
-        $masterAirports = $em->getRepository('AppBundle:AirportsMasterData');
-
-        $file = new \SplFileObject($this->get('kernel')->getRootDir().'/../german_wings_stations.csv');
-        $csvReader = new CsvReader($file);
-
-        $csvReader->setHeaderRowNumber(0);
-
-        foreach ($csvReader as $row) {
-            $masterAirport = $masterAirports->findOneBy(
-                array(
-                    'airportIcao' => $row['station'],
-                )
-            );
-
-            $airport = new MonitoredAirport();
-
-            $airport->setMidWarningCeiling($row['2_ceil'])
-                ->setHighWarningCeiling($row['3_ceil'])
-                ->setMidWarningVis($row['2_vis'])
-                ->setHighWarningVis($row['3_vis'])
-                ->setHighWarningWind($row['3_wind'])
-                ->setMidWarningWind($row['3_wind'])
-                ->setActiveSummer($row['active_s'])
-                ->setActiveWinter($row['active'])
-                ->setAlternateSummer($row['alternate_s'])
-                ->setAlternateWinter($row['alternate'])
-                ->setAirportData($masterAirport);
-
-            $em->persist($airport);
-        }
-
-        $em->flush();
-    }
+   
 }

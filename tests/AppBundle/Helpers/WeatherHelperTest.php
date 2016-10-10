@@ -41,6 +41,18 @@ class WeatherHelperTest extends KernelTestCase
         $this->assertInternalType("int", $retrievedSeason);
     }
 
+    public function testAirportModelToArray()
+    {
+        $masterAirport = new \AppBundle\Entity\AirportsMasterData();
+        $masterAirport->setAirportIcao('OMAA');
+        $monitoredAirport = new \AppBundle\Entity\MonitoredAirport();
+        $monitoredAirport->setAirportData($masterAirport);
+
+        $testAirport = $this->weatherHelper->airportsObjectToArray(array($monitoredAirport));
+
+        $this->assertArrayHasKey('OMAA', $testAirport);
+    }
+
     public static function dateProvider()
     {
         return array(

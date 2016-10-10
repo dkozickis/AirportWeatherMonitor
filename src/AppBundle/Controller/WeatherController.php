@@ -29,7 +29,9 @@ class WeatherController extends Controller
         $weatherHelper = $this->get('weather_helper');
         $season = $weatherHelper->getDateSeason();
 
-        $airports = $em->getRepository('AppBundle:MonitoredAirport')->getSeasonActiveAirports($alternate, $season);
+        $airportsQuery = $em->getRepository('AppBundle:MonitoredAirport')->getSeasonActiveAirports($alternate, $season);
+        $airports = $airportsQuery->getResult();
+        $airports = $weatherHelper->airportsObjectToArray($airports);
 
         if (count($airports) > 0) {
             $airports = $weatherProcessor->getGeoJsonWeather($airports);
@@ -55,7 +57,13 @@ class WeatherController extends Controller
         $season = $weatherHelper->getDateSeason();
         $referenceTime = $weatherHelper->getReferenceTime(60);
 
-        $airports = $em->getRepository('AppBundle:MonitoredAirport')->getAirportsWithOldMetar($season, $referenceTime);
+        $airportsQuery = $em->getRepository('AppBundle:MonitoredAirport')->getAirportsWithOldMetar(
+            $season,
+            $referenceTime
+        );
+
+        $airports = $airportsQuery->getResult();
+        $airports = $weatherHelper->airportsObjectToArray($airports);
 
         $airportArray = array_keys($airports);
 

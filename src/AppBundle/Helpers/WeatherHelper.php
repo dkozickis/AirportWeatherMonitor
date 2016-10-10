@@ -2,6 +2,8 @@
 
 namespace AppBundle\Helpers;
 
+use AppBundle\Entity\MonitoredAirport;
+
 class WeatherHelper
 {
     /**
@@ -31,5 +33,23 @@ class WeatherHelper
         $dateTime->modify('-'.$difference.' minutes');
 
         return $dateTime;
+    }
+
+    /**
+     * @param $airports
+     * @param $airportsArray
+     *
+     * @return MonitoredAirport[] array
+     */
+    public function airportsObjectToArray($airports)
+    {
+        $airportsArray = [];
+
+        /** @var MonitoredAirport $airport */
+        foreach ($airports as $airport) {
+            $airportsArray[$airport->getAirportData()->getAirportIcao()] = $airport;
+        }
+
+        return $airportsArray;
     }
 }

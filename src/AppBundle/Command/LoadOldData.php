@@ -15,7 +15,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
- * Class LoadOldData
+ * Class LoadOldData. Not forward facing, will not test.
  * @package AppBundle\Command
  * @codeCoverageIgnore
  */

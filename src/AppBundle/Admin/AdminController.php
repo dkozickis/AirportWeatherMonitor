@@ -5,6 +5,11 @@ namespace AppBundle\Admin;
 use JavierEguiluz\Bundle\EasyAdminBundle\Controller\AdminController as BaseAdminController;
 use Doctrine\ORM\EntityManager;
 
+/**
+ * Class AdminController. Will not test.
+ * @package AppBundle\Admin
+ * @codeCoverageIgnore
+ */
 class AdminController extends BaseAdminController
 {
     protected function createMonitoredAirportListQueryBuilder($entityClass, $sortDirection, $sortField)

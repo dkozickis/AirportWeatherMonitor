@@ -209,6 +209,33 @@ class TafValidatorTest extends KernelTestCase
                     ),
                 ),
             ),
+            array(
+                'name' => 'EPKK',
+                'highWind' => '46',
+                'midWind' => '46',
+                'highCeil' => '0',
+                'midCeil' => '470',
+                'highVis' => '550',
+                'midVis' => '1500',
+                'raw' => 'TAF EPKK 100530Z 1006/1106 26007KT 9999 +TSRA BKN035 TEMPO 1006/1008 4000 BR BKN009'.
+                    ' TEMPO 1010/1018 SHRA BKN025CB BECMG 1019/1022 3000 BR TEMPO 1022/1106 0500 FG'.
+                    ' BECMG 1023/1102 BKN005 BKN013',
+                'status' => '3',
+                'warning' => array(
+                    array(
+                        'chunk' => '+TSRA',
+                        'level' => 3
+                    ),
+                    array(
+                        'chunk' => 'FG',
+                        'level' => 2
+                    ),
+                    array(
+                        'chunk' => '0500',
+                        'level' => 3
+                    ),
+                ),
+            ),
         );
     }
 }

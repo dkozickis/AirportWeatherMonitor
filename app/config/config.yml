@@ -73,7 +73,7 @@ monolog:
     channels: ['weather']
     handlers:
         weather:
-            level:    error
+            level:    info
             type:     rotating_file
             path: '%kernel.logs_dir%/weather.log'
             channels: ['weather']

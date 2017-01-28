@@ -4,7 +4,7 @@ for (var i = 0; i < 4; i++) {
     for (var a = 0; a < 4; a++) {
         icons[i + '_' + a] = new L.Icon({
             iconUrl: '../img/' + i + '.png',
-            iconSize: [20, 20],
+            iconSize: [16, 16],
             shadowUrl: '../img/' + a + '.png',
             shadowSize: [30, 30]
         });

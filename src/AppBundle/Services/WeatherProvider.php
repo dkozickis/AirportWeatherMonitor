@@ -69,8 +69,6 @@ class WeatherProvider
             $xml = new \SimpleXMLElement($fullUrl, 0, 1);
         }
 
-        $this->weatherLogger->info('Requested '.strtoupper($type).' for airports - '.$airportsString);
-
         return $xml;
     }
 }

@@ -49,6 +49,27 @@ class WeatherProcessor
     private $weatherHelper;
 
     /**
+     * @var array
+     */
+    private $phenomenons;
+
+    /**
+     * @return array
+     */
+    public function getPhenomenons()
+    {
+        return $this->phenomenons;
+    }
+
+    /**
+     * @param array $phenomenons
+     */
+    public function setPhenomenons($phenomenons)
+    {
+        $this->phenomenons = $phenomenons;
+    }
+
+    /**
      * WeatherProcessor constructor.
      *
      * @param EntityManager $entityManager
@@ -71,9 +92,10 @@ class WeatherProcessor
      *
      * @return FeatureCollection
      */
-    public function getGeoJsonWeather($airports)
+    public function getGeoJsonWeather($airports, $phenomenons)
     {
         $this->airports = $airports;
+        $this->phenomenons = $phenomenons;
         $airports = $this->fillAirportsWithData();
 
         $features = array();
@@ -209,8 +231,8 @@ class WeatherProcessor
      */
     private function weatherValidatePass(MonitoredAirport $airport)
     {
-        $metarValidator = new MetarValidator($this->weatherLogger);
-        $tafValidator = new TafValidator($this->weatherLogger);
+        $metarValidator = new MetarValidator($this->weatherLogger, $this->phenomenons);
+        $tafValidator = new TafValidator($this->weatherLogger, $this->phenomenons);
 
         $validatedMetar = $metarValidator->validate($airport);
         $airport->setValidatedMetar($validatedMetar);

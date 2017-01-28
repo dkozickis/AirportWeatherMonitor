@@ -61,6 +61,10 @@ class WeatherProcessorTest extends KernelTestCase
     ) {
         $airport = new \AppBundle\Entity\MonitoredAirport();
         $airportMasterData = new \AppBundle\Entity\AirportsMasterData();
+        $phenomenons = array(
+            'mid' => array('TSRA'),
+            'high' => array('FZDZ', 'SA')
+        );
 
         $airportMasterData->setAirportIcao($name)
             ->setLat(0)
@@ -96,7 +100,7 @@ class WeatherProcessorTest extends KernelTestCase
         );
 
         /* @var \GeoJson\Feature\FeatureCollection */
-        $return = $weatherProcessor->getGeoJsonWeather($airports);
+        $return = $weatherProcessor->getGeoJsonWeather($airports, $phenomenons);
 
         $this->assertInstanceOf('GeoJson\Feature\FeatureCollection', $return);
         $this->assertEquals($colorizedMetar, $return->getFeatures()[0]->getProperties()['colorizedMetar']);

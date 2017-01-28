@@ -20,59 +20,7 @@ abstract class WeatherValidator
     const NO_ALERT = 1;
     const CEILING_CLOUDS = array('BKN', 'OVC', 'VV');
     const BAD_DECODER_EXCEPTIONS = array('SurfaceWindChunkDecoder', 'VisibilityChunkDecoder', 'CloudChunkDecoder');
-
-    //TODO: Move phenoms to DB
-
-    const MID_WEATHER_PHENOMEN = array(
-        'TSRA',
-        'TSPL',
-        '+PL',
-        'GR',
-        'TSGR',
-        'TSGS',
-        '+SHPL',
-        'SHGR',
-        'FG',
-        'PRFG',
-        'BCFG',
-        'FU',
-        'VA',
-        'DU',
-        'BLDU',
-        'VCBLSA',
-        'BLPY',
-        'PO',
-        'SQ',
-        'FC',
-        '+FC',
-        'SS',
-        '+SS',
-        'DS',
-        '+DS',
-        'VCDS',
-        'FZBR',
-        'VV///',
-    );
-
-    const HIGH_WEATHER_PHENOMEN = array(
-        '+FZDZ',
-        'FZFG',
-        'FZRA',
-        'SA',
-        'BLSA',
-        '+SN',
-        'BLSN',
-        'VCBLSN',
-        '+TSRA',
-        'TSSN',
-        '+TSSN',
-        '+SHSN',
-        'FZDZ',
-        '-FZDZ',
-        '-FZRA',
-        '+FZRA',
-    );
-
+    
     /**
      * @var MonitoredAirport
      */
@@ -94,13 +42,19 @@ abstract class WeatherValidator
     public $type;
 
     /**
+     * @var array
+     */
+    public $phenomenons;
+
+    /**
      * WeatherValidator constructor.
      *
      * @param Logger $weatherLogger
      */
-    public function __construct(Logger $weatherLogger)
+    public function __construct(Logger $weatherLogger, $phenomenons)
     {
         $this->weatherLogger = $weatherLogger;
+        $this->phenomenons = $phenomenons;
     }
 
     abstract public function validate(MonitoredAirport $airport);
@@ -274,10 +228,10 @@ abstract class WeatherValidator
      */
     protected function validatePhenomenon($weatherPhenomenonChunk)
     {
-        if (in_array($weatherPhenomenonChunk, WeatherValidator::MID_WEATHER_PHENOMEN)) {
+        if (in_array($weatherPhenomenonChunk, $this->phenomenons['mid'])) {
             $this->generateWarning($weatherPhenomenonChunk, WeatherValidator::MID_ALERT);
         }
-        if (in_array($weatherPhenomenonChunk, WeatherValidator::HIGH_WEATHER_PHENOMEN)) {
+        if (in_array($weatherPhenomenonChunk, $this->phenomenons['high'])) {
             $this->generateWarning($weatherPhenomenonChunk, WeatherValidator::HIGH_ALERT);
         }
     }

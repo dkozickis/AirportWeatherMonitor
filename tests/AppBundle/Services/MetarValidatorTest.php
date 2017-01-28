@@ -56,6 +56,11 @@ class MetarValidatorTest extends KernelTestCase
         $metarDecoder = new MetarDecoder();
         $airport = new MonitoredAirport();
 
+        $phenomenons = array(
+            'mid' => array('TSRA'),
+            'high' => array('FZDZ')
+        );
+
         $airport->setRawMetar($raw);
         $decodedMetar = $metarDecoder->parse($airport->getRawMetar());
         $airport->setDecodedMetar($decodedMetar);
@@ -73,7 +78,7 @@ class MetarValidatorTest extends KernelTestCase
             ->setHighWarningVis($highVis)
             ->setMidWarningVis($midVis);
 
-        $metarValidator = new MetarValidator($this->weatherLogger);
+        $metarValidator = new MetarValidator($this->weatherLogger, $phenomenons);
 
         $validatedMetar = $metarValidator->validate($airport);
         $airport->setValidatedMetar($validatedMetar);

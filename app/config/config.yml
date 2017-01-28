@@ -117,3 +117,11 @@ easy_admin:
         AirportsMasterData:
             class: AppBundle\Entity\AirportsMasterData
             label: "Airport Master Data"
+        MonitoredPhenomenons:
+            class: AppBundle\Entity\MonitoredPhenomenons
+            label: "Phenomenons"
+            list:
+              fields:
+                - { property: 'warning_level', label: 'Warning Level'}
+                - { property: 'phenomenons', label: 'Phenomenons'}
+

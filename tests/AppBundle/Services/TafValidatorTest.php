@@ -53,6 +53,10 @@ class TafValidatorTest extends KernelTestCase
     ) {
         $tafDecoder = new TafDecoder();
         $airport = new MonitoredAirport();
+        $phenomenons = array(
+            'mid' => array('TSRA', 'FG'),
+            'high' => array('FZDZ', '+TSRA')
+        );
 
         $airport->setRawTaf($raw);
         $decodedTaf = $tafDecoder->parse($airport->getRawTaf());
@@ -71,7 +75,7 @@ class TafValidatorTest extends KernelTestCase
             ->setHighWarningVis($highVis)
             ->setMidWarningVis($midVis);
 
-        $tafValidator = new TafValidator($this->weatherLogger);
+        $tafValidator = new TafValidator($this->weatherLogger, $phenomenons);
 
         $validatedTaf = $tafValidator->validate($airport);
         $airport->setValidatedTaf($validatedTaf);

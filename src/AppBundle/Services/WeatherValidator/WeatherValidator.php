@@ -20,7 +20,7 @@ abstract class WeatherValidator
     const NO_ALERT = 1;
     const CEILING_CLOUDS = array('BKN', 'OVC', 'VV');
     const BAD_DECODER_EXCEPTIONS = array('SurfaceWindChunkDecoder', 'VisibilityChunkDecoder', 'CloudChunkDecoder');
-    
+
     /**
      * @var MonitoredAirport
      */
@@ -47,6 +47,11 @@ abstract class WeatherValidator
     public $phenomenons;
 
     /**
+     * @var int
+     */
+    public $alternate;
+
+    /**
      * WeatherValidator constructor.
      *
      * @param Logger $weatherLogger
@@ -57,14 +62,26 @@ abstract class WeatherValidator
         $this->phenomenons = $phenomenons;
     }
 
-    abstract public function validate(MonitoredAirport $airport);
+    abstract public function validate(MonitoredAirport $airport, $alternate);
 
     /**
      * @param \MetarDecoder\Entity\SurfaceWind|\TafDecoder\Entity\SurfaceWind $surfaceWind
      */
     protected function validateWind($surfaceWind)
     {
-        $highWarning = $this->airport->getHighWarningWind();
+        if ($this->alternate == 1) {
+            $midWarning = $this->airport->getMidWarningWindAlt();
+            $highWarning = $this->airport->getHighWarningWindAlt();
+            if (null === $midWarning) {
+                $midWarning = $this->airport->getMidWarningWind();
+            }
+            if (null === $highWarning) {
+                $highWarning = $this->airport->getHighWarningWind();
+            }
+        } else {
+            $midWarning = $this->airport->getMidWarningWind();
+            $highWarning = $this->airport->getHighWarningWind();
+        }
 
         $surfaceWindChunk = $surfaceWind->getChunk();
         $knots = $surfaceWind->getMeanSpeed()->getConvertedValue('kt');
@@ -74,7 +91,7 @@ abstract class WeatherValidator
             $knots = $gustKnotsValue->getConvertedValue('kt');
         }
 
-        $this->exceedsWarningCheck($knots, $highWarning, $highWarning, $surfaceWindChunk);
+        $this->exceedsWarningCheck($knots, $midWarning, $highWarning, $surfaceWindChunk);
     }
 
     /**
@@ -82,9 +99,19 @@ abstract class WeatherValidator
      */
     protected function validateCeiling($cloud)
     {
-        $midWarning = $this->airport->getMidWarningCeiling();
-        $highWarning = $this->airport->getHighWarningCeiling();
-
+        if ($this->alternate == 1) {
+            $midWarning = $this->airport->getMidWarningCeilingAlt();
+            $highWarning = $this->airport->getHighWarningCeilingAlt();
+            if (null === $midWarning) {
+                $midWarning = $this->airport->getMidWarningCeiling();
+            }
+            if (null === $highWarning) {
+                $highWarning = $this->airport->getHighWarningCeiling();
+            }
+        } else {
+            $midWarning = $this->airport->getMidWarningCeiling();
+            $highWarning = $this->airport->getHighWarningCeiling();
+        }
         $cloudChunk = $cloud->getChunk();
         $cloudAmount = $cloud->getAmount();
         $cloudBase = $cloud->getBaseHeight()->getConvertedValue('ft');
@@ -99,9 +126,19 @@ abstract class WeatherValidator
      */
     protected function validateVisibility($visibility)
     {
-        $midWarning = $this->airport->getMidWarningVis();
-        $highWarning = $this->airport->getHighWarningVis();
-
+        if ($this->alternate == 1) {
+            $midWarning = $this->airport->getMidWarningVisAlt();
+            $highWarning = $this->airport->getHighWarningVisAlt();
+            if (null === $midWarning) {
+                $midWarning = $this->airport->getMidWarningVis();
+            }
+            if (null === $highWarning) {
+                $highWarning = $this->airport->getHighWarningVis();
+            }
+        } else {
+            $midWarning = $this->airport->getMidWarningVis();
+            $highWarning = $this->airport->getHighWarningVis();
+        }
         $visDistance = $visibility->getVisibility()->getConvertedValue('m');
         $visChunk = $visibility->getChunk();
 
@@ -229,10 +266,10 @@ abstract class WeatherValidator
     protected function validatePhenomenon($weatherPhenomenonChunk)
     {
         if (in_array($weatherPhenomenonChunk, $this->phenomenons['mid'])) {
-            $this->generateWarning($weatherPhenomenonChunk, WeatherValidator::MID_ALERT);
+            $this->generateWarning($weatherPhenomenonChunk, self::MID_ALERT);
         }
         if (in_array($weatherPhenomenonChunk, $this->phenomenons['high'])) {
-            $this->generateWarning($weatherPhenomenonChunk, WeatherValidator::HIGH_ALERT);
+            $this->generateWarning($weatherPhenomenonChunk, self::HIGH_ALERT);
         }
     }
 }

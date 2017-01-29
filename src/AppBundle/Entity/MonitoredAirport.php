@@ -102,62 +102,209 @@ class MonitoredAirport
     private $highWarningWind;
 
     /**
+     * @var int
+     *
+     * @ORM\Column(name="mid_warning_vis_alt", type="smallint", nullable=true)
+     */
+    private $midWarningVisAlt;
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="mid_warning_ceiling_alt", type="smallint", nullable=true)
+     */
+    private $midWarningCeilingAlt;
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="mid_warning_wind_alt", type="smallint", nullable=true)
+     */
+    private $midWarningWindAlt;
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="high_warning_vis_alt", type="smallint", nullable=true)
+     */
+    private $highWarningVisAlt;
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="high_warning_ceiling_alt", type="smallint", nullable=true)
+     */
+    private $highWarningCeilingAlt;
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="high_warning_wind_alt", type="smallint", nullable=true)
+     */
+    private $highWarningWindAlt;
+    /**
      * @var string
      *
      * @ORM\Column(name="raw_metar", type="string", nullable=true)
      */
     private $rawMetar;
-
     /**
      * @var \DateTime
      *
      * @ORM\Column(name="raw_metar_date_time", type="datetime", nullable=true)
      */
     private $rawMetarDateTime;
-
     /**
      * @var DecodedMetar
      */
     private $decodedMetar;
-
     /**
      * @var ValidatedWeather
      */
     private $validatedMetar;
-
     /**
      * @var string
      */
     private $colorizedMetar;
-
     /**
      * @var string
      *
      * @ORM\Column(name="raw_taf", type="string", nullable=true)
      */
     private $rawTaf;
-
     /**
      * @var \DateTime
      *
      * @ORM\Column(name="raw_taf_date_time", type="datetime", nullable=true)
      */
     private $rawTafDateTime;
-
     /**
      * @var DecodedTaf
      */
     private $decodedTaf;
-
     /**
      * @var ValidatedWeather
      */
     private $validatedTaf;
-
     /**
      * @var string
      */
     private $colorizedTaf;
+
+    /**
+     * @return int
+     */
+    public function getHighWarningCeilingAlt()
+    {
+        return $this->highWarningCeilingAlt;
+    }
+
+    /**
+     * @param int $highWarningCeilingAlt
+     *
+     * @return MonitoredAirport
+     */
+    public function setHighWarningCeilingAlt($highWarningCeilingAlt)
+    {
+        $this->highWarningCeilingAlt = $highWarningCeilingAlt;
+
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getHighWarningVisAlt()
+    {
+        return $this->highWarningVisAlt;
+    }
+
+    /**
+     * @param int $highWarningVisAlt
+     *
+     * @return MonitoredAirport
+     */
+    public function setHighWarningVisAlt($highWarningVisAlt)
+    {
+        $this->highWarningVisAlt = $highWarningVisAlt;
+
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getHighWarningWindAlt()
+    {
+        return $this->highWarningWindAlt;
+    }
+
+    /**
+     * @param int $highWarningWindAlt
+     *
+     * @return MonitoredAirport
+     */
+    public function setHighWarningWindAlt($highWarningWindAlt)
+    {
+        $this->highWarningWindAlt = $highWarningWindAlt;
+
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getMidWarningCeilingAlt()
+    {
+        return $this->midWarningCeilingAlt;
+    }
+
+    /**
+     * @param int $midWarningCeilingAlt
+     *
+     * @return MonitoredAirport
+     */
+    public function setMidWarningCeilingAlt($midWarningCeilingAlt)
+    {
+        $this->midWarningCeilingAlt = $midWarningCeilingAlt;
+
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getMidWarningVisAlt()
+    {
+        return $this->midWarningVisAlt;
+    }
+
+    /**
+     * @param int $midWarningVisAlt
+     *
+     * @return MonitoredAirport
+     */
+    public function setMidWarningVisAlt($midWarningVisAlt)
+    {
+        $this->midWarningVisAlt = $midWarningVisAlt;
+
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getMidWarningWindAlt()
+    {
+        return $this->midWarningWindAlt;
+    }
+
+    /**
+     * @param int $midWarningWindAlt
+     *
+     * @return MonitoredAirport
+     */
+    public function setMidWarningWindAlt($midWarningWindAlt)
+    {
+        $this->midWarningWindAlt = $midWarningWindAlt;
+
+        return $this;
+    }
 
     /**
      * @ORM\PostLoad()

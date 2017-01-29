@@ -103,17 +103,28 @@ easy_admin:
                     - { property: 'highWarningWind', label: 'Wind. R'}
             form:
                 fields:
+                    - { type: 'group', label: 'Airport', css_class: 'col-sm-4' }
                     - { property: 'airportData', label: 'Airport' }
-                    - { property: 'activeWinter', label: 'Act. W'}
-                    - { property: 'alternateWinter', label: 'Altn. W'}
-                    - { property: 'activeSummer', label: 'Act. S'}
-                    - { property: 'alternateSummer', label: 'Altn. S'}
+                    - { type: 'group', label: 'Winter', css_class: 'col-sm-4' }
+                    - { property: 'activeWinter', label: 'Active monitoring during Winter'}
+                    - { property: 'alternateWinter', label: 'Alternate during Winter'}
+                    - { type: 'group', label: 'Summer', css_class: 'col-sm-4' }
+                    - { property: 'activeSummer', label: 'Active monitoring during Summer'}
+                    - { property: 'alternateSummer', label: 'Alternate during Summer'}
+                    - { type: 'group', label: 'Normal Minimas', css_class: 'col-sm-6' }
                     - { property: 'midWarningVis', label: 'Vis. Y'}
                     - { property: 'midWarningCeiling', label: 'Ceil. Y'}
                     - { property: 'midWarningWind', label: 'Wind. Y'}
                     - { property: 'highWarningVis', label: 'Vis. R'}
                     - { property: 'highWarningCeiling', label: 'Ceil. R'}
                     - { property: 'highWarningWind', label: 'Wind. R'}
+                    - { type: 'group', label: 'Alternate Minimas', css_class: 'col-sm-6' }
+                    - { property: 'midWarningVisAlt', label: 'Vis. Y'}
+                    - { property: 'midWarningCeilingAlt', label: 'Ceil. Y'}
+                    - { property: 'midWarningWindAlt', label: 'Wind. Y'}
+                    - { property: 'highWarningVisAlt', label: 'Vis. R'}
+                    - { property: 'highWarningCeilingAlt', label: 'Ceil. R'}
+                    - { property: 'highWarningWindAlt', label: 'Wind. R'}
         AirportsMasterData:
             class: AppBundle\Entity\AirportsMasterData
             label: "Airport Master Data"

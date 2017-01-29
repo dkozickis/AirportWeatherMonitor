@@ -77,7 +77,7 @@ class TafValidatorTest extends KernelTestCase
 
         $tafValidator = new TafValidator($this->weatherLogger, $phenomenons);
 
-        $validatedTaf = $tafValidator->validate($airport);
+        $validatedTaf = $tafValidator->validate($airport, 0);
         $airport->setValidatedTaf($validatedTaf);
 
         $this->assertEquals($status, $validatedTaf->getWeatherStatus());
@@ -108,6 +108,10 @@ class TafValidatorTest extends KernelTestCase
                     'BECMG 0810/0812 27031KT',
                 'status' => '3',
                 'warning' => array(
+                    array(
+                        'chunk' => '03017G28KT',
+                        'level' => 2
+                    ),
                     array(
                         'chunk' => '27031KT',
                         'level' => 3
@@ -142,6 +146,14 @@ class TafValidatorTest extends KernelTestCase
                 'status' => '3',
                 'warning' => array(
                     array(
+                        'chunk' => '03017G28KT',
+                        'level' => 2
+                    ),
+                    array(
+                        'chunk' => '27030KT',
+                        'level' => 2
+                    ),
+                    array(
                         'chunk' => 'BKN004',
                         'level' => 3
                     )
@@ -160,6 +172,14 @@ class TafValidatorTest extends KernelTestCase
                 'status' => '2',
                 'warning' => array(
                     array(
+                        'chunk' => '03017G28KT',
+                        'level' => 2
+                    ),
+                    array(
+                        'chunk' => '27030KT',
+                        'level' => 2
+                    ),
+                    array(
                         'chunk' => 'BKN006',
                         'level' => 2
                     )
@@ -174,9 +194,21 @@ class TafValidatorTest extends KernelTestCase
                 'highVis' => '500',
                 'midVis' => '1000',
                 'raw' => 'TAF KJFK 201410Z 2014/2212 03017G28KT P6SM VCFGRA BKN020 OVC080 TX22/2014Z TN14/2204Z '.
-                    'BECMG 0810/0812 27030KT BKN006 BECMG 0810/0812 27030KT BKN004',
+                    'BECMG 0810/0812 27030KT BKN006 BECMG 0810/0812 27031KT BKN004',
                 'status' => '3',
                 'warning' => array(
+                    array(
+                        'chunk' => '03017G28KT',
+                        'level' => 2
+                    ),
+                    array(
+                        'chunk' => '27030KT',
+                        'level' => 2
+                    ),
+                    array(
+                        'chunk' => '27031KT',
+                        'level' => 3
+                    ),
                     array(
                         'chunk' => 'BKN006',
                         'level' => 2
@@ -199,6 +231,18 @@ class TafValidatorTest extends KernelTestCase
                     'BECMG 0810/0812 27030KT BKN006 BECMG 0810/0812 27030KT 1/2SM BKN004',
                 'status' => '3',
                 'warning' => array(
+                    array(
+                        'chunk' => '03017G28KT',
+                        'level' => 2
+                    ),
+                    array(
+                        'chunk' => '27030KT',
+                        'level' => 2
+                    ),
+                    array(
+                        'chunk' => '27030KT',
+                        'level' => 2
+                    ),
                     array(
                         'chunk' => 'BKN006',
                         'level' => 2

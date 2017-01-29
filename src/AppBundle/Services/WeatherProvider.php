@@ -7,18 +7,8 @@
  */
 namespace AppBundle\Services;
 
-use Symfony\Bridge\Monolog\Logger;
-
 class WeatherProvider
 {
-    /** @var Logger $weatherLogger */
-    private $weatherLogger;
-
-    public function __construct(Logger $logger)
-    {
-        $this->weatherLogger = $logger;
-    }
-
     /**
      * @param $airports
      * @param $type

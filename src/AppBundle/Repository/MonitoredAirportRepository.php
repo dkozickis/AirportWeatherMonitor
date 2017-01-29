@@ -3,7 +3,6 @@
 namespace AppBundle\Repository;
 
 use Doctrine\ORM\EntityRepository;
-use AppBundle\Entity\MonitoredAirport;
 
 /**
  * AirportsRepository.
@@ -16,10 +15,13 @@ class MonitoredAirportRepository extends EntityRepository
     /**
      * @param int $alternate
      * @param $season
+     *
      * @return \Doctrine\ORM\Query
      */
     public function getSeasonActiveAirports($alternate = 0, $season)
     {
+        $airportsArray = [];
+
         $qb = $this->createQueryBuilder('a');
         if ($season == 0) {
             $qb->where('a.activeWinter = 1');
@@ -30,7 +32,7 @@ class MonitoredAirportRepository extends EntityRepository
         }
 
         $qb->setParameter('alternate', $alternate);
-        
+
         $airportsQuery = $qb->getQuery();
 
         return $airportsQuery;
@@ -46,6 +48,7 @@ class MonitoredAirportRepository extends EntityRepository
     /**
      * @param bool      $season
      * @param \DateTime $referenceTime
+     *
      * @return \Doctrine\ORM\Query
      */
     public function getAirportsWithOldMetar($season, $referenceTime)
@@ -65,8 +68,7 @@ class MonitoredAirportRepository extends EntityRepository
         $qb->setParameter('datetime', $referenceTime);
 
         $airportsQuery = $qb->getQuery();
-        
+
         return $airportsQuery;
     }
-    
 }

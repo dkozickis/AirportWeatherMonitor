@@ -22,9 +22,10 @@ class TafValidator extends WeatherValidator
      *
      * @return ValidatedWeather
      */
-    public function validate(MonitoredAirport $airport)
+    public function validate(MonitoredAirport $airport, $alternate)
     {
         $this->airport = $airport;
+        $this->alternate = $alternate;
         $this->validatedWeather = new ValidatedWeather();
         $rawTaf = $this->airport->getRawTaf();
         $decodingExceptions = $this->airport->getDecodedTaf()->getDecodingExceptions();
@@ -48,9 +49,9 @@ class TafValidator extends WeatherValidator
         if ($weatherPhenomenon) {
             $weatherPhenomenonChunk = $weatherPhenomenon->getChunk();
             $this->validatePhenomenon($weatherPhenomenonChunk);
-            if($weatherPhenomenon->getEvolutions()){
+            if ($weatherPhenomenon->getEvolutions()) {
                 /* @var Evolution $evolution */
-                foreach ($weatherPhenomenon->getEvolutions() as $evolution){
+                foreach ($weatherPhenomenon->getEvolutions() as $evolution) {
                     /* @var WeatherPhenomenon $weatherPhenomenonEvolution */
                     $weatherPhenomenonEvolution = $evolution->getEntity();
                     $weatherPhenomenonEvolutionChunk = $weatherPhenomenonEvolution->getChunk();
@@ -109,6 +110,4 @@ class TafValidator extends WeatherValidator
 
         return $this->validatedWeather;
     }
-
-
 }

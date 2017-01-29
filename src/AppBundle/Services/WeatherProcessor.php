@@ -54,6 +54,31 @@ class WeatherProcessor
     private $phenomenons;
 
     /**
+     * @var int
+     */
+    private $alternate;
+
+    /**
+     * @return int
+     */
+    public function getAlternate()
+    {
+        return $this->alternate;
+    }
+
+    /**
+     * @param int $alternate
+     *
+     * @return WeatherProcessor
+     */
+    public function setAlternate($alternate)
+    {
+        $this->alternate = $alternate;
+
+        return $this;
+    }
+
+    /**
      * @return array
      */
     public function getPhenomenons()
@@ -92,10 +117,11 @@ class WeatherProcessor
      *
      * @return FeatureCollection
      */
-    public function getGeoJsonWeather($airports, $phenomenons)
+    public function getGeoJsonWeather($airports, $alternate, $phenomenons)
     {
         $this->airports = $airports;
         $this->phenomenons = $phenomenons;
+        $this->alternate = $alternate;
         $airports = $this->fillAirportsWithData();
 
         $features = array();
@@ -198,7 +224,7 @@ class WeatherProcessor
     {
         foreach ($this->airports as $airport) {
             $this->weatherDecodePass($airport);
-            $this->weatherValidatePass($airport);
+            $this->weatherValidatePass($airport, $this->alternate);
             $this->weatherColorizePass($airport, 'metar');
             $this->beautifyTaf($airport);
             $this->weatherColorizePass($airport, 'taf');
@@ -229,15 +255,15 @@ class WeatherProcessor
      *
      * @return MonitoredAirport
      */
-    private function weatherValidatePass(MonitoredAirport $airport)
+    private function weatherValidatePass(MonitoredAirport $airport, $alternate)
     {
         $metarValidator = new MetarValidator($this->weatherLogger, $this->phenomenons);
         $tafValidator = new TafValidator($this->weatherLogger, $this->phenomenons);
 
-        $validatedMetar = $metarValidator->validate($airport);
+        $validatedMetar = $metarValidator->validate($airport, $alternate);
         $airport->setValidatedMetar($validatedMetar);
 
-        $validatedTaf = $tafValidator->validate($airport);
+        $validatedTaf = $tafValidator->validate($airport, $alternate);
         $airport->setValidatedTaf($validatedTaf);
 
         return $airport;
@@ -264,7 +290,7 @@ class WeatherProcessor
                 $airport->$setColorizedWeather(
                     $this->colorString(
                         $warning->getChunk(),
-                        self::STATUS_COLOR[$weatherStatus],
+                        self::STATUS_COLOR[$warning->getWarningLevel()],
                         $airport->$getColorizedWeather()
                     )
                 );

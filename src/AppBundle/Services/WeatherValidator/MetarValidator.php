@@ -18,9 +18,10 @@ class MetarValidator extends WeatherValidator
      *
      * @return ValidatedWeather
      */
-    public function validate(MonitoredAirport $airport)
+    public function validate(MonitoredAirport $airport, $alternate)
     {
         $this->airport = $airport;
+        $this->alternate = $alternate;
         $this->validatedWeather = new ValidatedWeather();
         $decodedMetar = $this->airport->getDecodedMetar();
         $rawMetar = $this->airport->getRawMetar();
@@ -54,7 +55,7 @@ class MetarValidator extends WeatherValidator
                     }
                 }
             }
-            if(!empty($visibility)){
+            if (!empty($visibility)) {
                 $this->validateVisibility($visibility);
             }
         }

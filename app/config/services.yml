@@ -17,4 +17,3 @@ services:
 
   weather_provider:
     class: AppBundle\Services\WeatherProvider
-    arguments: ['@monolog.logger.weather']

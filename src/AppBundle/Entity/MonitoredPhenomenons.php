@@ -5,8 +5,7 @@ namespace AppBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Class MonitoredPhenomenons
- * @package AppBundle\Entity
+ * Class MonitoredPhenomenons.
  *
  * @ORM\Entity(repositoryClass="AppBundle\Repository\MonitoredPhenomenonsRepository")
  */
@@ -38,6 +37,7 @@ class MonitoredPhenomenons
 
     /**
      * @param int $id
+     *
      * @return MonitoredPhenomenons
      */
     public function setId($id)
@@ -57,6 +57,7 @@ class MonitoredPhenomenons
 
     /**
      * @param mixed $phenomenons
+     *
      * @return MonitoredPhenomenons
      */
     public function setPhenomenons($phenomenons)
@@ -76,6 +77,7 @@ class MonitoredPhenomenons
 
     /**
      * @param mixed $warningLevel
+     *
      * @return MonitoredPhenomenons
      */
     public function setWarningLevel($warningLevel)

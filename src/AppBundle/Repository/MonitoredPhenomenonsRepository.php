@@ -12,8 +12,7 @@ class MonitoredPhenomenonsRepository extends EntityRepository
         $qb = $this->createQueryBuilder('p');
         $result = $qb->getQuery()->getArrayResult();
 
-        foreach ($result as $key => $value)
-        {
+        foreach ($result as $key => $value) {
             $levelPhenomenons[$value['warningLevel']] = preg_split('/\s+/', $value['phenomenons']);
         }
 

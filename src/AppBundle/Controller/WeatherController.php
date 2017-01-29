@@ -32,11 +32,10 @@ class WeatherController extends Controller
         $phenomenons = $em->getRepository('AppBundle:MonitoredPhenomenons')->getLevelsPhenomenons();
         $airportsQuery = $em->getRepository('AppBundle:MonitoredAirport')->getSeasonActiveAirports($alternate, $season);
         $airports = $airportsQuery->getResult();
-        // TODO: replace below, logic can be incorporated in Repository
         $airports = $weatherHelper->airportsObjectToArray($airports);
 
         if (count($airports) > 0) {
-            $airports = $weatherProcessor->getGeoJsonWeather($airports, $phenomenons);
+            $airports = $weatherProcessor->getGeoJsonWeather($airports, $alternate, $phenomenons);
         }
 
         $response = new JsonResponse();

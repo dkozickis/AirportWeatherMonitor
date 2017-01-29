@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Denis
- * Date: 10/10/16
- * Time: 16:42
- */
 
 namespace AppBundle\Command;
 
@@ -16,12 +10,11 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * Class LoadOldData. Not forward facing, will not test.
- * @package AppBundle\Command
+ *
  * @codeCoverageIgnore
  */
 class LoadOldData extends ContainerAwareCommand
 {
-
     protected function configure()
     {
         $this->setName('app:load-old-data')->setDescription('Loads data from old system from CSV');
@@ -64,5 +57,4 @@ class LoadOldData extends ContainerAwareCommand
 
         $em->flush();
     }
-
 }

@@ -7,7 +7,7 @@ use Doctrine\ORM\EntityManager;
 
 /**
  * Class AdminController. Will not test.
- * @package AppBundle\Admin
+ *
  * @codeCoverageIgnore
  */
 class AdminController extends BaseAdminController

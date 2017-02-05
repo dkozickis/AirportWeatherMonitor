@@ -149,8 +149,7 @@ class WeatherProcessor
         $airportsWithOldWeather = $this->filterAirportsByWeatherTime();
 
         if (count($airportsWithOldWeather) > 0) {
-            $this->getAndUpdateWeather($airportsWithOldWeather, 'metar');
-            $this->getAndUpdateWeather($airportsWithOldWeather, 'taf');
+            $this->getAndUpdateWeather($airportsWithOldWeather);
         }
 
         $this->decodeValidateColorizeWeather();
@@ -183,10 +182,10 @@ class WeatherProcessor
      * @param $airportsWithOutdatedWeather
      * @param $type
      */
-    private function getAndUpdateWeather($airportsWithOutdatedWeather, $type)
+    private function getAndUpdateWeather($airportsWithOutdatedWeather)
     {
-        $freshWeather = $this->getWeather($airportsWithOutdatedWeather, $type);
-        $this->updateWeather($freshWeather, $type);
+        $freshWeather = $this->getWeather($airportsWithOutdatedWeather);
+        $this->updateWeather($freshWeather);
     }
 
     /**
@@ -195,25 +194,22 @@ class WeatherProcessor
      *
      * @return array
      */
-    private function getWeather($airports, $type)
+    private function getWeather($airports)
     {
-        return $this->weatherProvider->getWeather($airports, $type);
+        return $this->weatherProvider->getWeather($airports);
     }
 
     /**
      * @param $freshWeather
      * @param $type
      */
-    private function updateWeather($freshWeather, $type)
+    private function updateWeather($freshWeather)
     {
-        $firstLetterUpperType = ucfirst($type);
-
-        $weatherSet = 'setRaw'.$firstLetterUpperType;
-        $dateSet = $weatherSet.'DateTime';
-
         foreach ($freshWeather as $stationID => $data) {
-            $this->airports[$stationID]->$weatherSet($data['rawWeather']);
-            $this->airports[$stationID]->$dateSet($data['rawWeatherTime']);
+            $this->airports[$stationID]->setRawMetar($data["metar"]);
+            $this->airports[$stationID]->setRawMetarDateTime(new \DateTime($data['metar_obs_time']));
+            $this->airports[$stationID]->setRawTaf($data["taf"]);
+            $this->airports[$stationID]->setRawTafDateTime(new \DateTime($data['taf_obs_time']));
             $this->entityManager->persist($this->airports[$stationID]);
         }
 

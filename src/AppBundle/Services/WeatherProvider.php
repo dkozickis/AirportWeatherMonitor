@@ -15,7 +15,7 @@ class WeatherProvider
      *
      * @return array
      */
-    public function getWeather($airports, $type)
+    /*public function getWeather($airports, $type)
     {
         $upperCaseType = strtoupper($type);
         $weatherData = [];
@@ -33,6 +33,17 @@ class WeatherProvider
             );
         }
 
+        return $weatherData;
+    }*/
+
+
+    public function getWeather($airports)
+    {
+        $weatherData = json_decode(
+            file_get_contents("http://aws-dev.lidousers.com/weather?airports=".implode(',', array_values($airports))),
+            TRUE
+        );
+        
         return $weatherData;
     }
 

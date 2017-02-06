@@ -9,67 +9,20 @@ namespace AppBundle\Services;
 
 class WeatherProvider
 {
-    /**
-     * @param $airports
-     * @param $type
-     *
-     * @return array
-     */
-    /*public function getWeather($airports, $type)
+    private $server;
+
+    public function __construct($server)
     {
-        $upperCaseType = strtoupper($type);
-        $weatherData = [];
-
-        $freshWeather = $this->getWeatherXML($airports, $type);
-
-        foreach ($freshWeather->data->$upperCaseType as $weather) {
-            $stationID = (string) $weather->station_id;
-            $rawWeather = (string) $weather->raw_text;
-            $rawWeatherTime = new \DateTime($weather->observation_time, new \DateTimeZone('UTC'));
-
-            $weatherData[$stationID] = array(
-                'rawWeather' => $rawWeather,
-                'rawWeatherTime' => $rawWeatherTime,
-            );
-        }
-
-        return $weatherData;
-    }*/
-
+        $this->server = $server;
+    }
 
     public function getWeather($airports)
     {
         $weatherData = json_decode(
-            file_get_contents("http://aws-dev.lidousers.com/weather?airports=".implode(',', array_values($airports))),
-            TRUE
+            file_get_contents(rtrim($this->server, '/').'/weather?airports='.implode(',', array_values($airports))),
+            true
         );
-        
+
         return $weatherData;
-    }
-
-    /**
-     * Retrieves METAR/TAF XML from aviationweather.gov, returns SimpleXMLElement.
-     *
-     * @param string $type `metars` or `tafs`
-     *
-     * @return \SimpleXMLElement
-     */
-    private function getWeatherXML($airports, $type, $gzip = true)
-    {
-        $type = $type.'s';
-        $airportsString = implode(',', array_values($airports));
-
-        $fullUrl = 'http://aviationweather.gov/adds/dataserver_current/httpparam'.
-            '?dataSource='.$type.'&requestType=retrieve&format=xml&mostRecentForEachStation=true&'.
-            'hoursBeforeNow=3&stationString='.$airportsString;
-
-        if ($gzip) {
-            $fullUrl = $fullUrl.'&compression=gzip';
-            $xml = new \SimpleXMLElement('compress.zlib://'.$fullUrl, 0, 1);
-        } else {
-            $xml = new \SimpleXMLElement($fullUrl, 0, 1);
-        }
-
-        return $xml;
     }
 }

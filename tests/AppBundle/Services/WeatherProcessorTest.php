@@ -88,7 +88,7 @@ class WeatherProcessorTest extends KernelTestCase
             ->getMock();
 
         $weatherProviderMock->method('getWeather')
-            ->will($this->returnValueMap($wxReturn));
+            ->will($this->returnValue($wxReturn));
 
         $airports = array('HEGN' => $airport);
 
@@ -111,6 +111,7 @@ class WeatherProcessorTest extends KernelTestCase
 
     public static function dataProvider()
     {
+        $date = new \DateTime("now");
         return array(
             array(
                 'name' => 'HEGN',
@@ -121,27 +122,13 @@ class WeatherProcessorTest extends KernelTestCase
                 'highVis' => '500',
                 'midVis' => '1000',
                 'wxReturn' => array(
-                    array(
-                        array('HEGN'),
-                        'metar',
-                        array(
-                            'HEGN' => array(
-                                'rawWeather' => 'HEGN 040500Z 35024KT 2000 SA NSC 25/18 Q1011 NOSIG',
-                                'rawWeatherTime' => new \DateTime("now"),
-                            )
-                        )
-                    ),
-                    array(
-                        array('HEGN'),
-                        'taf',
-                        array(
-                            'HEGN' => array(
-                                'rawWeather' => 'TAF KJFK 201410Z 2014/2212 03017G28KT P6SM '.
-                                    'VCFGRA BKN020 OVC080 TX22/2014Z TN14/2204Z '.
-                                    'BECMG 0810/0812 27030KT BKN006',
-                                'rawWeatherTime' => new \DateTime("now"),
-                            )
-                        )
+                    "HEGN" => array(
+                        'metar' => 'HEGN 040500Z 35024KT 2000 SA NSC 25/18 Q1011 NOSIG',
+                        'metar_obs_time' => $date->format('Y-m-d H:i:s'),
+                        'taf' => 'TAF KJFK 201410Z 2014/2212 03017G28KT P6SM '.
+                            'VCFGRA BKN020 OVC080 TX22/2014Z TN14/2204Z '.
+                            'BECMG 0810/0812 27030KT BKN006',
+                        'taf_obs_time' => $date->format('Y-m-d H:i:s')
                     ),
                 ),
                 'colorizedMetar' => 'HEGN 040500Z <span class="yellow">35024KT</span> 2000 <span class="red">SA</span> NSC 25/18 Q1011 NOSIG',

@@ -206,9 +206,9 @@ class WeatherProcessor
     private function updateWeather($freshWeather)
     {
         foreach ($freshWeather as $stationID => $data) {
-            $this->airports[$stationID]->setRawMetar($data["metar"]);
+            $this->airports[$stationID]->setRawMetar($data['metar']);
             $this->airports[$stationID]->setRawMetarDateTime(new \DateTime($data['metar_obs_time']));
-            $this->airports[$stationID]->setRawTaf($data["taf"]);
+            $this->airports[$stationID]->setRawTaf($data['taf']);
             $this->airports[$stationID]->setRawTafDateTime(new \DateTime($data['taf_obs_time']));
             $this->entityManager->persist($this->airports[$stationID]);
         }

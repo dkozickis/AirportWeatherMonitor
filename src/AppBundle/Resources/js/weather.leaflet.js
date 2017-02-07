@@ -116,7 +116,7 @@ $(function () {
     }
     setInterval(updateOldMetar, 60000);
     setInterval(updateWeatherLayers, 120000);
-    updateOldMetar();
+    setTimeout(updateOldMetar, 10000);
 });
 
 

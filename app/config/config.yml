@@ -8,7 +8,8 @@ imports:
 # http://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
     locale: en
-    weather-server: "http://server.lidousers.com"
+    # Enter your server here, no trailing slash, i.e. - http://server.weather.aero
+    weather-server: http://server.lidousers.com
 
 framework:
     #esi:             ~

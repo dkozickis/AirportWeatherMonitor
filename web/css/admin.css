@@ -11,3 +11,8 @@ td.toggle input[type=checkbox].toggle_override {
 body#easyadmin-list-MonitoredAirportQuick .table > tbody > tr > td {
     padding: 4px;
 }
+
+th.ap-header.text-center {
+    padding: 4px;
+    border-left: 1px solid;
+}

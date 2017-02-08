@@ -133,7 +133,7 @@ class WeatherProcessorTest extends KernelTestCase
                 ),
                 'colorizedMetar' => 'HEGN 040500Z <span class="yellow">35024KT</span> 2000 <span class="red">SA</span> NSC 25/18 Q1011 NOSIG',
                 'metarStatus' => 3,
-                'colorizedTaf' => 'TAF KJFK 201410Z 2014/2212 <span class="yellow">03017G28KT</span> P6SM VCFGRA BKN020 OVC080 TX22/2014Z TN14/2204Z <br/>&nbsp;&nbsp;BECMG 0810/0812 <span class="yellow">27030KT</span> <span class="yellow">BKN006</span>',
+                'colorizedTaf' => 'TAF KJFK 201410Z 2014/2212 <span class="yellow">03017G28KT</span> P6SM VCFGRA BKN020 OVC080 TX22/2014Z TN14/2204Z <br/>&nbsp;&nbsp;BECMG 0810/0812 <span class="yellow">27030KT</span> <span class="yellow">BKN006</span> ',
                 'tafStatus' => 2,
             ),
         );

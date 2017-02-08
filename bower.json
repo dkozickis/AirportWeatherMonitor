@@ -20,7 +20,8 @@
   "dependencies": {
     "jquery": "~2.2.3",
     "leaflet": "~1.0",
-    "leaflet-spin": "~1.0"
+    "leaflet-spin": "~1.0",
+    "jquery.floatThead": "floatThead#^2.0.0"
   },
   "resolutions": {
     "leaflet": "~1.0"

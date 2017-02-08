@@ -39,7 +39,8 @@
     "safran-cassiopee/php-metar-decoder": "dev-master",
     "safran-cassiopee/php-taf-decoder": "dev-master",
     "jmikola/geojson": "~1.0",
-    "doctrine/doctrine-migrations-bundle": "^1.0"
+    "doctrine/doctrine-migrations-bundle": "^1.0",
+    "friendsofsymfony/user-bundle": "@beta"
   },
   "require-dev": {
     "sensio/generator-bundle": "^3.0",

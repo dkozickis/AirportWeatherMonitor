@@ -1,0 +1,12 @@
+{% trans_default_domain 'EasyAdminBundle' %}
+
+{% if view == 'show' %}
+    {% if value == true %}
+        <span class="label label-success">{{ 'label.true'|trans }}</span>
+    {% else %}
+        <span class="label label-danger">{{ 'label.false'|trans }}</span>
+    {% endif %}
+{% else %}
+    <input class="toggle_override" type="checkbox" {{ value == true ? 'checked' : '' }}
+           data-on="{{ 'label.true'|trans }}" data-off="{{ 'label.false'|trans }}">
+{% endif %}

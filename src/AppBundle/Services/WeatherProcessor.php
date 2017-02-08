@@ -305,7 +305,7 @@ class WeatherProcessor
     {
         $airport->setColorizedTaf(
             preg_replace(
-                '/(BECMG)|((PROB30|PROB40)(\sTEMPO)?)|(TEMPO)|(FM)/',
+                '/(BECMG)|((PROB30|PROB40)(\sTEMPO)?)|(TEMPO)|(FM\s)/',
                 '<br/>&nbsp;&nbsp;$0',
                 $airport->getColorizedTaf()
             )
@@ -323,9 +323,9 @@ class WeatherProcessor
      */
     private function colorString($partToColorize, $color, $oldTextWeather)
     {
-        return str_replace(
-            $partToColorize,
-            '<span class="'.$color.'">'.$partToColorize.'</span>',
+        return preg_replace(
+            "~\s?(".$partToColorize.")(\s|$)~",
+            ' <span class="'.$color.'">$1</span> ',
             $oldTextWeather
         );
     }

@@ -1,0 +1,165 @@
+easy_admin:
+    site_name: 'Airport Weather Monitor'
+    design:
+      #brand_color: '#D8B37B'
+      color_scheme: 'light'
+      form_theme: 'vertical'
+      assets:
+        css:
+          - '/css/admin.css'
+        js:
+          - '/js/floatThead.js'
+          - '/js/admin.js'
+    list:
+      max_results: 50
+      actions:
+         - { name: 'edit', icon: 'pencil', label: ''}
+         - { name: 'delete', icon: 'remove', label: ''}
+    entities:
+        MonitoredAirport:
+            class: AppBundle\Entity\MonitoredAirport
+            templates:
+              list: "list.html.twig"
+            label: "Monitored Airports"
+            edit:
+                title: "Edit Monitored Airport"
+            new:
+                title: "New Monitored Airport"
+            list:
+                title: "Monitored Airports"
+                actions:
+                  - { name: 'new', label: 'New Monitored Airport'}
+                fields:
+                    - { property: 'airportData', label: 'Airport' }
+                    - { property: 'activeWinter', type: 'boolean', label: 'Act. W', sortable: false}
+                    - { property: 'alternateWinter', type: 'boolean', label: 'Altn. W', sortable: false}
+                    - { property: 'activeSummer', type: 'boolean', label: 'Act. S', sortable: false}
+                    - { property: 'alternateSummer', type: 'boolean', label: 'Altn. S', sortable: false}
+                    - { property: 'midWarningVis', label: 'Vis', css_class: text-right bg-warning, sortable: false}
+                    - { property: 'midWarningCeiling', label: 'Ceil', css_class: text-right bg-warning, sortable: false}
+                    - { property: 'midWarningWind', label: 'Wind', css_class: text-right bg-warning, sortable: false}
+                    - { property: 'highWarningVis', label: 'Vis', css_class: text-right bg-danger, sortable: false}
+                    - { property: 'highWarningCeiling', label: 'Ceil', css_class: text-right bg-danger, sortable: false}
+                    - { property: 'highWarningWind', label: 'Wind', css_class: text-right bg-danger, sortable: false}
+                    - { property: 'midWarningVisAlt', label: 'Vis', css_class: text-right bg-warning, sortable: false}
+                    - { property: 'midWarningCeilingAlt', label: 'Ceil', css_class: text-right bg-warning, sortable: false}
+                    - { property: 'midWarningWindAlt', label: 'Wind', css_class: text-right bg-warning, sortable: false}
+                    - { property: 'highWarningVisAlt', label: 'Vis', css_class: text-right bg-danger, sortable: false}
+                    - { property: 'highWarningCeilingAlt', label: 'Ceil', css_class: text-right bg-danger, sortable: false}
+                    - { property: 'highWarningWindAlt', label: 'Wind', css_class: text-right bg-danger, sortable: false}
+            form:
+                title: "Edit Monitored Airport"
+                fields:
+                    - { type: 'group', label: 'Airport', css_class: 'col-sm-4' }
+                    - { property: 'airportData', label: 'Airport' }
+                    - { type: 'group', label: 'Winter', css_class: 'col-sm-4' }
+                    - { property: 'activeWinter', label: 'Active monitoring during Winter'}
+                    - { property: 'alternateWinter', label: 'Alternate during Winter'}
+                    - { type: 'group', label: 'Summer', css_class: 'col-sm-4' }
+                    - { property: 'activeSummer', label: 'Active monitoring during Summer'}
+                    - { property: 'alternateSummer', label: 'Alternate during Summer'}
+                    - { type: 'group', label: 'Normal Minimas', css_class: 'col-sm-6' }
+                    - { property: 'midWarningVis', label: 'Visibility Yellow'}
+                    - { property: 'midWarningCeiling', label: 'Ceiling Yellow'}
+                    - { property: 'midWarningWind', label: 'Wind Yellow'}
+                    - { property: 'highWarningVis', label: 'Visibility Red'}
+                    - { property: 'highWarningCeiling', label: 'Ceiling Red'}
+                    - { property: 'highWarningWind', label: 'Wind Red'}
+                    - { type: 'group', label: 'Alternate Minimas', css_class: 'col-sm-6' }
+                    - { property: 'midWarningVisAlt', label: 'Visibility Yellow'}
+                    - { property: 'midWarningCeilingAlt', label: 'Ceilinig Yellow'}
+                    - { property: 'midWarningWindAlt', label: 'Wind Yellow'}
+                    - { property: 'highWarningVisAlt', label: 'Visibility Red'}
+                    - { property: 'highWarningCeilingAlt', label: 'Ceilinig Red'}
+                    - { property: 'highWarningWindAlt', label: 'Wind Red'}
+        MonitoredAirportQuick:
+            class: AppBundle\Entity\MonitoredAirport
+            templates:
+              list: "list.html.twig"
+            label: "Monitored Airports (All)"
+            edit:
+                title: "Edit Monitored Airport"
+            new:
+                title: "New Monitored Airport"
+            list:
+                title: "Monitored Airports (Quick)"
+                max_results: 500
+                actions:
+                  - { name: 'new', label: 'New Monitored Airport'}
+                fields:
+                    - { property: 'airportData', label: 'Airport' }
+                    - { property: 'activeWinter', type: 'toggle', label: 'Act. W', sortable: false}
+                    - { property: 'alternateWinter', type: 'toggle', label: 'Altn. W', sortable: false}
+                    - { property: 'activeSummer', type: 'toggle', label: 'Act. S', sortable: false}
+                    - { property: 'alternateSummer', type: 'toggle', label: 'Altn. S', sortable: false}
+                    - { property: 'midWarningVis', label: 'Vis', template: 'input_inline_edit.html.twig', css_class: bg-warning text-right, sortable: false}
+                    - { property: 'midWarningCeiling', label: 'Ceil', template: 'input_inline_edit.html.twig', css_class: bg-warning text-right, sortable: false}
+                    - { property: 'midWarningWind', label: 'Wind', template: 'input_inline_edit.html.twig', css_class: bg-warning text-right, sortable: false}
+                    - { property: 'highWarningVis', label: 'Vis', template: 'input_inline_edit.html.twig', css_class: bg-danger text-right, sortable: false}
+                    - { property: 'highWarningCeiling', label: 'Ceil', template: 'input_inline_edit.html.twig', css_class: bg-danger text-right, sortable: false}
+                    - { property: 'highWarningWind', label: 'Wind', template: 'input_inline_edit.html.twig', css_class: bg-danger text-right, sortable: false}
+                    - { property: 'midWarningVisAlt', label: 'Vis', template: 'input_inline_edit.html.twig',css_class: bg-warning text-right, sortable: false}
+                    - { property: 'midWarningCeilingAlt', label: 'Ceil', template: 'input_inline_edit.html.twig',css_class: bg-warning text-right, sortable: false}
+                    - { property: 'midWarningWindAlt', label: 'Wind', template: 'input_inline_edit.html.twig', css_class: bg-warning text-right, sortable: false}
+                    - { property: 'highWarningVisAlt', label: 'Vis', template: 'input_inline_edit.html.twig', css_class: bg-danger text-right, sortable: false}
+                    - { property: 'highWarningCeilingAlt', label: 'Ceil', template: 'input_inline_edit.html.twig', css_class: bg-danger text-right, sortable: false}
+                    - { property: 'highWarningWindAlt', label: 'Wind', template: 'input_inline_edit.html.twig', css_class: bg-danger text-right, sortable: false}
+            form:
+                title: "Edit Monitored Airport"
+                fields:
+                    - { type: 'group', label: 'Airport', css_class: 'col-sm-4' }
+                    - { property: 'airportData', label: 'Airport' }
+                    - { type: 'group', label: 'Winter', css_class: 'col-sm-4' }
+                    - { property: 'activeWinter', label: 'Active monitoring during Winter'}
+                    - { property: 'alternateWinter', label: 'Alternate during Winter'}
+                    - { type: 'group', label: 'Summer', css_class: 'col-sm-4' }
+                    - { property: 'activeSummer', label: 'Active monitoring during Summer'}
+                    - { property: 'alternateSummer', label: 'Alternate during Summer'}
+                    - { type: 'group', label: 'Normal Minimas', css_class: 'col-sm-6' }
+                    - { property: 'midWarningVis', label: 'Visibility Yellow'}
+                    - { property: 'midWarningCeiling', label: 'Ceiling Yellow'}
+                    - { property: 'midWarningWind', label: 'Wind Yellow'}
+                    - { property: 'highWarningVis', label: 'Visibility Red'}
+                    - { property: 'highWarningCeiling', label: 'Ceiling Red'}
+                    - { property: 'highWarningWind', label: 'Wind Red'}
+                    - { type: 'group', label: 'Alternate Minimas', css_class: 'col-sm-6' }
+                    - { property: 'midWarningVisAlt', label: 'Visibility Yellow'}
+                    - { property: 'midWarningCeilingAlt', label: 'Ceilinig Yellow'}
+                    - { property: 'midWarningWindAlt', label: 'Wind Yellow'}
+                    - { property: 'highWarningVisAlt', label: 'Visibility Red'}
+                    - { property: 'highWarningCeilingAlt', label: 'Ceilinig Red'}
+                    - { property: 'highWarningWindAlt', label: 'Wind Red'}
+        MonitoredPhenomenons:
+            class: AppBundle\Entity\MonitoredPhenomenons
+            disabled_actions: ['new', 'delete']
+            label: "Phenomenons"
+            list:
+              title: "Monitored Phenomenons"
+              fields:
+                - { property: 'warning_level', label: 'Warning Level', template: 'phenomenon.html.twig'}
+                - { property: 'phenomenons', label: 'Phenomenons'}
+            edit:
+              title: "Edit Monitored Phenomenon"
+              fields:
+                - {property: 'phenomenons', label: 'Phenomenons'}
+        AirportsMasterData:
+            class: AppBundle\Entity\AirportsMasterData
+            label: "Airports Master Data"
+            list:
+              sort: ['airportIcao', 'ASC']
+              title: "Airports Master Data"
+              fields:
+                - { property: 'airport_icao', label: "ICAO Code"}
+                - { property: 'lat', label: "Latitude"}
+                - { property: 'lon', label: "Longitude"}
+              actions:
+                - { name: 'new', label: 'New Master Airport Data'}
+            edit:
+              title: "Edit Airport Master Data"
+            new:
+              title: "New Airport Master Data"
+            form:
+              fields:
+                - { property: 'airport_icao', label: "Airport ICAO code", type: "text"}
+                - { property: 'lat', label: "Latitude"}
+                - { property: 'lon', label: "Longitude"}

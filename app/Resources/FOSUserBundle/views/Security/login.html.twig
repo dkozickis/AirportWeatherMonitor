@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="{{ asset('favicon.ico') }}">
+
+    <title>Login Page</title>
+
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+    <!-- Custom styles for this template -->
+    <link href="{{ asset('css/signin.css') }}" rel="stylesheet">
+</head>
+
+<body>
+
+<div class="container">
+
+    {% if error %}
+        <div class="alert alert-danger form-signin">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+    {% endif %}
+
+    <form class="form-signin" action="{{ path("fos_user_security_check") }}" method="post">
+        {% if csrf_token %}
+            <input type="hidden" name="_csrf_token" value="{{ csrf_token }}"/>
+        {% endif %}
+        <h2 class="form-signin-heading">Please sign in</h2>
+        <label for="username" class="sr-only">Username</label>
+        <input placeholder="Username" class="form-control" type="text" id="username" name="_username"
+               value="{{ last_username }}" required="required" autofocus/>
+        <label for="inputPassword" class="sr-only">Password</label>
+        <input type="password" id="password" name="_password" required="required" class="form-control"
+               placeholder="Password">
+        <div class="checkbox">
+            <label>
+                <input type="checkbox" id="remember_me" name="_remember_me" value="on"/> Remember me
+            </label>
+        </div>
+        <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+    </form>
+
+</div> <!-- /container -->
+
+</body>
+</html>

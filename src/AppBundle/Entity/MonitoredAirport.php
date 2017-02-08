@@ -752,4 +752,9 @@ class MonitoredAirport
 
         return $this;
     }
+
+    public function __call($name, $arguments)
+    {
+        return $this->id;
+    }
 }

@@ -2,8 +2,16 @@ app:
     resource: "@AppBundle/Controller/"
     type:     annotation
 
+admin_inline:
+    resource: "@AppBundle/Admin/AdminInlineEditController.php"
+    type: annotation
+    prefix: /admin/ajax
+
 easy_admin_bundle:
     #resource: "@EasyAdminBundle/Controller/"
     resource: "@AppBundle/Admin/AdminController.php"
     type:     annotation
     prefix:   /admin
+
+fos_user:
+    resource: "@FOSUserBundle/Resources/config/routing/all.xml"

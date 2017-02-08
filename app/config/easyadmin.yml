@@ -76,7 +76,7 @@ easy_admin:
             class: AppBundle\Entity\MonitoredAirport
             templates:
               list: "list.html.twig"
-            label: "Monitored Airports (Quick)"
+            label: "Monitored Airports (All)"
             edit:
                 title: "Edit Monitored Airport"
             new:

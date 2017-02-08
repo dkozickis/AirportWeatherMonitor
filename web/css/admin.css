@@ -1,0 +1,9 @@
+.inline_edit {
+    width: 40px;
+    text-align: right;
+}
+
+td.toggle input[type=checkbox].toggle_override {
+    display: inline-block;
+}
+

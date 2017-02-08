@@ -9,3 +9,7 @@ $(".inline_edit").change(function () {
         }
     })
 });
+
+if ($("body#easyadmin-list-MonitoredAirportQuick .table").length) {
+    $("body#easyadmin-list-MonitoredAirportQuick .table").floatThead();
+}

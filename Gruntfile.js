@@ -33,7 +33,8 @@ module.exports = function(grunt) {
                     'leaflet.min.js': 'leaflet/dist/leaflet.js',
                     'jquery.min.js': 'jquery/dist/jquery.min.js',
                     'spin.min.js': 'spin.js/spin.min.js',
-                    'leaflet.spin.js': 'leaflet-spin/leaflet.spin.js'
+                    'leaflet.spin.js': 'leaflet-spin/leaflet.spin.js',
+                    'floatThead.js': 'jquery.floatThead/dist/jquery.floatThead.min.js'
                 }
             }
         },
@@ -64,7 +65,8 @@ module.exports = function(grunt) {
                     'web/js/weather.leaflet.js' : ['src/AppBundle/Resources/js/weather.leaflet.js'],
                     'web/js/jquery.min.js' : ['src/AppBundle/Resources/js/jquery.min.js'],
                     'web/js/leaflet.spin.min.js': ['src/AppBundle/Resources/js/leaflet.spin.js'],
-                    'web/js/spin.min.js': ['src/AppBundle/Resources/js/spin.min.js']
+                    'web/js/spin.min.js': ['src/AppBundle/Resources/js/spin.min.js'],
+                    'web/js/floatThead.js': ['src/AppBundle/Resources/js/floatThead.js']
                 }
             }
         },

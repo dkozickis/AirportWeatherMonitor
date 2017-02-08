@@ -8,6 +8,7 @@ easy_admin:
         css:
           - '/css/admin.css'
         js:
+          - '/js/floatThead.js'
           - '/js/admin.js'
     list:
       max_results: 50

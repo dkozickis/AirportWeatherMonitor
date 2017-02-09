@@ -323,9 +323,10 @@ class WeatherProcessor
      */
     private function colorString($partToColorize, $color, $oldTextWeather)
     {
-        print_r("~\s?(".$partToColorize.")(\s|$)~");
+        $toReplace = preg_quote($partToColorize);
+
         return preg_replace(
-            "~\s?(".$partToColorize.")(\s|$)~",
+            "/\s?($toReplace)(\s|$)/",
             ' <span class="'.$color.'">$1</span> ',
             $oldTextWeather
         );

@@ -323,7 +323,7 @@ class WeatherProcessor
      */
     private function colorString($partToColorize, $color, $oldTextWeather)
     {
-        $toReplace = preg_quote($partToColorize);
+        $toReplace = preg_quote($partToColorize, "/");
 
         print_r("/\s?($toReplace)(\s|$)?/");
 

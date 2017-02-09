@@ -17,3 +17,5 @@ parameters:
 
     # A secret key that's used to generate certain security-related tokens
     secret:            cdcae70cdfd415339afdd473f2fe79c5d6492fa2
+
+    weather-server: ~

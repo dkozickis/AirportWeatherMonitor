@@ -153,6 +153,7 @@ class AdminController extends BaseAdminController
     /**
      * @param string $methodNamePattern
      * @param array $arguments
+     *
      * @return mixed
      */
     protected function executeDynamicMethod($methodNamePattern, array $arguments = array())

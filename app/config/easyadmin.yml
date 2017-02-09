@@ -82,7 +82,7 @@ easy_admin:
             new:
                 title: "New Monitored Airport"
             list:
-                title: "Monitored Airports (Quick)"
+                title: "Monitored Airports (All)"
                 max_results: 500
                 actions:
                   - { name: 'new', label: 'New Monitored Airport'}

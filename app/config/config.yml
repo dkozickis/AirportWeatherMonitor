@@ -10,7 +10,6 @@ imports:
 parameters:
     locale: en
     # Enter your server here, no trailing slash, i.e. - http://server.weather.aero
-    weather-server: http://server.lidousers.com
 
 framework:
     #esi:             ~

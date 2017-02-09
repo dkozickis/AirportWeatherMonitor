@@ -20,8 +20,6 @@ class MonitoredAirportRepository extends EntityRepository
      */
     public function getSeasonActiveAirports($alternate = 0, $season)
     {
-        $airportsArray = [];
-
         $qb = $this->createQueryBuilder('a');
         if ($season == 0) {
             $qb->where('a.activeWinter = 1');
@@ -37,13 +35,6 @@ class MonitoredAirportRepository extends EntityRepository
 
         return $airportsQuery;
     }
-
-    /**
-     * @param bool      $season
-     * @param \DateTime $referenceTime
-     * 
-     * @return \AppBundle\Entity\MonitoredAirport[]
-     */
 
     /**
      * @param bool      $season

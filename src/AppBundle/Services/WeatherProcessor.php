@@ -325,6 +325,8 @@ class WeatherProcessor
     {
         $toReplace = preg_quote($partToColorize);
 
+        print_r("/\s?($toReplace)(\s|$)?/");
+
         return preg_replace(
             "/\s?($toReplace)(\s|$)?/",
             ' <span class="'.$color.'">$1</span> ',

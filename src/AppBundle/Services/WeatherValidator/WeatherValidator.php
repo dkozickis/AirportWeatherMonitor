@@ -10,6 +10,7 @@ namespace AppBundle\Services\WeatherValidator;
 use AppBundle\Entity\MonitoredAirport;
 use AppBundle\Entity\ValidatedWeather;
 use AppBundle\Entity\ValidatorWarning;
+use MetarDecoder\Entity\Value;
 use MetarDecoder\Exception\ChunkDecoderException;
 use Symfony\Bridge\Monolog\Logger;
 
@@ -95,90 +96,6 @@ abstract class WeatherValidator
     }
 
     /**
-     * @param \MetarDecoder\Entity\CloudLayer|\TafDecoder\Entity\CloudLayer $cloud
-     */
-    protected function validateCeiling($cloud)
-    {
-        if ($this->alternate == 1) {
-            $midWarning = $this->airport->getMidWarningCeilingAlt();
-            $highWarning = $this->airport->getHighWarningCeilingAlt();
-            if (null === $midWarning) {
-                $midWarning = $this->airport->getMidWarningCeiling();
-            }
-            if (null === $highWarning) {
-                $highWarning = $this->airport->getHighWarningCeiling();
-            }
-        } else {
-            $midWarning = $this->airport->getMidWarningCeiling();
-            $highWarning = $this->airport->getHighWarningCeiling();
-        }
-        $cloudChunk = $cloud->getChunk();
-        $cloudAmount = $cloud->getAmount();
-        $cloudBase = $cloud->getBaseHeight()->getConvertedValue('ft');
-
-        if (in_array($cloudAmount, self::CEILING_CLOUDS)) {
-            $this->belowWarningCheck($cloudBase, $midWarning, $highWarning, $cloudChunk);
-        }
-    }
-
-    /**
-     * @param \MetarDecoder\Entity\Visibility|\TafDecoder\Entity\Visibility $visibility
-     */
-    protected function validateVisibility($visibility)
-    {
-        if ($this->alternate == 1) {
-            $midWarning = $this->airport->getMidWarningVisAlt();
-            $highWarning = $this->airport->getHighWarningVisAlt();
-            if (null === $midWarning) {
-                $midWarning = $this->airport->getMidWarningVis();
-            }
-            if (null === $highWarning) {
-                $highWarning = $this->airport->getHighWarningVis();
-            }
-        } else {
-            $midWarning = $this->airport->getMidWarningVis();
-            $highWarning = $this->airport->getHighWarningVis();
-        }
-        $visDistance = $visibility->getVisibility()->getConvertedValue('m');
-        $visChunk = $visibility->getChunk();
-
-        $this->belowWarningCheck($visDistance, $midWarning, $highWarning, $visChunk);
-    }
-
-    /**
-     * @param $referenceValue
-     * @param $midWarning
-     * @param $highWarning
-     * @param $chunk
-     */
-    protected function belowWarningCheck($referenceValue, $midWarning, $highWarning, $chunk)
-    {
-        $metarStatus = $this->belowValueCheck($referenceValue, $midWarning, $highWarning);
-
-        if ($metarStatus > self::NO_ALERT) {
-            $this->generateWarning($chunk, $metarStatus);
-        }
-    }
-
-    /**
-     * @param $referenceValue
-     * @param $midWarning
-     * @param $highWarning
-     *
-     * @return int
-     */
-    protected function belowValueCheck($referenceValue, $midWarning, $highWarning)
-    {
-        if ($referenceValue < $highWarning) {
-            return self::HIGH_ALERT;
-        } elseif ($referenceValue < $midWarning) {
-            return self::MID_ALERT;
-        } else {
-            return self::NO_ALERT;
-        }
-    }
-
-    /**
      * @param $referenceValue
      * @param $midWarning
      * @param $highWarning
@@ -224,6 +141,94 @@ abstract class WeatherValidator
         $validatorWarning->setWarningLevel($weatherStatus);
         $this->validatedWeather->setWeatherStatus($weatherStatus);
         $this->validatedWeather->addWarning($validatorWarning);
+    }
+
+    /**
+     * @param \MetarDecoder\Entity\CloudLayer|\TafDecoder\Entity\CloudLayer $cloud
+     */
+    protected function validateCeiling($cloud)
+    {
+        if ($this->alternate == 1) {
+            $midWarning = $this->airport->getMidWarningCeilingAlt();
+            $highWarning = $this->airport->getHighWarningCeilingAlt();
+            if (null === $midWarning) {
+                $midWarning = $this->airport->getMidWarningCeiling();
+            }
+            if (null === $highWarning) {
+                $highWarning = $this->airport->getHighWarningCeiling();
+            }
+        } else {
+            $midWarning = $this->airport->getMidWarningCeiling();
+            $highWarning = $this->airport->getHighWarningCeiling();
+        }
+        $cloudChunk = $cloud->getChunk();
+        $cloudAmount = $cloud->getAmount();
+        $cloudBase = $cloud->getBaseHeight()->getConvertedValue('ft');
+
+        if (in_array($cloudAmount, self::CEILING_CLOUDS)) {
+            $this->belowWarningCheck($cloudBase, $midWarning, $highWarning, $cloudChunk);
+        }
+    }
+
+    /**
+     * @param $referenceValue
+     * @param $midWarning
+     * @param $highWarning
+     * @param $chunk
+     */
+    protected function belowWarningCheck($referenceValue, $midWarning, $highWarning, $chunk)
+    {
+        $metarStatus = $this->belowValueCheck($referenceValue, $midWarning, $highWarning);
+
+        if ($metarStatus > self::NO_ALERT) {
+            $this->generateWarning($chunk, $metarStatus);
+        }
+    }
+
+    /**
+     * @param $referenceValue
+     * @param $midWarning
+     * @param $highWarning
+     *
+     * @return int
+     */
+    protected function belowValueCheck($referenceValue, $midWarning, $highWarning)
+    {
+        if ($referenceValue < $highWarning) {
+            return self::HIGH_ALERT;
+        } elseif ($referenceValue < $midWarning) {
+            return self::MID_ALERT;
+        } else {
+            return self::NO_ALERT;
+        }
+    }
+
+    /**
+     * @param \MetarDecoder\Entity\Visibility|\TafDecoder\Entity\Visibility $visibility
+     */
+    protected function validateVisibility($visibility)
+    {
+        if ($this->alternate == 1) {
+            $midWarning = $this->airport->getMidWarningVisAlt();
+            $highWarning = $this->airport->getHighWarningVisAlt();
+            if (null === $midWarning) {
+                $midWarning = $this->airport->getMidWarningVis();
+            }
+            if (null === $highWarning) {
+                $highWarning = $this->airport->getHighWarningVis();
+            }
+        } else {
+            $midWarning = $this->airport->getMidWarningVis();
+            $highWarning = $this->airport->getHighWarningVis();
+        }
+        if (null === $visibility->getVisibility()) {
+            $realVis = new Value(0, 'm');
+            $visibility->setVisibility($realVis);
+        }
+        $visDistance = $visibility->getVisibility()->getConvertedValue('m');
+        $visChunk = $visibility->getChunk();
+
+        $this->belowWarningCheck($visDistance, $midWarning, $highWarning, $visChunk);
     }
 
     /**

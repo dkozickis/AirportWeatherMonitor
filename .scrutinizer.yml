@@ -1,0 +1,14 @@
+filter:
+    excluded_paths:
+        - 'app/*'
+        - 'tests/*'
+        - 'bin/*'
+        - '*.min.js'
+checks:
+    php: true
+coding_style:
+    php: {  }
+build:
+    environment:
+        php:
+            version: 7.1

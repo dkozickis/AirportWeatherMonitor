@@ -34,11 +34,18 @@ html, body, #map {
 }
 
 .yellow {
-    color: #b8860b;
+    color: #ffff00;
     font-weight: bold;
 }
 
 .red {
     color: #ff0000;
     font-weight: bold;
+}
+
+.leaflet-popup-content-wrapper, .leaflet-popup-tip {
+    background: #cccccc;
+    box-shadow: 0 1px 10px #888;
+    -moz-box-shadow: 0 1px 10px #888;
+    -webkit-box-shadow: 0 1px 14px #999;
 }

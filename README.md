@@ -4,4 +4,4 @@
 Airport Weather Monitor
 ================
 
-*N.B.* This app depends on data from [Airport Weather Server](https://github.com/dkozickis/AirportWeatherServer)
+**N.B.** This app depends on data from [Airport Weather Server](https://github.com/dkozickis/AirportWeatherServer)

@@ -40,6 +40,8 @@ framework:
 twig:
     debug:            "%kernel.debug%"
     strict_variables: "%kernel.debug%"
+    globals:
+      icon_type: '%icon_type%'
 
 # Doctrine Configuration
 doctrine:

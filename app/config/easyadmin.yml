@@ -6,7 +6,7 @@ easy_admin:
       form_theme: 'vertical'
       assets:
         css:
-          - '/css/admin.css'
+          - '/css/monitor.min.css'
         js:
           - '/js/floatThead.js'
           - '/js/admin.js'

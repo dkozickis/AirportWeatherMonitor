@@ -1,11 +1,18 @@
 var icons = {};
+var iconAdd = '';
+var iconSizes = [16, 16];
+
+if (iconType == 2) {
+    iconAdd = '-alt';
+    iconSizes = [18, 18];
+}
 
 for (var i = 0; i < 4; i++) {
     for (var a = 0; a < 4; a++) {
         icons[i + '_' + a] = new L.Icon({
-            iconUrl: '../img/' + i + '.png',
-            iconSize: [16, 16],
-            shadowUrl: '../img/' + a + '.png',
+            iconUrl: '../img/' + i + iconAdd + '.png',
+            iconSize: iconSizes,
+            shadowUrl: '../img/' + a + iconAdd + '.png',
             shadowSize: [30, 30]
         });
     }
@@ -48,8 +55,8 @@ var alternateMap = L.tileLayer('http://mt1.google.com/vt/lyrs=y@129&hl=en&x={x}&
 });
 
 var baseMaps = {
-    'Google Street' : baseMap,
-    'Google Hybrid' : alternateMap
+    'Google Street': baseMap,
+    'Google Hybrid': alternateMap
 };
 
 /*
@@ -62,9 +69,9 @@ var airportsDest = new L.GeoJSON.AJAX(destinationWeather, {
 airportsDest.addTo(map);
 
 /*airportsDest.on('data:loaded', function () {
-    destBounds = airportsDest.getBounds();
-    this.map.fitBounds(destBounds);
-}.bind());*/
+ destBounds = airportsDest.getBounds();
+ this.map.fitBounds(destBounds);
+ }.bind());*/
 
 /*
  Alternate airports layer
@@ -110,10 +117,12 @@ $(function () {
             $("div.metar-info").html(metarLegend.join(" "));
         });
     }
-    function updateWeatherLayers(){
+
+    function updateWeatherLayers() {
         airportsDest.refresh();
         airportsAltn.refresh();
     }
+
     setInterval(updateOldMetar, 60000);
     setInterval(updateWeatherLayers, 120000);
     setTimeout(updateOldMetar, 10000);

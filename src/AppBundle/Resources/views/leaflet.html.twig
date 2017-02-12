@@ -13,6 +13,7 @@
     var destinationWeather = '{{ path('weather_json_actual') }}';
     var alternateWeather = '{{ path('weather_json_actual', { alternate : 1}) }}';
     var oldMetar = '{{ path('weather_json_old') }}';
+    var iconType = {{ icon_type }};
 </script>
 <script src="{{ asset('js/jquery.min.js') }}"></script>
 <script src="{{ asset('js/spin.min.js') }}"></script>

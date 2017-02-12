@@ -66,7 +66,8 @@ module.exports = function(grunt) {
                     'web/js/jquery.min.js' : ['src/AppBundle/Resources/js/jquery.min.js'],
                     'web/js/leaflet.spin.min.js': ['src/AppBundle/Resources/js/leaflet.spin.js'],
                     'web/js/spin.min.js': ['src/AppBundle/Resources/js/spin.min.js'],
-                    'web/js/floatThead.js': ['src/AppBundle/Resources/js/floatThead.js']
+                    'web/js/floatThead.js': ['src/AppBundle/Resources/js/floatThead.js'],
+                    'web/js/admin.js': ['src/AppBundle/Resources/js/admin.js']
                 }
             }
         },

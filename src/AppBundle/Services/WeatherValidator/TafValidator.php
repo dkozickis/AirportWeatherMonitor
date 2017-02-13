@@ -39,23 +39,28 @@ class TafValidator extends WeatherValidator
         /* @var Visibility $visibility */
         $visibility = $this->airport->getDecodedTaf()->getVisibility();
 
-        /* @var WeatherPhenomenon $weatherPhenomenon */
-        $weatherPhenomenon = $this->airport->getDecodedTaf()->getWeatherPhenomenon();
+        /* @var WeatherPhenomenon[] $weatherPhenomenon */
+        $weatherPhenomenons = $this->airport->getDecodedTaf()->getWeatherPhenomenons();
 
         if (!$this->checkProcessingErrors($rawTaf, $decodingExceptions)) {
             return $this->validatedWeather;
         }
 
-        if ($weatherPhenomenon) {
-            $weatherPhenomenonChunk = $weatherPhenomenon->getChunk();
-            $this->validatePhenomenon($weatherPhenomenonChunk);
-            if ($weatherPhenomenon->getEvolutions()) {
-                /* @var Evolution $evolution */
-                foreach ($weatherPhenomenon->getEvolutions() as $evolution) {
-                    /* @var WeatherPhenomenon $weatherPhenomenonEvolution */
-                    $weatherPhenomenonEvolution = $evolution->getEntity();
-                    $weatherPhenomenonEvolutionChunk = $weatherPhenomenonEvolution->getChunk();
-                    $this->validatePhenomenon($weatherPhenomenonEvolutionChunk);
+        if ($weatherPhenomenons) {
+            /** @var WeatherPhenomenon $weatherPhenomenon */
+            foreach ($weatherPhenomenons as $weatherPhenomenon) {
+                $weatherPhenomenonChunk = $weatherPhenomenon->getChunk();
+                $this->validatePhenomenon($weatherPhenomenonChunk);
+                if ($weatherPhenomenon->getEvolutions()) {
+                    /* @var Evolution $evolution */
+                    foreach ($weatherPhenomenon->getEvolutions() as $evolution) {
+                        $weatherPhenomenonEvolution = $evolution->getEntity();
+                        /* @var WeatherPhenomenon $weatherPhenomenon */
+                        foreach ($weatherPhenomenonEvolution as $weatherPhenomenon) {
+                            $weatherPhenomenonChunk = $weatherPhenomenon->getChunk();
+                            $this->validatePhenomenon($weatherPhenomenonChunk);
+                        }
+                    }
                 }
             }
         }

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "31b0408234441003d43c39fce3c701a4",
+    "content-hash": "1fe98de327102a9f114a4c6fad5eb642",
     "packages": [
         {
             "name": "doctrine/annotations",
@@ -1631,12 +1631,12 @@
             "version": "dev-master",
             "source": {
                 "type": "git",
-                "url": "https://github.com/JohnieWalker/php-metar-decoder.git",
+                "url": "https://github.com/dkozickis/php-metar-decoder.git",
                 "reference": "05c571c21cd980d2014f817422672b9a772b3913"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/JohnieWalker/php-metar-decoder/zipball/05c571c21cd980d2014f817422672b9a772b3913",
+                "url": "https://api.github.com/repos/dkozickis/php-metar-decoder/zipball/05c571c21cd980d2014f817422672b9a772b3913",
                 "reference": "05c571c21cd980d2014f817422672b9a772b3913",
                 "shasum": ""
             },
@@ -1678,13 +1678,13 @@
             "version": "dev-master",
             "source": {
                 "type": "git",
-                "url": "https://github.com/JohnieWalker/php-taf-decoder.git",
-                "reference": "32dbbb6f8425a2c2a47bab864402597f3424ae86"
+                "url": "https://github.com/dkozickis/php-taf-decoder.git",
+                "reference": "1a3a15b677db5fdb96c1285e7a2be340bbef8d9c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/JohnieWalker/php-taf-decoder/zipball/32dbbb6f8425a2c2a47bab864402597f3424ae86",
-                "reference": "32dbbb6f8425a2c2a47bab864402597f3424ae86",
+                "url": "https://api.github.com/repos/dkozickis/php-taf-decoder/zipball/1a3a15b677db5fdb96c1285e7a2be340bbef8d9c",
+                "reference": "1a3a15b677db5fdb96c1285e7a2be340bbef8d9c",
                 "shasum": ""
             },
             "require": {
@@ -1716,9 +1716,10 @@
             ],
             "description": "TAF weather forecast decoder",
             "support": {
-                "source": "https://github.com/JohnieWalker/php-taf-decoder/tree/master"
+                "source": "https://github.com/dkozickis/php-taf-decoder/tree/master",
+                "issues": "https://github.com/dkozickis/php-taf-decoder/issues"
             },
-            "time": "2017-02-08 06:44:44"
+            "time": "2017-02-13 14:02:14"
         },
         {
             "name": "sensio/distribution-bundle",
@@ -4041,7 +4042,7 @@
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
-        "php": ">=5.5.9"
+        "php": ">=7.0"
     },
     "platform-dev": []
 }

@@ -22,75 +22,6 @@ class TafValidatorTest extends KernelTestCase
     private $weatherLogger;
 
     /**
-     * {@inheritdoc}
-     */
-    protected function setUp()
-    {
-        self::bootKernel();
-
-        $this->em = static::$kernel->getContainer()
-            ->get('doctrine')
-            ->getManager();
-
-        $this->weatherLogger = static::$kernel->getContainer()
-            ->get('monolog.logger.weather');
-    }
-
-    /**
-     * @dataProvider airportMetarDataProvider
-     */
-    public function testValidate(
-        $name,
-        $highWind,
-        $midWind,
-        $highCeil,
-        $midCeil,
-        $highVis,
-        $midVis,
-        $raw,
-        $status,
-        $warnings
-    ) {
-        $tafDecoder = new TafDecoder();
-        $airport = new MonitoredAirport();
-        $phenomenons = array(
-            'mid' => array('TSRA', 'FG'),
-            'high' => array('FZDZ', '+TSRA')
-        );
-
-        $airport->setRawTaf($raw);
-        $decodedTaf = $tafDecoder->parse($airport->getRawTaf());
-        $airport->setDecodedTaf($decodedTaf);
-
-        $airportMasterData = new AirportsMasterData();
-        $airportMasterData->setAirportIcao($name)
-            ->setLat(0)
-            ->setLon(0);
-
-        $airport->setAirportData($airportMasterData)
-            ->setHighWarningWind($highWind)
-            ->setMidWarningWind($midWind)
-            ->setHighWarningCeiling($highCeil)
-            ->setMidWarningCeiling($midCeil)
-            ->setHighWarningVis($highVis)
-            ->setMidWarningVis($midVis);
-
-        $tafValidator = new TafValidator($this->weatherLogger, $phenomenons);
-
-        $validatedTaf = $tafValidator->validate($airport, 0);
-        $airport->setValidatedTaf($validatedTaf);
-
-        $this->assertEquals($status, $validatedTaf->getWeatherStatus());
-
-        $i = 0;
-        foreach ($warnings as $warning) {
-            $this->assertEquals($warning['chunk'], $validatedTaf->getWeatherWarnings()[$i]->getChunk());
-            $this->assertEquals($warning['level'], $validatedTaf->getWeatherWarnings()[$i]->getWarningLevel());
-            ++$i;
-        }
-    }
-
-    /**
      * @return array
      */
     public static function airportMetarDataProvider()
@@ -129,9 +60,7 @@ class TafValidatorTest extends KernelTestCase
                 'raw' => 'TAF KJFK 201410Z 2014/2212 /////KT P6SM VCFGRA BKN020 OVC080 TX22/2014Z TN14/2204Z '.
                     'BECMG 0810/0812 27031KT',
                 'status' => '0',
-                'warning' => array(
-
-                ),
+                'warning' => array(),
             ),
             array(
                 'name' => 'KJFK',
@@ -285,5 +214,72 @@ class TafValidatorTest extends KernelTestCase
                 ),
             ),
         );
+    }
+
+    /**
+     * @dataProvider airportMetarDataProvider
+     */
+    public function testValidate(
+        $name,
+        $highWind,
+        $midWind,
+        $highCeil,
+        $midCeil,
+        $highVis,
+        $midVis,
+        $raw,
+        $status,
+        $warnings
+    ) {
+        $tafDecoder = new TafDecoder();
+        $airport = new MonitoredAirport();
+        $phenomenons = array(
+            'mid' => array('TSRA', 'FG'),
+            'high' => array('FZDZ', '+TSRA')
+        );
+
+        $airport->setRawTaf($raw);
+        $decodedTaf = $tafDecoder->parse($airport->getRawTaf());
+        $airport->setDecodedTaf($decodedTaf);
+
+        $airportMasterData = new AirportsMasterData();
+        $airportMasterData->setAirportIcao($name)
+            ->setLat(0)
+            ->setLon(0);
+
+        $airport->setAirportData($airportMasterData)
+            ->setHighWarningWind($highWind)
+            ->setMidWarningWind($midWind)
+            ->setHighWarningCeiling($highCeil)
+            ->setMidWarningCeiling($midCeil)
+            ->setHighWarningVis($highVis)
+            ->setMidWarningVis($midVis);
+
+        $tafValidator = new TafValidator($this->weatherLogger, $phenomenons);
+
+        $validatedTaf = $tafValidator->validate($airport, 0);
+        $airport->setValidatedTaf($validatedTaf);
+
+        $this->assertEquals($status, $validatedTaf->getWeatherStatus());
+
+        for ($i = 0; $i < count($warnings); $i++) {
+            $this->assertEquals($warnings[$i]['chunk'], $validatedTaf->getWeatherWarnings()[$i]->getChunk());
+            $this->assertEquals($warnings[$i]['level'], $validatedTaf->getWeatherWarnings()[$i]->getWarningLevel());
+        }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function setUp()
+    {
+        self::bootKernel();
+
+        $this->em = static::$kernel->getContainer()
+            ->get('doctrine')
+            ->getManager();
+
+        $this->weatherLogger = static::$kernel->getContainer()
+            ->get('monolog.logger.weather');
     }
 }

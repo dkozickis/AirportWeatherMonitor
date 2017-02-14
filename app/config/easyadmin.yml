@@ -27,6 +27,7 @@ easy_admin:
                 title: "New Monitored Airport"
             list:
                 title: "Monitored Airports"
+                help: "Alternate values are checked if airport is configured as alternate during season.<br/>If `alternate` values are not maintained - value from `destination` will be taken during weather check for airport."
                 actions:
                   - { name: 'new', label: 'New Monitored Airport'}
                 fields:
@@ -83,6 +84,9 @@ easy_admin:
                 title: "New Monitored Airport"
             list:
                 title: "Monitored Airports (All)"
+                help: "Alternate values are checked if airport is configured as alternate during season.<br/>
+                If `alternate` values are not maintained - value from `destination` will be taken during weather check for airport.<br/>
+                <strong>This list allows quick maintenance of minimas by just tabbing through them</strong>"
                 max_results: 500
                 actions:
                   - { name: 'new', label: 'New Monitored Airport'}
@@ -140,6 +144,7 @@ easy_admin:
                 - { property: 'phenomenons', label: 'Phenomenons'}
             edit:
               title: "Edit Monitored Phenomenon"
+              help: "<strong>Separate each phenomena type using whitespace</strong>"
               fields:
                 - {property: 'phenomenons', label: 'Phenomenons'}
         AirportsMasterData:

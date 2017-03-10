@@ -13,7 +13,7 @@ use Symfony\Component\Console\Output\OutputInterface;
  *
  * @codeCoverageIgnore
  */
-class LoadOldData extends ContainerAwareCommand
+class LoadOldDataCommand extends ContainerAwareCommand
 {
     protected function configure()
     {

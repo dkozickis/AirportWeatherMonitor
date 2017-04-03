@@ -36,18 +36,18 @@ easy_admin:
                     - { property: 'alternateWinter', type: 'boolean', label: 'Altn. W', sortable: false}
                     - { property: 'activeSummer', type: 'boolean', label: 'Act. S', sortable: false}
                     - { property: 'alternateSummer', type: 'boolean', label: 'Altn. S', sortable: false}
-                    - { property: 'midWarningVis', label: 'Vis', css_class: text-right bg-warning, sortable: false}
-                    - { property: 'midWarningCeiling', label: 'Ceil', css_class: text-right bg-warning, sortable: false}
-                    - { property: 'midWarningWind', label: 'Wind', css_class: text-right bg-warning, sortable: false}
-                    - { property: 'highWarningVis', label: 'Vis', css_class: text-right bg-danger, sortable: false}
                     - { property: 'highWarningCeiling', label: 'Ceil', css_class: text-right bg-danger, sortable: false}
+                    - { property: 'highWarningVis', label: 'Vis', css_class: text-right bg-danger, sortable: false}
                     - { property: 'highWarningWind', label: 'Wind', css_class: text-right bg-danger, sortable: false}
-                    - { property: 'midWarningVisAlt', label: 'Vis', css_class: text-right bg-warning, sortable: false}
-                    - { property: 'midWarningCeilingAlt', label: 'Ceil', css_class: text-right bg-warning, sortable: false}
-                    - { property: 'midWarningWindAlt', label: 'Wind', css_class: text-right bg-warning, sortable: false}
-                    - { property: 'highWarningVisAlt', label: 'Vis', css_class: text-right bg-danger, sortable: false}
+                    - { property: 'midWarningCeiling', label: 'Ceil', css_class: text-right bg-warning, sortable: false}
+                    - { property: 'midWarningVis', label: 'Vis', css_class: text-right bg-warning, sortable: false}
+                    - { property: 'midWarningWind', label: 'Wind', css_class: text-right bg-warning, sortable: false}
                     - { property: 'highWarningCeilingAlt', label: 'Ceil', css_class: text-right bg-danger, sortable: false}
+                    - { property: 'highWarningVisAlt', label: 'Vis', css_class: text-right bg-danger, sortable: false}
                     - { property: 'highWarningWindAlt', label: 'Wind', css_class: text-right bg-danger, sortable: false}
+                    - { property: 'midWarningCeilingAlt', label: 'Ceil', css_class: text-right bg-warning, sortable: false}
+                    - { property: 'midWarningVisAlt', label: 'Vis', css_class: text-right bg-warning, sortable: false}
+                    - { property: 'midWarningWindAlt', label: 'Wind', css_class: text-right bg-warning, sortable: false}
             form:
                 title: "Edit Monitored Airport"
                 fields:
@@ -60,19 +60,19 @@ easy_admin:
                     - { property: 'activeSummer', label: 'Active monitoring during Summer'}
                     - { property: 'alternateSummer', label: 'Alternate during Summer'}
                     - { type: 'group', label: 'Normal Minimas', css_class: 'col-sm-6' }
-                    - { property: 'midWarningVis', label: 'Visibility Yellow'}
-                    - { property: 'midWarningCeiling', label: 'Ceiling Yellow'}
-                    - { property: 'midWarningWind', label: 'Wind Yellow'}
-                    - { property: 'highWarningVis', label: 'Visibility Red'}
                     - { property: 'highWarningCeiling', label: 'Ceiling Red'}
+                    - { property: 'highWarningVis', label: 'Visibility Red'}
                     - { property: 'highWarningWind', label: 'Wind Red'}
+                    - { property: 'midWarningCeiling', label: 'Ceiling Yellow'}
+                    - { property: 'midWarningVis', label: 'Visibility Yellow'}
+                    - { property: 'midWarningWind', label: 'Wind Yellow'}
                     - { type: 'group', label: 'Alternate Minimas', css_class: 'col-sm-6' }
-                    - { property: 'midWarningVisAlt', label: 'Visibility Yellow'}
-                    - { property: 'midWarningCeilingAlt', label: 'Ceilinig Yellow'}
-                    - { property: 'midWarningWindAlt', label: 'Wind Yellow'}
-                    - { property: 'highWarningVisAlt', label: 'Visibility Red'}
                     - { property: 'highWarningCeilingAlt', label: 'Ceilinig Red'}
+                    - { property: 'highWarningVisAlt', label: 'Visibility Red'}
                     - { property: 'highWarningWindAlt', label: 'Wind Red'}
+                    - { property: 'midWarningCeilingAlt', label: 'Ceilinig Yellow'}
+                    - { property: 'midWarningVisAlt', label: 'Visibility Yellow'}
+                    - { property: 'midWarningWindAlt', label: 'Wind Yellow'}
         MonitoredAirportQuick:
             class: AppBundle\Entity\MonitoredAirport
             templates:
@@ -96,18 +96,18 @@ easy_admin:
                     - { property: 'alternateWinter', type: 'toggle', label: 'Altn. W', sortable: false}
                     - { property: 'activeSummer', type: 'toggle', label: 'Act. S', sortable: false}
                     - { property: 'alternateSummer', type: 'toggle', label: 'Altn. S', sortable: false}
-                    - { property: 'midWarningVis', label: 'Vis', template: 'input_inline_edit.html.twig', css_class: bg-warning text-right, sortable: false}
-                    - { property: 'midWarningCeiling', label: 'Ceil', template: 'input_inline_edit.html.twig', css_class: bg-warning text-right, sortable: false}
-                    - { property: 'midWarningWind', label: 'Wind', template: 'input_inline_edit.html.twig', css_class: bg-warning text-right, sortable: false}
-                    - { property: 'highWarningVis', label: 'Vis', template: 'input_inline_edit.html.twig', css_class: bg-danger text-right, sortable: false}
                     - { property: 'highWarningCeiling', label: 'Ceil', template: 'input_inline_edit.html.twig', css_class: bg-danger text-right, sortable: false}
+                    - { property: 'highWarningVis', label: 'Vis', template: 'input_inline_edit.html.twig', css_class: bg-danger text-right, sortable: false}
                     - { property: 'highWarningWind', label: 'Wind', template: 'input_inline_edit.html.twig', css_class: bg-danger text-right, sortable: false}
-                    - { property: 'midWarningVisAlt', label: 'Vis', template: 'input_inline_edit.html.twig',css_class: bg-warning text-right, sortable: false}
-                    - { property: 'midWarningCeilingAlt', label: 'Ceil', template: 'input_inline_edit.html.twig',css_class: bg-warning text-right, sortable: false}
-                    - { property: 'midWarningWindAlt', label: 'Wind', template: 'input_inline_edit.html.twig', css_class: bg-warning text-right, sortable: false}
-                    - { property: 'highWarningVisAlt', label: 'Vis', template: 'input_inline_edit.html.twig', css_class: bg-danger text-right, sortable: false}
+                    - { property: 'midWarningCeiling', label: 'Ceil', template: 'input_inline_edit.html.twig', css_class: bg-warning text-right, sortable: false}
+                    - { property: 'midWarningVis', label: 'Vis', template: 'input_inline_edit.html.twig', css_class: bg-warning text-right, sortable: false}
+                    - { property: 'midWarningWind', label: 'Wind', template: 'input_inline_edit.html.twig', css_class: bg-warning text-right, sortable: false}
                     - { property: 'highWarningCeilingAlt', label: 'Ceil', template: 'input_inline_edit.html.twig', css_class: bg-danger text-right, sortable: false}
+                    - { property: 'highWarningVisAlt', label: 'Vis', template: 'input_inline_edit.html.twig', css_class: bg-danger text-right, sortable: false}
                     - { property: 'highWarningWindAlt', label: 'Wind', template: 'input_inline_edit.html.twig', css_class: bg-danger text-right, sortable: false}
+                    - { property: 'midWarningCeilingAlt', label: 'Ceil', template: 'input_inline_edit.html.twig',css_class: bg-warning text-right, sortable: false}
+                    - { property: 'midWarningVisAlt', label: 'Vis', template: 'input_inline_edit.html.twig',css_class: bg-warning text-right, sortable: false}
+                    - { property: 'midWarningWindAlt', label: 'Wind', template: 'input_inline_edit.html.twig', css_class: bg-warning text-right, sortable: false}
             form:
                 title: "Edit Monitored Airport"
                 fields:
@@ -120,19 +120,19 @@ easy_admin:
                     - { property: 'activeSummer', label: 'Active monitoring during Summer'}
                     - { property: 'alternateSummer', label: 'Alternate during Summer'}
                     - { type: 'group', label: 'Normal Minimas', css_class: 'col-sm-6' }
-                    - { property: 'midWarningVis', label: 'Visibility Yellow'}
-                    - { property: 'midWarningCeiling', label: 'Ceiling Yellow'}
-                    - { property: 'midWarningWind', label: 'Wind Yellow'}
-                    - { property: 'highWarningVis', label: 'Visibility Red'}
                     - { property: 'highWarningCeiling', label: 'Ceiling Red'}
+                    - { property: 'highWarningVis', label: 'Visibility Red'}
                     - { property: 'highWarningWind', label: 'Wind Red'}
+                    - { property: 'midWarningCeiling', label: 'Ceiling Yellow'}
+                    - { property: 'midWarningVis', label: 'Visibility Yellow'}
+                    - { property: 'midWarningWind', label: 'Wind Yellow'}
                     - { type: 'group', label: 'Alternate Minimas', css_class: 'col-sm-6' }
-                    - { property: 'midWarningVisAlt', label: 'Visibility Yellow'}
-                    - { property: 'midWarningCeilingAlt', label: 'Ceilinig Yellow'}
-                    - { property: 'midWarningWindAlt', label: 'Wind Yellow'}
-                    - { property: 'highWarningVisAlt', label: 'Visibility Red'}
                     - { property: 'highWarningCeilingAlt', label: 'Ceilinig Red'}
+                    - { property: 'highWarningVisAlt', label: 'Visibility Red'}
                     - { property: 'highWarningWindAlt', label: 'Wind Red'}
+                    - { property: 'midWarningCeilingAlt', label: 'Ceilinig Yellow'}
+                    - { property: 'midWarningVisAlt', label: 'Visibility Yellow'}
+                    - { property: 'midWarningWindAlt', label: 'Wind Yellow'}
         MonitoredPhenomenons:
             class: AppBundle\Entity\MonitoredPhenomenons
             disabled_actions: ['new', 'delete']

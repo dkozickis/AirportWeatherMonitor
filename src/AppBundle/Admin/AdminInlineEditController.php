@@ -29,15 +29,15 @@ class AdminInlineEditController extends Controller
         $entityParam = $request->get('param');
         $newValue = trim($request->get('value'));
 
-        if (null === $newValue || empty($newValue)) {
+        /**if (null === $newValue || empty($newValue)) {
             $newValue = null;
-        }
+        }**/
 
         $result = $rep->createQueryBuilder('ma')
             ->update('AppBundle:MonitoredAirport', 'ma');
 
         if (null === $newValue || empty($newValue)) {
-            $result->set('ma.'.$entityParam, 'NULL');
+            $result->set('ma.'.$entityParam, 0);
         } else {
             $result->set('ma.'.$entityParam, $newValue);
         }

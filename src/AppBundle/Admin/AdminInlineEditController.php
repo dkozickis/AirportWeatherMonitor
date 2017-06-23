@@ -37,7 +37,6 @@ class AdminInlineEditController extends Controller
             ->update('AppBundle:MonitoredAirport', 'ma');
 
         if (null === $newValue || empty($newValue)) {
-            dump('We null baby');
             $result->set('ma.'.$entityParam, 'NULL');
         } else {
             $result->set('ma.'.$entityParam, $newValue);

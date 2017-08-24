@@ -1,5 +1,5 @@
 [![Build Status](https://travis-ci.org/dkozickis/AirportWeatherMonitor.svg?branch=master)](https://travis-ci.org/dkozickis/AirportWeatherMonitor)
-[![Coverage Status](https://coveralls.io/repos/github/JohnieWalker/AeroWeatherWatch/badge.svg?branch=master)](https://coveralls.io/github/JohnieWalker/AeroWeatherWatch?branch=master)
+[![Coverage Status](https://coveralls.io/repos/github/dkozickis/AirportWeatherMonitor/badge.svg?branch=master)](https://coveralls.io/github/dkozickis/AirportWeatherMonitor?branch=master)
 
 Airport Weather Monitor
 ================

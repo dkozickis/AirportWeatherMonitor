@@ -88,9 +88,13 @@ monolog:
             type:     rotating_file
             path: '%kernel.logs_dir%/weather.log'
             channels: ['weather']
+            max_file: 7
 
 fos_user:
     db_driver: orm # other valid values are 'mongodb' and 'couchdb'
     firewall_name: main
     user_class: AppBundle\Entity\User
+    from_email:
+        address: "noreply@wxmonitor.aero"
+        sender_name: "No Reply"
 

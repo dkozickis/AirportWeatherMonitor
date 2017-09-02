@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "1fe98de327102a9f114a4c6fad5eb642",
+    "content-hash": "6a6a53884bfc96d4b8d9abb1c797a855",
     "packages": [
         {
             "name": "doctrine/annotations",
@@ -1669,9 +1669,9 @@
             ],
             "description": "METAR weather observation decoder",
             "support": {
-                "source": "https://github.com/JohnieWalker/php-metar-decoder/tree/master"
+                "source": "https://github.com/dkozickis/php-metar-decoder/tree/master"
             },
-            "time": "2017-01-26 12:27:04"
+            "time": "2017-01-26T12:27:04+00:00"
         },
         {
             "name": "safran-cassiopee/php-taf-decoder",
@@ -1719,7 +1719,7 @@
                 "source": "https://github.com/dkozickis/php-taf-decoder/tree/master",
                 "issues": "https://github.com/dkozickis/php-taf-decoder/issues"
             },
-            "time": "2017-02-13 14:02:14"
+            "time": "2017-02-13T14:02:14+00:00"
         },
         {
             "name": "sensio/distribution-bundle",

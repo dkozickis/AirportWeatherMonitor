@@ -9,6 +9,10 @@
     "grunt-contrib-less": "^1.2.0",
     "grunt-contrib-uglify": "^0.5.1",
     "grunt-copy": "^0.1.0",
-    "grunt-img": "^0.1.8"
+    "grunt-img": "^0.1.8",
+    "floatthead": "^2.0.3",
+    "jquery": "^3.2.1",
+    "leaflet": "^1.2.0",
+    "leaflet-spin": "github:dkozickis/Leaflet.Spin"
   }
 }

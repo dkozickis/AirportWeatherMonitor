@@ -17,11 +17,13 @@
   "repositories": [
     {
       "type": "vcs",
-      "url": "https://github.com/dkozickis/php-metar-decoder"
+      "url": "https://github.com/dkozickis/php-metar-decoder",
+      "no-api": true
     },
     {
       "type": "vcs",
-      "url": "https://github.com/dkozickis/php-taf-decoder"
+      "url": "https://github.com/dkozickis/php-taf-decoder",
+      "no-api": true
     }
   ],
   "require": {

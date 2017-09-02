@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "6a6a53884bfc96d4b8d9abb1c797a855",
+    "content-hash": "2cf630557399e62867156936e7b45cf8",
     "packages": [
         {
             "name": "doctrine/annotations",
@@ -1631,7 +1631,7 @@
             "version": "dev-master",
             "source": {
                 "type": "git",
-                "url": "https://github.com/dkozickis/php-metar-decoder.git",
+                "url": "https://github.com/dkozickis/php-metar-decoder",
                 "reference": "05c571c21cd980d2014f817422672b9a772b3913"
             },
             "dist": {
@@ -1678,7 +1678,7 @@
             "version": "dev-master",
             "source": {
                 "type": "git",
-                "url": "https://github.com/dkozickis/php-taf-decoder.git",
+                "url": "https://github.com/dkozickis/php-taf-decoder",
                 "reference": "1a3a15b677db5fdb96c1285e7a2be340bbef8d9c"
             },
             "dist": {

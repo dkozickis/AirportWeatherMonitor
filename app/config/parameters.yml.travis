@@ -3,7 +3,7 @@ parameters:
     database_host:     localhost
     database_port:     null
     database_name:     aero_weather
-    database_user:     travis
+    database_user:     root
     database_password: ~
 
     mailer_transport:  smtp

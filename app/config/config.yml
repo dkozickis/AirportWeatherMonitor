@@ -88,7 +88,7 @@ monolog:
             type:     rotating_file
             path: '%kernel.logs_dir%/weather.log'
             channels: ['weather']
-            max_file: 7
+            max_files: 7
 
 fos_user:
     db_driver: orm # other valid values are 'mongodb' and 'couchdb'

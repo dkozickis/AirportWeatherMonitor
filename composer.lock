@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "1fe98de327102a9f114a4c6fad5eb642",
+    "content-hash": "2cf630557399e62867156936e7b45cf8",
     "packages": [
         {
             "name": "doctrine/annotations",
@@ -1631,7 +1631,7 @@
             "version": "dev-master",
             "source": {
                 "type": "git",
-                "url": "https://github.com/dkozickis/php-metar-decoder.git",
+                "url": "https://github.com/dkozickis/php-metar-decoder",
                 "reference": "05c571c21cd980d2014f817422672b9a772b3913"
             },
             "dist": {
@@ -1669,16 +1669,16 @@
             ],
             "description": "METAR weather observation decoder",
             "support": {
-                "source": "https://github.com/JohnieWalker/php-metar-decoder/tree/master"
+                "source": "https://github.com/dkozickis/php-metar-decoder/tree/master"
             },
-            "time": "2017-01-26 12:27:04"
+            "time": "2017-01-26T12:27:04+00:00"
         },
         {
             "name": "safran-cassiopee/php-taf-decoder",
             "version": "dev-master",
             "source": {
                 "type": "git",
-                "url": "https://github.com/dkozickis/php-taf-decoder.git",
+                "url": "https://github.com/dkozickis/php-taf-decoder",
                 "reference": "1a3a15b677db5fdb96c1285e7a2be340bbef8d9c"
             },
             "dist": {
@@ -1719,7 +1719,7 @@
                 "source": "https://github.com/dkozickis/php-taf-decoder/tree/master",
                 "issues": "https://github.com/dkozickis/php-taf-decoder/issues"
             },
-            "time": "2017-02-13 14:02:14"
+            "time": "2017-02-13T14:02:14+00:00"
         },
         {
             "name": "sensio/distribution-bundle",

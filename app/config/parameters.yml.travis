@@ -1,10 +1,10 @@
 parameters:
     database_driver:   pdo_mysql
-    database_host:     127.0.0.1
+    database_host:     localhost
     database_port:     null
     database_name:     aero_weather
-    database_user:     travis
-    database_password: null
+    database_user:     root
+    database_password: ~
 
     mailer_transport:  smtp
     mailer_host:       127.0.0.1
@@ -14,6 +14,5 @@ parameters:
     locale:            en
     secret:            cdcae70cdfd415339afdd473f2fe79c5d6492fa2
 
-    weather-server: 'http://server.lidousers.com'
+    weather-server: 'http://server.wxmonitor.aero'
     icon_type: 1
-

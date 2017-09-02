@@ -1,6 +1,15 @@
 language: php
 php:
   - 7.1
+  
+sudo: false
+  
+services:
+  - mysql
+  
+cache:
+  directories:
+    - $HOME/.composer/cache/files
 
 before_script:
   - cp app/config/parameters.yml.travis app/config/parameters.yml
@@ -16,6 +25,3 @@ script:
 
 after_script:
   - php ./vendor/satooshi/php-coveralls/bin/coveralls -v
-
-sudo: false
-

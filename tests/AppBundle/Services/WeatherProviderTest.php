@@ -26,7 +26,7 @@ class WeatherProviderTest extends KernelTestCase
 
     public function testGet()
     {
-        $weatherProvider = new WeatherProvider("http://server.lidousers.com");
+        $weatherProvider = new WeatherProvider("http://server.wxmonitor.aero");
         $weather = $weatherProvider->getWeather(array('OMAA'));
 
         $this->assertArrayHasKey('OMAA', $weather);

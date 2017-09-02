@@ -44,14 +44,16 @@ function airportMarker(feature, layer) {
 /*
  Base Map for our leaflet map
  */
-var baseMap = L.tileLayer('http://mt1.google.com/vt/lyrs=m@129&hl=en&x={x}&y={y}&z={z}&s=Galileo', {
+var baseMap = L.tileLayer('https://{s}.google.com/vt/lyrs=m@129&hl=en&x={x}&y={y}&z={z}&s=Galileo', {
     attribution: 'Created & Maintained by Deniss Kozickis @ EY',
-    maxZoom: 18
+    maxZoom: 18,
+    subdomains:['mt0','mt1','mt2','mt3']
 }).addTo(map);
 
-var alternateMap = L.tileLayer('http://mt1.google.com/vt/lyrs=y@129&hl=en&x={x}&y={y}&z={z}&s=Galileo', {
+var alternateMap = L.tileLayer('https://{s}.google.com/vt/lyrs=y@129&hl=en&x={x}&y={y}&z={z}&s=Galileo', {
     attribution: 'Created & Maintained by Deniss Kozickis @ EY',
-    maxZoom: 18
+    maxZoom: 18,
+    subdomains:['mt0','mt1','mt2','mt3']
 });
 
 var baseMaps = {
